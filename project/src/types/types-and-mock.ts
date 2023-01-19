@@ -51,6 +51,6 @@ export const offersMock: Offer[] = [
 ];
 
 export const stateMock: State = {
-  rentalOffersCount: 32,
+  rentalOffersCount: 5,
   currentCity: 'Amsterdam'
 };
