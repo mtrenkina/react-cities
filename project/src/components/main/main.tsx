@@ -2,7 +2,7 @@ import React from 'react';
 import { Offer, State } from '../../types/types-and-mock';
 import PlaceCard from '../place-card/place-card';
 
-const Main = (props: {offers: Offer[]; city: State}) => (
+const Main = (props: {offers: Offer[]; city: State}): JSX.Element => (
   <React.Fragment>
     <div style={{ display: 'none' }}>
       <svg xmlns='http://www.w3.org/2000/svg'>
