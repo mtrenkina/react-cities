@@ -4,7 +4,7 @@ export enum AppRoute {
   FavoritesEmpty = '/favorites-empty',
   Login = '/login',
   MainEmpty = '/main-empty',
-  Property = '/property',
+  Room = '/offer',
   PropertyNotLogged = '/property-not-logged',
 }
 
