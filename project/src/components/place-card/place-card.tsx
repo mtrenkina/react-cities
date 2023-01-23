@@ -1,5 +1,5 @@
 import React from 'react';
-import {Offer} from '../../types/types-and-mock';
+import {Offer} from '../../types/types';
 
 const PlaceCard = ({mark, imageSrc, price, inBookmarks, rating, name, type}: Offer): JSX.Element => {
   const bookMarkBtnClasses = ['place-card__bookmark-button', 'button'];

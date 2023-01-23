@@ -1,5 +1,7 @@
 import React from 'react';
-import { Offer, State } from '../../types/types-and-mock';
+import { Link } from 'react-router-dom';
+import { Offer, State } from '../../types/types';
+import Logo from '../../components/logo/logo';
 import PlaceCard from '../place-card/place-card';
 
 const Main = (props: {offers: Offer[]; city: State}): JSX.Element => (
@@ -28,22 +30,20 @@ const Main = (props: {offers: Offer[]; city: State}): JSX.Element => (
         <div className='container'>
           <div className='header__wrapper'>
             <div className='header__left'>
-              <a className='header__logo-link header__logo-link--active'>
-                <img className='header__logo' src='img/logo.svg' alt='6 cities logo' width='81' height='41' />
-              </a>
+              <Logo />
             </div>
             <nav className='header__nav'>
               <ul className='header__nav-list'>
                 <li className='header__nav-item user'>
-                  <a className='header__nav-link header__nav-link--profile' href='/#'>
+                  <Link className='header__nav-link header__nav-link--profile' to='/'>
                     <div className='header__avatar-wrapper user__avatar-wrapper'></div>
                     <span className='header__user-name user__name'>Oliver.conner@gmail.com</span>
-                  </a>
+                  </Link>
                 </li>
                 <li className='header__nav-item'>
-                  <a className='header__nav-link' href='/#'>
+                  <Link className='header__nav-link' to='/'>
                     <span className='header__signout'>Sign out</span>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>
@@ -57,34 +57,34 @@ const Main = (props: {offers: Offer[]; city: State}): JSX.Element => (
           <section className='locations container'>
             <ul className='locations__list tabs__list'>
               <li className='locations__item'>
-                <a className='locations__item-link tabs__item' href='/#'>
+                <Link className='locations__item-link tabs__item' to='/'>
                   <span>Paris</span>
-                </a>
+                </Link>
               </li>
               <li className='locations__item'>
-                <a className='locations__item-link tabs__item' href='/#'>
+                <Link className='locations__item-link tabs__item' to='/'>
                   <span>Cologne</span>
-                </a>
+                </Link>
               </li>
               <li className='locations__item'>
-                <a className='locations__item-link tabs__item' href='/#'>
+                <Link className='locations__item-link tabs__item' to='/'>
                   <span>Brussels</span>
-                </a>
+                </Link>
               </li>
               <li className='locations__item'>
-                <a className='locations__item-link tabs__item tabs__item--active'>
+                <Link className='locations__item-link tabs__item tabs__item--active' to='/'>
                   <span>Amsterdam</span>
-                </a>
+                </Link>
               </li>
               <li className='locations__item'>
-                <a className='locations__item-link tabs__item' href='/#'>
+                <Link className='locations__item-link tabs__item' to='/'>
                   <span>Hamburg</span>
-                </a>
+                </Link>
               </li>
               <li className='locations__item'>
-                <a className='locations__item-link tabs__item' href='/#'>
+                <Link className='locations__item-link tabs__item' to='/'>
                   <span>Dusseldorf</span>
-                </a>
+                </Link>
               </li>
             </ul>
           </section>
@@ -120,7 +120,7 @@ const Main = (props: {offers: Offer[]; city: State}): JSX.Element => (
               <div className='cities__places-list places__list tabs__content'>
                 {Array.from(props.offers).map((offer: Offer) => (
                   <PlaceCard
-                    key={`${offer.name}`}
+                    key={`${offer.name} - ${offer.id}`}
                     mark={offer.mark}
                     imageSrc={offer.imageSrc}
                     price={offer.price}
@@ -128,6 +128,7 @@ const Main = (props: {offers: Offer[]; city: State}): JSX.Element => (
                     rating={offer.rating}
                     name={offer.name}
                     type={offer.type}
+                    id={'offer.id'}
                   />
                 ))}
               </div>
