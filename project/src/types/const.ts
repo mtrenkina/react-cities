@@ -2,6 +2,7 @@ export enum AppRoute {
   Main = '/',
   Favorites = '/favorites',
   FavoritesEmpty = '/favorites-empty',
+  Property = '/property',
   Login = '/login',
   MainEmpty = '/main-empty',
   Room = '/offer',

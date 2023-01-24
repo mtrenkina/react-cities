@@ -22,7 +22,7 @@ const App = (props: { offers: Offer[]; city: State }): JSX.Element => (
       />
       <Route
         path={AppRoute.Favorites}
-        element={<FavouritesPrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}><Favorites /></FavouritesPrivateRoute>}
+        element={<FavouritesPrivateRoute authorizationStatus={AuthorizationStatus.Auth}><Favorites offers={props.offers}/></FavouritesPrivateRoute>}
       />
       <Route
         path={`${AppRoute.Room}/:id`}
