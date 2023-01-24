@@ -1,15 +1,30 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../types/const';
 import {Offer} from '../../types/types';
 
-const PlaceCard = ({mark, imageSrc, price, inBookmarks, rating, name, type}: Offer): JSX.Element => {
+type PlaceCardProps = {card: Offer} & {onCardHover: (id: number) => void}
+
+const PlaceCard = ({card, onCardHover}: PlaceCardProps): JSX.Element => {
+
+  const {mark, imageSrc, price, inBookmarks, rating, name, type, id} = card;
   const bookMarkBtnClasses = ['place-card__bookmark-button', 'button'];
+
+  const handleCardMouseEnter = () => {
+    ///* eslint-disable */ debugger;
+    onCardHover(card.id);
+  };
+
+  const handleCardMouseleave = () => {
+    onCardHover(0);
+  };
 
   if (inBookmarks) {
     bookMarkBtnClasses.push('place-card__bookmark-button--active');
   }
 
   return (
-    <article className="cities__place-card place-card">
+    <article className="cities__place-card place-card" onMouseEnter={handleCardMouseEnter} onMouseLeave={handleCardMouseleave}>
       {mark ? (
         <div className="place-card__mark">
           <span>{mark}</span>
@@ -40,7 +55,7 @@ const PlaceCard = ({mark, imageSrc, price, inBookmarks, rating, name, type}: Off
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{name}</a>
+          <Link to={`${AppRoute.Room}/${id}`}>{name}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

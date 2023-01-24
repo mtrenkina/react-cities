@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Offer, State } from '../../types/types';
 import Logo from '../../components/logo/logo';
-import PlaceCard from '../place-card/place-card';
+import PlaceCardsList from '../place-cards-list/place-cards-list';
 
 const Main = (props: {offers: Offer[]; city: State}): JSX.Element => (
   <React.Fragment>
@@ -117,21 +117,7 @@ const Main = (props: {offers: Offer[]; city: State}): JSX.Element => (
                   </li>
                 </ul>
               </form>
-              <div className='cities__places-list places__list tabs__content'>
-                {Array.from(props.offers).map((offer: Offer) => (
-                  <PlaceCard
-                    key={`${offer.name} - ${offer.id}`}
-                    mark={offer.mark}
-                    imageSrc={offer.imageSrc}
-                    price={offer.price}
-                    inBookmarks={offer.inBookmarks}
-                    rating={offer.rating}
-                    name={offer.name}
-                    type={offer.type}
-                    id={'offer.id'}
-                  />
-                ))}
-              </div>
+              <PlaceCardsList offers={props.offers}/>
             </section>
             <div className='cities__right-section'>
               <section className='cities__map map'></section>

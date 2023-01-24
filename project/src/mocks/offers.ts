@@ -1,9 +1,9 @@
-import { nanoid } from 'nanoid';
+//import { nanoid } from 'nanoid';
 import { Offer, State} from '../types/types';
 
 export const offersMock: Offer[] = [
   {
-    id: nanoid(3),
+    id: 5,
     mark: 'Premium',
     imageSrc: 'img/apartment-01.jpg',
     price: 120,
@@ -13,7 +13,7 @@ export const offersMock: Offer[] = [
     type: 'Apartment',
   },
   {
-    id: nanoid(3),
+    id: 2,
     imageSrc: 'img/room.jpg',
     price: 80,
     inBookmarks: false,
@@ -22,7 +22,7 @@ export const offersMock: Offer[] = [
     type: 'Private room',
   },
   {
-    id: nanoid(3),
+    id: 3,
     imageSrc: 'img/apartment-02.jpg',
     price: 132,
     inBookmarks: true,
@@ -31,7 +31,7 @@ export const offersMock: Offer[] = [
     type: 'Apartment',
   },
   {
-    id: nanoid(3),
+    id: 4,
     mark: 'Premium',
     imageSrc: 'img/apartment-03.jpg',
     price: 180,

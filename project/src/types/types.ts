@@ -1,5 +1,5 @@
 export type Offer = {
-  id: string;
+  id: number;
 	mark?: string;
 	imageSrc: string;
   price: number;
