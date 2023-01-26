@@ -5,11 +5,11 @@ import Property from '../property/property';
 import NotFound from '../../pages/not-found/not-found';
 import LoginPrivateRoute from '../login-private-route/login-private-route';
 import FavouritesPrivateRoute from '../favourites-private-route/favourites-private-route';
-import { Offer, State } from '../../types/types';
-import { AppRoute, AuthorizationStatus } from '../../types/const';
+import { Offer, City } from '../../types/types';
+import { AppRoute, AuthorizationStatus } from '../../mocks/const';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-const App = (props: { offers: Offer[]; city: State }): JSX.Element => (
+const App = (props: { offers: Offer[]; city: City }): JSX.Element => (
   <BrowserRouter>
     <Routes>
       <Route

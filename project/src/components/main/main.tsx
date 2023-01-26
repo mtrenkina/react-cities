@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Offer, State } from '../../types/types';
+import { Offer, City } from '../../types/types';
 import Logo from '../../components/logo/logo';
 import PlaceCardsList from '../place-cards-list/place-cards-list';
+import Map from '../map/map';
 
-const Main = (props: {offers: Offer[]; city: State}): JSX.Element => (
+const Main = (props: {offers: Offer[]; city: City}): JSX.Element => (
   <React.Fragment>
     <div style={{ display: 'none' }}>
       <svg xmlns='http://www.w3.org/2000/svg'>
@@ -120,7 +121,12 @@ const Main = (props: {offers: Offer[]; city: State}): JSX.Element => (
               <PlaceCardsList offers={props.offers}/>
             </section>
             <div className='cities__right-section'>
-              <section className='cities__map map'></section>
+              <section className='cities__map map'>
+                <Map
+                  city= {props.city}
+                  points= {props.offers}
+                />
+              </section>
             </div>
           </div>
         </div>

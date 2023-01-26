@@ -1,5 +1,4 @@
-//import { nanoid } from 'nanoid';
-import { Offer, State} from '../types/types';
+import { Offer, City} from '../types/types';
 
 export const offersMock: Offer[] = [
   {
@@ -11,6 +10,8 @@ export const offersMock: Offer[] = [
     rating: 93,
     name: 'Beautiful luxurious apartment at great location',
     type: 'Apartment',
+    lat: 52.3909553943508,
+    lng: 4.85309666406198,
   },
   {
     id: 2,
@@ -20,6 +21,8 @@ export const offersMock: Offer[] = [
     rating: 80,
     name: 'Wood and stone place',
     type: 'Private room',
+    lat: 52.369553943508,
+    lng: 4.85309666406198,
   },
   {
     id: 3,
@@ -29,6 +32,8 @@ export const offersMock: Offer[] = [
     rating: 80,
     name: 'Canal View Prinsengracht',
     type: 'Apartment',
+    lat: 52.3909553943508,
+    lng: 4.929309666406198,
   },
   {
     id: 4,
@@ -39,10 +44,15 @@ export const offersMock: Offer[] = [
     rating: 100,
     name: 'Nice, cozy, warm big bed apartment',
     type: 'Apartment',
+    lat: 52.3809553943508,
+    lng: 4.939309666406198,
   },
 ];
 
-export const stateMock: State = {
+export const currentCityMock: City = {
   rentalOffersCount: 4,
-  currentCity: 'Amsterdam'
+  currentCity: 'Amsterdam',
+  lat: 52.374,
+  lng: 4.88969,
+  zoom: 12,
 };

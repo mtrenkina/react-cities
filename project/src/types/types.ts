@@ -7,11 +7,16 @@ export type Offer = {
   rating: number;
   name: string;
   type: string;
+  lat: number;
+  lng: number;
 }
 
-export type State = {
+export type City = {
   rentalOffersCount: number;
   currentCity: string;
+  lat: number;
+  lng: number;
+  zoom: number;
 }
 
 export type User = {

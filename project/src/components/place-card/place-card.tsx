@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../types/const';
+import { AppRoute } from '../../mocks/const';
 import {Offer} from '../../types/types';
 
 type PlaceCardProps = {card: Offer} & {onCardHover: (id: number) => void}
