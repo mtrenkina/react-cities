@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Offer, City } from '../../types/offers';
+import { Offer } from '../../types/offer';
+import { City } from '../../types/city';
 import Logo from '../../components/logo/logo';
 import CardsList from '../cards-list/cards-list';
 import Map from '../map/map';
@@ -13,6 +14,7 @@ type MainProps = {
 const Main = ({ offers, city }: MainProps): JSX.Element => {
 
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
+
   const onCardHover = (listItemId: number) => {
     const currentPoint = offers.find((offer) =>
       offer.id === listItemId,
@@ -110,7 +112,7 @@ const Main = ({ offers, city }: MainProps): JSX.Element => {
               <section className='cities__places places'>
                 <h2 className='visually-hidden'>Places</h2>
                 <b className='places__found'>
-                  {city.rentalOffersCount} places to stay in {city.currentCity}
+                  {city.rentalOffersCount} places to stay in {city.name}
                 </b>
                 <form className='places__sorting' action='#' method='get'>
                   <span className='places__sorting-caption'>Sort by</span>

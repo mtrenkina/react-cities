@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../mocks/const';
-import {Offer} from '../../types/offers';
+import {Offer} from '../../types/offer';
 
 type CardsProps = {
   card: Offer;

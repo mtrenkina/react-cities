@@ -5,7 +5,8 @@ import Property from '../property/property';
 import NotFound from '../../pages/not-found/not-found';
 import LoginPrivateRoute from '../login-private-route/login-private-route';
 import FavouritesPrivateRoute from '../favourites-private-route/favourites-private-route';
-import { Offer, City } from '../../types/offers';
+import { Offer } from '../../types/offer';
+import { City } from '../../types/city';
 import { AppRoute, AuthorizationStatus } from '../../mocks/const';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 

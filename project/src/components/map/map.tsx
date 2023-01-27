@@ -3,7 +3,8 @@ import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../mocks/const';
 import useMap from '../../hooks/useMap';
-import {City, Offer} from '../../types/offers';
+import { Offer } from '../../types/offer';
+import { City } from '../../types/city';
 
 type MapProps = {
   city: City;

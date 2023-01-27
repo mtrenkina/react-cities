@@ -4,7 +4,8 @@ import Logo from '../../components/logo/logo';
 import Comment from '../../components/comment/comment';
 import ReviewsList from '../reviews-list/reviews-list';
 import { reviews } from '../../mocks/reviews';
-import { Offer, City } from '../../types/offers';
+import { Offer } from '../../types/offer';
+import { City } from '../../types/city';
 import Map from '../map/map';
 import CardsList from '../cards-list/cards-list';
 
@@ -19,6 +20,7 @@ const Property = ({offers, city}: PropertyProps): JSX.Element => {
   const nearOffers = () => Array.from(offers).filter((offer) => offer.id !== Number(params.id));
 
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
+
   const onCardHover = (listItemId: number) => {
     const currentPoint = offers.find((offer) =>
       offer.id === listItemId,

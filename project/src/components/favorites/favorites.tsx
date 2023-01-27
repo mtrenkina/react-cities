@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Offer } from '../../types/offers';
+import { Offer } from '../../types/offer';
 import Logo from '../../components/logo/logo';
 import Card from '../card/card';
 

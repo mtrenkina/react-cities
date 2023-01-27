@@ -4,6 +4,7 @@
     "nanoid": "^4.0.0"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.1",
     "leaflet": "^1.9.3"
   }
 }
