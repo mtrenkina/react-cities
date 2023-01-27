@@ -3,12 +3,11 @@ import { useState } from 'react';
 
 const Comment = (): JSX.Element => {
 
-  const [formData, setFormData] = useState({ review: '', });
+  const [formData, setFormData] = useState('');
   const [rating, setRating] = useState(0);
 
   const fieldChangeHandler = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const {name, value} = evt.target;
-    setFormData({...formData, [name]: value});
+    setFormData(evt.target.value);
   };
 
   const inputClickHandler = (evt: React.MouseEvent<HTMLInputElement> ) => {
@@ -63,6 +62,7 @@ const Comment = (): JSX.Element => {
         name='review'
         placeholder='Tell how was your stay, what you like and what can be improved'
         onChange={fieldChangeHandler}
+        value={formData}
       >
       </textarea>
       <div className='reviews__button-wrapper'>

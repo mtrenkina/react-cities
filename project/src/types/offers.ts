@@ -1,14 +1,21 @@
+import { Host } from "./reviews";
+
 export type Offer = {
   id: number;
 	mark?: string;
+  host: Host;
 	imageSrc: string;
   price: number;
+  bedrooms: number;
+  capacity: number;
   inBookmarks: boolean;
   rating: number;
   name: string;
+  description: string;
   type: string;
   lat: number;
   lng: number;
+  goods: string[];
 }
 
 export type City = {
@@ -18,18 +25,3 @@ export type City = {
   lng: number;
   zoom: number;
 }
-
-export type User = {
-  avatarUrl: string;
-  id: number;
-  isPro: boolean;
-  name: string;
-};
-
-export type Review = {
-  id: string;
-  user: User;
-  rating: number;
-  date: string;
-  comment: string;
-};

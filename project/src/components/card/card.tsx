@@ -1,22 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../mocks/const';
-import {Offer} from '../../types/types';
+import {Offer} from '../../types/offers';
 
-type PlaceCardProps = {card: Offer} & {onCardHover: (id: number) => void}
+type CardsProps = {
+  card: Offer;
+  changeActiveCard?: (id: number) => void;
+  cardClassName: string;
+  imgClassName: string;
+}
 
-const PlaceCard = ({card, onCardHover}: PlaceCardProps): JSX.Element => {
+const Card = ({card, changeActiveCard, cardClassName, imgClassName}: CardsProps): JSX.Element => {
 
   const {mark, imageSrc, price, inBookmarks, rating, name, type, id} = card;
   const bookMarkBtnClasses = ['place-card__bookmark-button', 'button'];
 
   const handleCardMouseEnter = () => {
-    ///* eslint-disable */ debugger;
-    onCardHover(card.id);
+    if (changeActiveCard) {
+      changeActiveCard(card.id);
+    }
   };
 
   const handleCardMouseleave = () => {
-    onCardHover(0);
+    if (changeActiveCard) {
+      changeActiveCard(0);
+    }
   };
 
   if (inBookmarks) {
@@ -24,15 +32,19 @@ const PlaceCard = ({card, onCardHover}: PlaceCardProps): JSX.Element => {
   }
 
   return (
-    <article className="cities__place-card place-card" onMouseEnter={handleCardMouseEnter} onMouseLeave={handleCardMouseleave}>
+    <article className={`${cardClassName} place-card`} onMouseEnter={handleCardMouseEnter} onMouseLeave={handleCardMouseleave}>
       {mark ? (
         <div className="place-card__mark">
           <span>{mark}</span>
         </div>
       ) : null}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${imgClassName} place-card__image-wrapper`}>
         <Link to='/'>
-          <img className="place-card__image" src={imageSrc} width={260} height={200} alt="Place image" />
+          <img className="place-card__image" src={imageSrc}
+            width={imgClassName === 'favorites__image-wrapper' ? 150 : 260}
+            height={imgClassName === 'favorites__image-wrapper' ? 110 : 200}
+            alt="Place image"
+          />
         </Link>
       </div>
       <div className="place-card__info">
@@ -50,7 +62,7 @@ const PlaceCard = ({card, onCardHover}: PlaceCardProps): JSX.Element => {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${rating}%`}} />
+            <span style={{ width: `${100 / 5 * rating}%` }} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -63,4 +75,4 @@ const PlaceCard = ({card, onCardHover}: PlaceCardProps): JSX.Element => {
   );
 };
 
-export default PlaceCard;
+export default Card;

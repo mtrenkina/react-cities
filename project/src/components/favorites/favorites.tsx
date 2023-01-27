@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { Offer } from '../../types/types';
+import { Offer } from '../../types/offers';
 import Logo from '../../components/logo/logo';
-import FavoritesCard from '../favorites-card/favorites-card';
+import Card from '../card/card';
 
 const Favorites = (props: { offers: Offer[] }): JSX.Element => {
   const filterOffers = props.offers.filter((offer) => offer.inBookmarks === true);
-  const filterOffer = filterOffers.map((offer) => <FavoritesCard offer={offer} key={offer.id} />);
+  const filterOffer = filterOffers.map((offer) => <Card card={offer} key={offer.id} cardClassName={'favorites__card'} imgClassName={'favorites__image-wrapper'} />);
 
   return (
     <div className='page'>
