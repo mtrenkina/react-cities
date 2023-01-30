@@ -25,7 +25,7 @@ const CitiesLi = ({city}: citiesLiProps): JSX.Element => {
 const CitiesList = (): JSX.Element => (
   <ul className='locations__list tabs__list'>
     {Array.from(cities).map((city) => (
-      <CitiesLi key={city.id} city={city}/>
+      <CitiesLi key={city.id} city={city} />
     ))}
   </ul>
 );

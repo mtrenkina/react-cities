@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import Card from '../card/card';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fillOffersList } from '../../store/action';
 
 type CardsListProps = {
   onCardHover: (id: number) => void;
@@ -9,7 +11,13 @@ type CardsListProps = {
 
 const CardsList = ({ cardClassName, imgClassName, onCardHover }: CardsListProps): JSX.Element => {
 
-  const offers = useAppSelector((state) => state.change.offers);
+  const city = useAppSelector((state) => state.change.city);
+  const offers = useAppSelector((state) => state.change.offers).filter((offer) => offer.city.id === city.id);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fillOffersList(offers));
+  }, [city]);
 
   const changeActiveCard = (id: number) => {
     onCardHover(id);

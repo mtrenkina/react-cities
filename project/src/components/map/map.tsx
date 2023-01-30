@@ -4,7 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../mocks/const';
 import useMap from '../../hooks/useMap';
 import { Offer } from '../../types/offer';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fillOffersList } from '../../store/action';
 
 type MapProps = {
   selectedPoint?: Offer;
@@ -26,7 +27,13 @@ const Map = (props: MapProps): JSX.Element => {
 
   const {selectedPoint} = props;
   const city = useAppSelector((state) => state.change.city);
-  const points = useAppSelector((state) => state.change.offers);
+  const points = useAppSelector((state) => state.change.offers).filter((offer) => offer.city.id === city.id);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fillOffersList(points));
+  }, [city]);
 
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
@@ -48,7 +55,7 @@ const Map = (props: MapProps): JSX.Element => {
           .addTo(map);
       });
     }
-  }, [map, points, selectedPoint]);
+  }, [map, city, points, selectedPoint]);
 
   return <div style={{height: '100%'}} ref={mapRef}></div>;
 };
