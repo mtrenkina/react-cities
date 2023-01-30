@@ -40,6 +40,8 @@ const Map = (props: MapProps): JSX.Element => {
 
   useEffect(() => {
     if (map) {
+      map.setView([city.lat,city.lng], city.zoom);
+
       points.forEach((point) => {
         const marker = new leaflet.Marker({
           lat: point.lat,

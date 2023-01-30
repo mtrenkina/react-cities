@@ -7,17 +7,17 @@ import Map from '../map/map';
 import CitiesList from '../cities-list/cities-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fillOffersList } from '../../store/action';
-import { offersMock } from '../../mocks/offers';
 
 const Main = (): JSX.Element => {
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
 
   const dispatch = useAppDispatch();
   const city = useAppSelector((state) => state.change.city);
+  const offers = useAppSelector((state) => state.change.offers);
   const filtredOffers = useAppSelector((state) => state.change.offers).filter((offer) => offer.city.id === city.id);
 
   useEffect(() => {
-    dispatch(fillOffersList(offersMock.filter((offer) => offer.city.id === city.id)));
+    dispatch(fillOffersList(offers));
   }, [city]);
 
 
