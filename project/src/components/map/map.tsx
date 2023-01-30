@@ -4,11 +4,9 @@ import 'leaflet/dist/leaflet.css';
 import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../mocks/const';
 import useMap from '../../hooks/useMap';
 import { Offer } from '../../types/offer';
-import { City } from '../../types/city';
+import { useAppSelector } from '../../hooks';
 
 type MapProps = {
-  city: City;
-  points: Offer[];
   selectedPoint?: Offer;
 };
 
@@ -25,7 +23,10 @@ const currentCustomIcon = new leaflet.Icon({
 });
 
 const Map = (props: MapProps): JSX.Element => {
-  const {city, points, selectedPoint} = props;
+
+  const {selectedPoint} = props;
+  const city = useAppSelector((state) => state.change.city);
+  const points = useAppSelector((state) => state.change.offers);
 
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);

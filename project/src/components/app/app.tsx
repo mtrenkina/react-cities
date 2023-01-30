@@ -5,22 +5,15 @@ import Property from '../property/property';
 import NotFound from '../../pages/not-found/not-found';
 import LoginPrivateRoute from '../login-private-route/login-private-route';
 import FavouritesPrivateRoute from '../favourites-private-route/favourites-private-route';
-import { Offer } from '../../types/offer';
-import { City } from '../../types/city';
 import { AppRoute, AuthorizationStatus } from '../../mocks/const';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-type AppProps = {
-  offers: Offer[];
-  city: City;
-}
-
-const App = ({offers, city}: AppProps): JSX.Element => (
+const App = (): JSX.Element => (
   <BrowserRouter>
     <Routes>
       <Route
         path={AppRoute.Main}
-        element={<Main offers={offers} city={city} />}
+        element={<Main />}
       />
       <Route
         path={AppRoute.Login}
@@ -28,11 +21,11 @@ const App = ({offers, city}: AppProps): JSX.Element => (
       />
       <Route
         path={AppRoute.Favorites}
-        element={<FavouritesPrivateRoute authorizationStatus={AuthorizationStatus.Auth}><Favorites offers={offers}/></FavouritesPrivateRoute>}
+        element={<FavouritesPrivateRoute authorizationStatus={AuthorizationStatus.Auth}><Favorites /></FavouritesPrivateRoute>}
       />
       <Route
         path={`${AppRoute.Room}/:id`}
-        element={<Property offers={offers} city={city} />}
+        element={<Property />}
       />
       <Route
         path="*"

@@ -1,23 +1,17 @@
 import React, {useState} from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Logo from '../../components/logo/logo';
 import Comment from '../../components/comment/comment';
 import ReviewsList from '../reviews-list/reviews-list';
 import { reviews } from '../../mocks/reviews';
 import { Offer } from '../../types/offer';
-import { City } from '../../types/city';
 import Map from '../map/map';
 import CardsList from '../cards-list/cards-list';
+import { useAppSelector } from '../../hooks';
 
-type PropertyProps = {
-  offers: Offer[];
-  city: City;
-}
+const Property = (): JSX.Element => {
 
-const Property = ({offers, city}: PropertyProps): JSX.Element => {
-
-  const params = useParams();
-  const nearOffers = () => Array.from(offers).filter((offer) => offer.id !== Number(params.id));
+  const offers = useAppSelector((state) => state.change.offers);
 
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
 
@@ -177,7 +171,7 @@ const Property = ({offers, city}: PropertyProps): JSX.Element => {
               </div>
             </div>
             <section className='property__map map'>
-              <Map city={city} points={nearOffers()} selectedPoint={selectedOffer}/>
+              <Map selectedPoint={selectedOffer}/>
             </section>
           </section>
           <div className='container'>
@@ -185,7 +179,6 @@ const Property = ({offers, city}: PropertyProps): JSX.Element => {
               <h2 className='near-places__title'>Other places in the neighbourhood</h2>
               <div className='near-places__list places__list'>
                 <CardsList
-                  offers={nearOffers()}
                   cardClassName={'near-places__card'}
                   imgClassName={'near-places__image-wrapper'}
                   onCardHover={onCardHover}

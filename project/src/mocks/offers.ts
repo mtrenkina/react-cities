@@ -1,10 +1,10 @@
-import { Offer} from '../types/offer';
-import { Amsterdam } from './cities';
+import { Offer } from '../types/offer';
+import { cities } from './cities';
 
-export const offersAmsterdamMock: Offer[] = [
+export const offersMock: Offer[] = [
   {
     id: 1,
-    city: Amsterdam,
+    city: cities[0],
     host: {
       id: 3,
       avatarUrl: 'img/1.png',
@@ -21,13 +21,13 @@ export const offersAmsterdamMock: Offer[] = [
     name: 'Beautiful luxurious apartment at great location',
     description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
     type: 'apartment',
-    lat: 52.3909553943508,
-    lng: 4.85309666406198,
+    lat: 48.8644,
+    lng: 2.3498,
     goods: ['Wi-Fi', 'Washing machine', 'Kitchen'],
   },
   {
     id: 2,
-    city: Amsterdam,
+    city: cities[3],
     host: {
       id: 1,
       avatarUrl: 'img/1.png',
@@ -49,7 +49,7 @@ export const offersAmsterdamMock: Offer[] = [
   },
   {
     id: 3,
-    city: Amsterdam,
+    city: cities[3],
     host: {
       id: 2,
       avatarUrl: 'img/1.png',
@@ -71,7 +71,7 @@ export const offersAmsterdamMock: Offer[] = [
   },
   {
     id: 4,
-    city: Amsterdam,
+    city: cities[1],
     host: {
       id: 4,
       avatarUrl: 'img/1.png',
@@ -88,8 +88,8 @@ export const offersAmsterdamMock: Offer[] = [
     name: 'Hotel is situated in the hip, up-and-coming neighbourhood of Amsterdam Noord',
     description: 'Our restaurant is the perfect place to hang out, all day long. ',
     type: 'hotel',
-    lat: 52.3809553943508,
-    lng: 4.939309666406198,
+    lat: 50.9533,
+    lng: 6.95,
     goods: ['Wi-Fi'],
   },
 ];

@@ -1,14 +1,15 @@
-import { Offer } from '../../types/offer';
 import Card from '../card/card';
+import { useAppSelector } from '../../hooks';
 
 type CardsListProps = {
-  offers: Offer[];
   onCardHover: (id: number) => void;
   cardClassName: string;
   imgClassName: string;
 };
 
-const CardsList = ({ offers, cardClassName, imgClassName, onCardHover }: CardsListProps): JSX.Element => {
+const CardsList = ({ cardClassName, imgClassName, onCardHover }: CardsListProps): JSX.Element => {
+
+  const offers = useAppSelector((state) => state.change.offers);
 
   const changeActiveCard = (id: number) => {
     onCardHover(id);

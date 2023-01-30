@@ -1,19 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
-import { City } from '../../types/city';
 import Logo from '../../components/logo/logo';
 import CardsList from '../cards-list/cards-list';
 import Map from '../map/map';
+import CitiesList from '../cities-list/cities-list';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { fillOffersList } from '../../store/action';
 
-type MainProps = {
-  offers: Offer[];
-  city: City;
-}
+const Main = (): JSX.Element => {
 
-const Main = ({ offers, city }: MainProps): JSX.Element => {
+  const offers = useAppSelector((state) => state.change.offers);
+  const city = useAppSelector((state) => state.change.city);
 
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fillOffersList(offers));
+  }, [dispatch]);
+
 
   const onCardHover = (listItemId: number) => {
     const currentPoint = offers.find((offer) =>
@@ -73,38 +80,7 @@ const Main = ({ offers, city }: MainProps): JSX.Element => {
           <h1 className='visually-hidden'>Cities</h1>
           <div className='tabs'>
             <section className='locations container'>
-              <ul className='locations__list tabs__list'>
-                <li className='locations__item'>
-                  <Link className='locations__item-link tabs__item' to='/'>
-                    <span>Paris</span>
-                  </Link>
-                </li>
-                <li className='locations__item'>
-                  <Link className='locations__item-link tabs__item' to='/'>
-                    <span>Cologne</span>
-                  </Link>
-                </li>
-                <li className='locations__item'>
-                  <Link className='locations__item-link tabs__item' to='/'>
-                    <span>Brussels</span>
-                  </Link>
-                </li>
-                <li className='locations__item'>
-                  <Link className='locations__item-link tabs__item tabs__item--active' to='/'>
-                    <span>Amsterdam</span>
-                  </Link>
-                </li>
-                <li className='locations__item'>
-                  <Link className='locations__item-link tabs__item' to='/'>
-                    <span>Hamburg</span>
-                  </Link>
-                </li>
-                <li className='locations__item'>
-                  <Link className='locations__item-link tabs__item' to='/'>
-                    <span>Dusseldorf</span>
-                  </Link>
-                </li>
-              </ul>
+              <CitiesList />
             </section>
           </div>
           <div className='cities'>
@@ -112,7 +88,7 @@ const Main = ({ offers, city }: MainProps): JSX.Element => {
               <section className='cities__places places'>
                 <h2 className='visually-hidden'>Places</h2>
                 <b className='places__found'>
-                  {city.rentalOffersCount} places to stay in {city.name}
+                  {offers.filter((offer) => offer.city === city).length} places to stay in {city.name}
                 </b>
                 <form className='places__sorting' action='#' method='get'>
                   <span className='places__sorting-caption'>Sort by</span>
@@ -138,7 +114,6 @@ const Main = ({ offers, city }: MainProps): JSX.Element => {
                   </ul>
                 </form>
                 <CardsList
-                  offers={offers}
                   cardClassName={'cities__place-card'}
                   imgClassName={'cities__image-wrapper'}
                   onCardHover={onCardHover}
@@ -146,7 +121,7 @@ const Main = ({ offers, city }: MainProps): JSX.Element => {
               </section>
               <div className='cities__right-section'>
                 <section className='cities__map map'>
-                  <Map city={city} points={offers} selectedPoint={selectedOffer}/>
+                  <Map selectedPoint={selectedOffer}/>
                 </section>
               </div>
             </div>
