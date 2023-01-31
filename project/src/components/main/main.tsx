@@ -120,7 +120,7 @@ const Main = (): JSX.Element => {
               </section>
               <div className='cities__right-section'>
                 <section className='cities__map map'>
-                  <Map selectedPoint={selectedOffer}/>
+                  <Map city={city} points={filtredOffers} selectedPoint={selectedOffer}/>
                 </section>
               </div>
             </div>

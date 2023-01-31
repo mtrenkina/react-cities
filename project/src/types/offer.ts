@@ -7,6 +7,7 @@ export type Offer = {
 	mark?: string;
   host: Host;
 	imageSrc: string;
+  images: string[];
   price: number;
   bedrooms: number;
   capacity: number;

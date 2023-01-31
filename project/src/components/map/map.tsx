@@ -3,11 +3,12 @@ import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
 import { Offer } from '../../types/offer';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fillOffersList } from '../../store/action';
+import { City } from '../../types/city';
 
 type MapProps = {
   selectedPoint?: Offer;
+  city: City;
+  points: Offer[];
 };
 
 const defaultCustomIcon = new leaflet.Icon({
@@ -24,15 +25,9 @@ const currentCustomIcon = new leaflet.Icon({
 
 const Map = (props: MapProps): JSX.Element => {
 
-  const {selectedPoint} = props;
-  const city = useAppSelector((state) => state.change.city);
-  const points = useAppSelector((state) => state.change.offers).filter((offer) => offer.city.id === city.id);
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(fillOffersList(points));
-  }, [city]);
+  const {selectedPoint, city, points} = props;
+  //const city = useAppSelector((state) => state.change.city);
+  //const points = useAppSelector((state) => state.change.offers).filter((offer) => offer.city.id === city.id);
 
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);

@@ -7,12 +7,13 @@ export const offersMock: Offer[] = [
     city: cities[0],
     host: {
       id: 3,
-      avatarUrl: 'img/1.png',
+      avatarUrl: 'img/avatar-angelina.jpg',
       isPro: true,
       name: 'Angelina'
     },
     mark: 'Premium',
     imageSrc: 'img/apartment-01.jpg',
+    images: ['img/apartment-01.jpg'],
     price: 120,
     bedrooms: 3,
     capacity: 4,
@@ -30,11 +31,12 @@ export const offersMock: Offer[] = [
     city: cities[3],
     host: {
       id: 1,
-      avatarUrl: 'img/1.png',
+      avatarUrl: 'img/avatar-angelina.jpg',
       isPro: true,
       name: 'Marcella'
     },
     imageSrc: 'img/room.jpg',
+    images: ['img/room.jpg'],
     price: 80,
     bedrooms: 1,
     capacity: 1,
@@ -52,11 +54,12 @@ export const offersMock: Offer[] = [
     city: cities[3],
     host: {
       id: 2,
-      avatarUrl: 'img/1.png',
+      avatarUrl: 'img/avatar-angelina.jpg',
       isPro: false,
       name: 'Willie'
     },
     imageSrc: 'img/apartment-02.jpg',
+    images: ['img/apartment-02.jpg'],
     price: 132,
     bedrooms: 3,
     capacity: 6,
@@ -74,12 +77,13 @@ export const offersMock: Offer[] = [
     city: cities[1],
     host: {
       id: 4,
-      avatarUrl: 'img/1.png',
+      avatarUrl: 'img/avatar-angelina.jpg',
       isPro: false,
       name: 'Mark'
     },
     mark: 'Premium',
     imageSrc: 'img/apartment-03.jpg',
+    images: ['img/apartment-03.jpg'],
     price: 180,
     bedrooms: 10,
     capacity: 30,
