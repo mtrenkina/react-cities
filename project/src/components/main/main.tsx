@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
+import { sortingTypes, sortingByPrice } from '../../mocks/const';
 import Logo from '../../components/logo/logo';
 import CardsList from '../cards-list/cards-list';
 import Map from '../map/map';
@@ -11,22 +12,41 @@ import { fillOffersList } from '../../store/action';
 
 const Main = (): JSX.Element => {
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
+  const [sortedOffers, setSortedOffers] = useState<Offer[]>([]);
 
   const dispatch = useAppDispatch();
   const city = useAppSelector((state) => state.change.city);
   const offers = useAppSelector((state) => state.change.offers);
-  const filtredOffers = useAppSelector((state) => state.change.offers).filter((offer) => offer.city.id === city.id);
+  const filtredOffers = useMemo(() => offers.filter((offer) => offer.city.id === city.id), [offers, city]);
+  const currentSort = useAppSelector((state) => state.change.sort);
 
   useEffect(() => {
     dispatch(fillOffersList(offers));
   }, [city]);
 
+  useEffect(() => {
+    const sorted = sortingOffers([...filtredOffers]);
+    setSortedOffers(sorted ?? []);
+  }, [currentSort, city]);
 
   const onCardHover = (listItemId: number) => {
     const currentPoint = filtredOffers.find((offer) =>
       offer.id === listItemId,
     );
     setSelectedOffer(currentPoint);
+  };
+
+  const sortingOffers = (copyOffers: Offer[]) => {
+    switch (currentSort) {
+      case sortingTypes.PRICELOWTOHIGHT:
+        return copyOffers.sort((x,y) => x.price - y.price);
+      case sortingTypes.PRICEHIGHTTOLOW:
+        return copyOffers.sort(sortingByPrice);
+      case sortingTypes.RAITING:
+        return copyOffers.sort((x,y) => y.rating - x.rating);
+      case sortingTypes.POPULAR:
+        return copyOffers;
+    }
   };
 
   return (
@@ -92,6 +112,7 @@ const Main = (): JSX.Element => {
                 </b>
                 <PlacesSorting />
                 <CardsList
+                  sortedOffers = {sortedOffers}
                   cardClassName={'cities__place-card'}
                   imgClassName={'cities__image-wrapper'}
                   onCardHover={onCardHover}

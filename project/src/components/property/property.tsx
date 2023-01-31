@@ -179,6 +179,7 @@ const Property = (): JSX.Element => {
               <h2 className='near-places__title'>Other places in the neighbourhood</h2>
               <div className='near-places__list places__list'>
                 <CardsList
+                  sortedOffers = {offers}
                   cardClassName={'near-places__card'}
                   imgClassName={'near-places__image-wrapper'}
                   onCardHover={onCardHover}
