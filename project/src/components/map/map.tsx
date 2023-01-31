@@ -1,7 +1,6 @@
 import {useRef, useEffect} from 'react';
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../mocks/const';
 import useMap from '../../hooks/useMap';
 import { Offer } from '../../types/offer';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -12,14 +11,14 @@ type MapProps = {
 };
 
 const defaultCustomIcon = new leaflet.Icon({
-  iconUrl: URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
+  iconUrl: 'img/pin.svg',
+  iconSize: [27, 39],
   iconAnchor: [20, 40]
 });
 
 const currentCustomIcon = new leaflet.Icon({
-  iconUrl: URL_MARKER_CURRENT,
-  iconSize: [40, 40],
+  iconUrl: 'img/pin-active.svg',
+  iconSize: [27, 39],
   iconAnchor: [20, 40]
 });
 
