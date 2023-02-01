@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
-import { sortingTypes, sortingByPrice } from '../../mocks/const';
+import { sortingTypes, sortingByPrice } from '../../const';
 import Logo from '../../components/logo/logo';
 import CardsList from '../cards-list/cards-list';
 import Map from '../map/map';
@@ -17,7 +17,7 @@ const Main = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const city = useAppSelector((state) => state.change.city);
   const offers = useAppSelector((state) => state.change.offers);
-  const filtredOffers = useMemo(() => offers.filter((offer) => offer.city.id === city.id), [offers, city]);
+  const filtredOffers = useMemo(() => offers.filter((offer) => offer.city.name === city), [offers, city]);
   const currentSort = useAppSelector((state) => state.change.sort);
 
   useEffect(() => {
@@ -108,7 +108,7 @@ const Main = (): JSX.Element => {
               <section className='cities__places places'>
                 <h2 className='visually-hidden'>Places</h2>
                 <b className='places__found'>
-                  {filtredOffers.length} places to stay in {city.name}
+                  {filtredOffers.length} places to stay in {city}
                 </b>
                 <PlacesSorting />
                 <CardsList

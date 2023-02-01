@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeSorting } from '../../store/action';
-import { sortingTypes } from '../../mocks/const';
+import { sortingTypes } from '../../const';
 
 const PlacesSorting = (): JSX.Element => {
 

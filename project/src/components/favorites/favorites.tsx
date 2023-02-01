@@ -7,7 +7,7 @@ const Favorites = (): JSX.Element => {
 
   const offers = useAppSelector((state) => state.change.offers);
 
-  const filterOffers = offers.filter((offer) => offer.inBookmarks === true);
+  const filterOffers = offers.filter((offer) => offer.isFavotite === true);
   const filterOffer = filterOffers.map((offer) => <Card card={offer} key={offer.id} cardClassName={'favorites__card'} imgClassName={'favorites__image-wrapper'} />);
 
   return (

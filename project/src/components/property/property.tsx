@@ -8,14 +8,13 @@ import { Offer } from '../../types/offer';
 import Map from '../map/map';
 import CardsList from '../cards-list/cards-list';
 import { useAppSelector } from '../../hooks';
-import { offersMock } from '../../mocks/offers';
 
 const Property = (): JSX.Element => {
   const params = useParams();
   const offers = useAppSelector((state) => state.change.offers);
   const city = useAppSelector((state) => state.change.city);
-  const currentOffer = offersMock.find((offer) => offer.id === Number(params.id));
-  const nearOffers = offers.filter((offer) => offer.id !== Number(params.id)).filter((offer) => offer.city.id === city.id);
+  const currentOffer = offers.find((offer) => offer.id === Number(params.id));
+  const nearOffers = offers.filter((offer) => offer.id !== Number(params.id)).filter((offer) => offer.city.name === city);
 
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
 
@@ -84,17 +83,17 @@ const Property = (): JSX.Element => {
             </div>
             <div className='property__container container'>
               <div className='property__wrapper'>
-                {currentOffer?.mark &&
+                {currentOffer?.isPremium &&
                 <div className="property__mark">
                   <span>Premium</span>
                 </div> }
                 <div className='property__name-wrapper'>
-                  <h1 className='property__name'>{currentOffer?.name}</h1>
+                  <h1 className='property__name'>{currentOffer?.title}</h1>
                   <button className='property__bookmark-button button' type='button'>
                     <svg className='property__bookmark-icon' width='31' height='33'>
                       <use xlinkHref='#icon-bookmark'></use>
                     </svg>
-                    <span className='visually-hidden'>{currentOffer?.inBookmarks ? 'In' : 'To'} bookmarks</span>
+                    <span className='visually-hidden'>{currentOffer?.isFavotite ? 'In' : 'To'} bookmarks</span>
                   </button>
                 </div>
                 <div className='property__rating rating'>
@@ -107,7 +106,7 @@ const Property = (): JSX.Element => {
                 <ul className='property__features'>
                   <li className='property__feature property__feature--entire'>{currentOffer?.type}</li>
                   <li className='property__feature property__feature--bedrooms'>{currentOffer?.bedrooms} bedrooms</li>
-                  <li className='property__feature property__feature--adults'>max {currentOffer?.capacity} adults</li>
+                  <li className='property__feature property__feature--adults'>max {currentOffer?.maxAdults} adults</li>
                 </ul>
                 <div className='property__price'>
                   <b className='property__price-value'>&euro;{currentOffer?.price}</b>

@@ -1,14 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCurrentCity, fillOffersList, changeSorting } from './action';
+import { changeCurrentCity, fillOffersList, changeSorting, loadOffers, requireAuthorization, setOffersLoadingStatus } from './action';
 import { Offer } from '../types/offer';
-import { City } from '../types/city';
-import { BASE_CITY } from '../mocks/const';
-import { offersMock } from '../mocks/offers';
+import { AuthorizationStatus } from '../const';
 
-const initialState: {city: City; offers: Offer[]; sort: string} = {
-  city: BASE_CITY,
-  offers: offersMock,
+const initialState: {city: string; offers: Offer[]; sort: string; authorizationStatus: string; isDataLoading: boolean} = {
+  city: 'Paris',
+  offers: [],
   sort: 'Popular',
+  authorizationStatus: AuthorizationStatus.Unknown,
+  isDataLoading: false,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -21,5 +21,14 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(changeSorting, (state, action) => {
       state.sort = action.payload;
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(setOffersLoadingStatus, (state, action) => {
+      state.isDataLoading = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
     });
 });

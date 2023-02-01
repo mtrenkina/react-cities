@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../mocks/const';
+import { AppRoute } from '../../const';
 import {Offer} from '../../types/offer';
 
 type CardsProps = {
@@ -12,7 +12,7 @@ type CardsProps = {
 
 const Card = ({card, changeActiveCard, cardClassName, imgClassName}: CardsProps): JSX.Element => {
 
-  const {mark, imageSrc, price, inBookmarks, rating, name, type, id} = card;
+  const {isPremium, previewImage, price, isFavotite, rating, title, type, id} = card;
   const bookMarkBtnClasses = ['place-card__bookmark-button', 'button'];
 
   const handleCardMouseEnter = () => {
@@ -27,20 +27,19 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName}: CardsProps)
     }
   };
 
-  if (inBookmarks) {
+  if (isFavotite) {
     bookMarkBtnClasses.push('place-card__bookmark-button--active');
   }
 
   return (
     <article className={`${cardClassName} place-card`} onMouseEnter={handleCardMouseEnter} onMouseLeave={handleCardMouseleave}>
-      {mark ? (
-        <div className="place-card__mark">
-          <span>{mark}</span>
-        </div>
-      ) : null}
+      <div className="place-card__mark">
+        {isPremium &&
+        <span>Premium</span>}
+      </div>
       <div className={`${imgClassName} place-card__image-wrapper`}>
         <Link to='/'>
-          <img className="place-card__image" src={imageSrc}
+          <img className="place-card__image" src={previewImage}
             width={imgClassName === 'favorites__image-wrapper' ? 150 : 260}
             height={imgClassName === 'favorites__image-wrapper' ? 110 : 200}
             alt="Place image"
@@ -57,7 +56,7 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName}: CardsProps)
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark" />
             </svg>
-            <span className="visually-hidden">{inBookmarks ? 'In' : 'To'} bookmarks</span>
+            <span className="visually-hidden">{isFavotite ? 'In' : 'To'} bookmarks</span>
           </button>
         </div>
         <div className="place-card__rating rating">
@@ -67,7 +66,7 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName}: CardsProps)
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoute.Room}/${id}`}>{name}</Link>
+          <Link to={`${AppRoute.Room}/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

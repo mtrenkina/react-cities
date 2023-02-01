@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
 import { cities } from '../../mocks/cities';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { City } from '../../types/city';
 import {changeCurrentCity} from '../../store/action';
 
 type citiesLiProps = {
-  city: City;
+  city: string;
 }
 
 const CitiesLi = ({city}: citiesLiProps): JSX.Element => {
@@ -16,7 +15,7 @@ const CitiesLi = ({city}: citiesLiProps): JSX.Element => {
   return (
     <li className='locations__item'>
       <Link className={`locations__item-link tabs__item ${city === currentCity ? 'tabs__item--active' : ''}`} to='/' onClick={() => dispatch(changeCurrentCity(city))}>
-        <span>{city.name}</span>
+        <span>{city}</span>
       </Link>
     </li>
   );
@@ -25,7 +24,7 @@ const CitiesLi = ({city}: citiesLiProps): JSX.Element => {
 const CitiesList = (): JSX.Element => (
   <ul className='locations__list tabs__list'>
     {Array.from(cities).map((city) => (
-      <CitiesLi key={city.id} city={city} />
+      <CitiesLi key={city.name} city={city.name} />
     ))}
   </ul>
 );
