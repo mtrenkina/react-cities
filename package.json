@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",
-    "leaflet": "^1.9.3"
+    "leaflet": "^1.9.3",
+    "react-spinners": "^0.13.8"
   }
 }

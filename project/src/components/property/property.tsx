@@ -7,14 +7,21 @@ import { reviews } from '../../mocks/reviews';
 import { Offer } from '../../types/offer';
 import Map from '../map/map';
 import CardsList from '../cards-list/cards-list';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { AuthorizationStatus } from '../../const';
+import { logoutAction } from '../../store/api-action';
 
 const Property = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+
+  const authorizationStatus = useAppSelector((state) => state.change.authorizationStatus);
   const params = useParams();
   const offers = useAppSelector((state) => state.change.offers);
   const city = useAppSelector((state) => state.change.city);
   const currentOffer = offers.find((offer) => offer.id === Number(params.id));
-  const nearOffers = offers.filter((offer) => offer.id !== Number(params.id)).filter((offer) => offer.city.name === city);
+  const nearOffers = offers
+    .filter((offer) => offer.id !== Number(params.id))
+    .filter((offer) => offer.city.name === city);
 
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
 
@@ -54,15 +61,33 @@ const Property = (): JSX.Element => {
               <nav className='header__nav'>
                 <ul className='header__nav-list'>
                   <li className='header__nav-item user'>
-                    <Link className='header__nav-link header__nav-link--profile' to='/favorites'>
+                    <Link className='header__nav-link header__nav-link--profile' to='/'>
                       <div className='header__avatar-wrapper user__avatar-wrapper'></div>
-                      <span className='header__user-name user__name'>Oliver.conner@gmail.com</span>
+                      {authorizationStatus === AuthorizationStatus.Auth && (
+                        <>
+                          <span className='header__user-name user__name'>Oliver.conner@gmail.com</span>
+                          <span className='header__favorite-count'>3</span>
+                        </>
+                      )}
                     </Link>
                   </li>
                   <li className='header__nav-item'>
-                    <Link className='header__nav-link' to='/'>
-                      <span className='header__signout'>Sign out</span>
-                    </Link>
+                    {authorizationStatus === AuthorizationStatus.Auth ? (
+                      <Link
+                        className='header__nav-link'
+                        to={'/'}
+                        onClick={(evt) => {
+                          evt.preventDefault();
+                          dispatch(logoutAction());
+                        }}
+                      >
+                        <span className='header__signout'>Sign out</span>
+                      </Link>
+                    ) : (
+                      <Link className='header__nav-link' to={'/login'}>
+                        <span className='header__signout'>Sign in</span>
+                      </Link>
+                    )}
                   </li>
                 </ul>
               </nav>
@@ -83,10 +108,11 @@ const Property = (): JSX.Element => {
             </div>
             <div className='property__container container'>
               <div className='property__wrapper'>
-                {currentOffer?.isPremium &&
-                <div className="property__mark">
-                  <span>Premium</span>
-                </div> }
+                {currentOffer?.isPremium && (
+                  <div className='property__mark'>
+                    <span>Premium</span>
+                  </div>
+                )}
                 <div className='property__name-wrapper'>
                   <h1 className='property__name'>{currentOffer?.title}</h1>
                   <button className='property__bookmark-button button' type='button'>
@@ -135,8 +161,7 @@ const Property = (): JSX.Element => {
                       />
                     </div>
                     <span className='property__user-name'>{currentOffer?.host.name}</span>
-                    {currentOffer?.host.isPro &&
-                      <span className='property__user-status'>Pro</span>}
+                    {currentOffer?.host.isPro && <span className='property__user-status'>Pro</span>}
                   </div>
                   <div className='property__description'>
                     <p className='property__text'>{currentOffer?.description}</p>

@@ -13,7 +13,6 @@ type CardsProps = {
 const Card = ({card, changeActiveCard, cardClassName, imgClassName}: CardsProps): JSX.Element => {
 
   const {isPremium, previewImage, price, isFavotite, rating, title, type, id} = card;
-  const bookMarkBtnClasses = ['place-card__bookmark-button', 'button'];
 
   const handleCardMouseEnter = () => {
     if (changeActiveCard) {
@@ -27,18 +26,14 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName}: CardsProps)
     }
   };
 
-  if (isFavotite) {
-    bookMarkBtnClasses.push('place-card__bookmark-button--active');
-  }
-
   return (
     <article className={`${cardClassName} place-card`} onMouseEnter={handleCardMouseEnter} onMouseLeave={handleCardMouseleave}>
+      {isPremium &&
       <div className="place-card__mark">
-        {isPremium &&
-        <span>Premium</span>}
-      </div>
+        <span>Premium</span>
+      </div>}
       <div className={`${imgClassName} place-card__image-wrapper`}>
-        <Link to='/'>
+        <Link to={`${AppRoute.Room}/${id}`}>
           <img className="place-card__image" src={previewImage}
             width={imgClassName === 'favorites__image-wrapper' ? 150 : 260}
             height={imgClassName === 'favorites__image-wrapper' ? 110 : 200}
@@ -52,7 +47,7 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName}: CardsProps)
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={bookMarkBtnClasses.join(' ')} type="button">
+          <button className={`button place-card__bookmark-button ${isFavotite ? 'place-card__bookmark-button--active' : ''}`} type="button">
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark" />
             </svg>

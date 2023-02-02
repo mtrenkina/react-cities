@@ -2,20 +2,20 @@ import Main from '../main/main';
 import Favorites from '../favorites/favorites';
 import Login from '../login/login';
 import Property from '../property/property';
-import NotFound from '../../pages/not-found/not-found';
+import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import LoginPrivateRoute from '../login-private-route/login-private-route';
 import FavouritesPrivateRoute from '../favourites-private-route/favourites-private-route';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import Loading from '../../pages/loading/loading';
+import LoadingPage from '../../pages/loading-page/loading-page';
 
 const App = (): JSX.Element => {
   const authorizationStatus = useAppSelector((state) => state.change.authorizationStatus);
   const isOffersDataLoading = useAppSelector((state) => state.change.isDataLoading);
 
   if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
-    return <Loading />;
+    return <LoadingPage />;
   }
 
   return (
@@ -25,7 +25,7 @@ const App = (): JSX.Element => {
         <Route
           path={AppRoute.Login}
           element={
-            <LoginPrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
+            <LoginPrivateRoute>
               <Login />
             </LoginPrivateRoute>
           }
@@ -33,13 +33,13 @@ const App = (): JSX.Element => {
         <Route
           path={AppRoute.Favorites}
           element={
-            <FavouritesPrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+            <FavouritesPrivateRoute>
               <Favorites />
             </FavouritesPrivateRoute>
           }
         />
         <Route path={`${AppRoute.Room}/:id`} element={<Property />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -9,16 +9,21 @@ import CitiesList from '../cities-list/cities-list';
 import PlacesSorting from '../places-sorting/places-sorting';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fillOffersList } from '../../store/action';
+import { logoutAction } from '../../store/api-action';
+import { AuthorizationStatus } from '../../const';
 
 const Main = (): JSX.Element => {
-  const [selectedOffer, setSelectedOffer] = useState<Offer>();
-  const [sortedOffers, setSortedOffers] = useState<Offer[]>([]);
 
   const dispatch = useAppDispatch();
+
+  const [selectedOffer, setSelectedOffer] = useState<Offer>();
+  const [sortedOffers, setSortedOffers] = useState<Offer[]>([]);
+  const [currentSorting, setSorting] = useState<string>('Popular');
+
   const city = useAppSelector((state) => state.change.city);
   const offers = useAppSelector((state) => state.change.offers);
   const filtredOffers = useMemo(() => offers.filter((offer) => offer.city.name === city), [offers, city]);
-  const currentSort = useAppSelector((state) => state.change.sort);
+  const authorizationStatus = useAppSelector((state) => state.change.authorizationStatus);
 
   useEffect(() => {
     dispatch(fillOffersList(offers));
@@ -27,23 +32,25 @@ const Main = (): JSX.Element => {
   useEffect(() => {
     const sorted = sortingOffers([...filtredOffers]);
     setSortedOffers(sorted ?? []);
-  }, [currentSort, city]);
+  }, [currentSorting, city]);
 
   const onCardHover = (listItemId: number) => {
-    const currentPoint = filtredOffers.find((offer) =>
-      offer.id === listItemId,
-    );
+    const currentPoint = filtredOffers.find((offer) => offer.id === listItemId);
     setSelectedOffer(currentPoint);
   };
 
+  const changeSorting = (type: string) => {
+    setSorting(type);
+  };
+
   const sortingOffers = (copyOffers: Offer[]) => {
-    switch (currentSort) {
+    switch (currentSorting) {
       case sortingTypes.PRICELOWTOHIGHT:
-        return copyOffers.sort((x,y) => x.price - y.price);
+        return copyOffers.sort((x, y) => x.price - y.price);
       case sortingTypes.PRICEHIGHTTOLOW:
         return copyOffers.sort(sortingByPrice);
       case sortingTypes.RAITING:
-        return copyOffers.sort((x,y) => y.rating - x.rating);
+        return copyOffers.sort((x, y) => y.rating - x.rating);
       case sortingTypes.POPULAR:
         return copyOffers;
     }
@@ -82,13 +89,31 @@ const Main = (): JSX.Element => {
                   <li className='header__nav-item user'>
                     <Link className='header__nav-link header__nav-link--profile' to='/favorites'>
                       <div className='header__avatar-wrapper user__avatar-wrapper'></div>
-                      <span className='header__user-name user__name'>Oliver.conner@gmail.com</span>
+                      {authorizationStatus === AuthorizationStatus.Auth && (
+                        <>
+                          <span className='header__user-name user__name'>Oliver.conner@gmail.com</span>
+                          <span className='header__favorite-count'>3</span>
+                        </>
+                      )}
                     </Link>
                   </li>
                   <li className='header__nav-item'>
-                    <Link className='header__nav-link' to='/'>
-                      <span className='header__signout'>Sign out</span>
-                    </Link>
+                    {authorizationStatus === AuthorizationStatus.Auth ? (
+                      <Link
+                        className='header__nav-link'
+                        to={'/'}
+                        onClick={(evt) => {
+                          evt.preventDefault();
+                          dispatch(logoutAction());
+                        }}
+                      >
+                        <span className='header__signout'>Sign out</span>
+                      </Link>
+                    ) : (
+                      <Link className='header__nav-link' to={'/login'}>
+                        <span className='header__signout'>Sign in</span>
+                      </Link>
+                    )}
                   </li>
                 </ul>
               </nav>
@@ -110,9 +135,9 @@ const Main = (): JSX.Element => {
                 <b className='places__found'>
                   {filtredOffers.length} places to stay in {city}
                 </b>
-                <PlacesSorting />
+                <PlacesSorting sortingType={sortingTypes} currentSorting={currentSorting} setSorting={changeSorting} />
                 <CardsList
-                  sortedOffers = {sortedOffers}
+                  sortedOffers={sortedOffers}
                   cardClassName={'cities__place-card'}
                   imgClassName={'cities__image-wrapper'}
                   onCardHover={onCardHover}
@@ -120,7 +145,7 @@ const Main = (): JSX.Element => {
               </section>
               <div className='cities__right-section'>
                 <section className='cities__map map'>
-                  <Map city={city} points={filtredOffers} selectedPoint={selectedOffer}/>
+                  <Map city={city} points={filtredOffers} selectedPoint={selectedOffer} />
                 </section>
               </div>
             </div>
