@@ -1,4 +1,6 @@
 import { Comment } from '../../types/comment';
+import dayjs from 'dayjs';
+dayjs().format();
 
 type CommentProps = {
   comment: Comment;
@@ -28,7 +30,7 @@ const CommentsItem = ({comment}: CommentProps): JSX.Element => (
       </div>
       <p className='reviews__text'>{comment.comment}</p>
       <time className='reviews__time' dateTime='2019-04-24'>
-        {comment.date}
+        {dayjs(comment.date).format('MMMM YYYY')}
       </time>
     </div>
   </li>

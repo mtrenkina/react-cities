@@ -6,7 +6,10 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",
+    "dayjs": "^1.11.7",
     "leaflet": "^1.9.3",
-    "react-spinners": "^0.13.8"
+    "react-dayjs": "^0.3.2",
+    "react-spinners": "^0.13.8",
+    "react-toastify": "^9.1.1"
   }
 }
