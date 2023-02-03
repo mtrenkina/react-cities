@@ -5,10 +5,10 @@ export type Host = {
   isPro: boolean;
 };
 
-export type Review = {
-  id: number;
-  user: Host;
-  rating: number;
-  date: string;
+export type Comment = {
   comment: string;
+  date: string;
+  id: number;
+  rating: number;
+  user: Host;
 };

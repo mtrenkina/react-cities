@@ -1,26 +1,69 @@
-import { Offer } from './types/offer';
+import { City } from './types/city';
+
+const PARIS: City = {
+  name: 'Paris',
+  lat: 48.8534,
+  lng: 2.3488,
+  zoom: 13,
+};
+
+const COLOGNE: City = {
+  name: 'Cologne',
+  lat: 50.9333,
+  lng: 6.95,
+  zoom: 13,
+};
+
+const BRUSSELS: City = {
+  name: 'Brussels',
+  lat: 50.8504,
+  lng: 4.34878,
+  zoom: 13,
+};
+
+const AMSTERDAM: City = {
+  name: 'Amsterdam',
+  lat: 52.374,
+  lng: 4.88969,
+  zoom: 13,
+};
+
+const HAMBURG: City = {
+  name: 'Hamburg',
+  lat: 53.5753,
+  lng: 10.0153,
+  zoom: 13,
+};
+
+const DUSSELDORF: City = {
+  name: 'Dusseldorf',
+  lat: 51.2217,
+  lng: 6.77616,
+  zoom: 13,
+};
+
+export const cities: City[] = [PARIS, COLOGNE, BRUSSELS, AMSTERDAM, HAMBURG, DUSSELDORF];
 
 export enum AppRoute {
-  Main = '/',
-  Favorites = '/favorites',
-  FavoritesEmpty = '/favorites-empty',
-  Property = '/property',
-  Login = '/login',
-  MainEmpty = '/main-empty',
-  Room = '/offer',
-  PropertyNotLogged = '/property-not-logged',
+  MAIN = '/',
+  FAVOURITES = '/favorites',
+  PROPERTY = '/property',
+  LOGIN = '/login',
+  ROOM = '/offer',
 }
 
 export enum APIRoute {
-  Offers = '/hotels',
-  Login = '/login',
-  Logout = '/logout',
+  OFFERS = '/hotels',
+  LOGIN = '/login',
+  LOGOUT = '/logout',
+  NEAR_OFFERS = '/hotels/{hotelId}/nearby',
+  COMMENTS = '/comments/{hotelId}',
 }
 
 export enum AuthorizationStatus {
-  Auth = 'AUTH',
-  NoAuth = 'NO_AUTH',
-  Unknown = 'UNKNOWN',
+  AUTH = 'AUTH',
+  NO_AUTH = 'NO_AUTH',
+  UNKNOWN = 'UNKNOWN',
 }
 
 export const sortingTypes = {
@@ -28,18 +71,4 @@ export const sortingTypes = {
   PRICELOWTOHIGHT: 'Price: low to high',
   PRICEHIGHTTOLOW: 'Price: high to low',
   RAITING: 'Top rated first',
-};
-
-export const sortingByPrice = (offerA: Offer, offerB: Offer) => {
-  const priceA = offerA.price;
-  const priceB = offerB.price;
-
-  switch(priceA < priceB) {
-    case true:
-      return 1;
-    case false:
-      return -1;
-    default:
-      return 0;
-  }
 };

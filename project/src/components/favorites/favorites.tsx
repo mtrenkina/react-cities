@@ -1,15 +1,11 @@
 import { Link } from 'react-router-dom';
 import Logo from '../../components/logo/logo';
 import Card from '../card/card';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { AuthorizationStatus } from '../../const';
-import { logoutAction } from '../../store/api-action';
+import { useAppSelector } from '../../hooks';
+import UserInfo from '../../components/user-info/user-info';
 
 const Favorites = (): JSX.Element => {
 
-  const dispatch = useAppDispatch();
-
-  const authorizationStatus = useAppSelector((state) => state.change.authorizationStatus);
   const offers = useAppSelector((state) => state.change.offers);
   const filterOffers = offers.filter((offer) => offer.isFavotite === true);
   const filterOffer = filterOffers.map((offer) => <Card card={offer} key={offer.id} cardClassName={'favorites__card'} imgClassName={'favorites__image-wrapper'} />);
@@ -24,29 +20,7 @@ const Favorites = (): JSX.Element => {
             </div>
             <nav className='header__nav'>
               <ul className='header__nav-list'>
-                <li className='header__nav-item user'>
-                  <Link className='header__nav-link header__nav-link--profile' to='/'>
-                    <div className='header__avatar-wrapper user__avatar-wrapper'></div>
-                    {authorizationStatus === AuthorizationStatus.Auth &&
-                    <>
-                      <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                      <span className="header__favorite-count">{filterOffer.length}</span>
-                    </>}
-                  </Link>
-                </li>
-                <li className='header__nav-item'>
-                  {authorizationStatus === AuthorizationStatus.Auth ?
-                    <Link className="header__nav-link" to={'/'} onClick={(evt) => {
-                      evt.preventDefault();
-                      dispatch(logoutAction());
-                    }}
-                    >
-                      <span className="header__signout">Sign out</span>
-                    </Link> :
-                    <Link className="header__nav-link" to={'/login'}>
-                      <span className="header__signout">Sign in</span>
-                    </Link>}
-                </li>
+                <UserInfo/>
               </ul>
             </nav>
           </div>

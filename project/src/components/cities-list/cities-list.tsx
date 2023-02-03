@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { cities } from '../../mocks/cities';
+import { cities } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {changeCurrentCity} from '../../store/action';
 

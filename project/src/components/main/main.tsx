@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
-import { sortingTypes, sortingByPrice } from '../../const';
+import { sortingTypes } from '../../const';
 import Logo from '../../components/logo/logo';
 import CardsList from '../cards-list/cards-list';
 import Map from '../map/map';
@@ -9,8 +8,7 @@ import CitiesList from '../cities-list/cities-list';
 import PlacesSorting from '../places-sorting/places-sorting';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fillOffersList } from '../../store/action';
-import { logoutAction } from '../../store/api-action';
-import { AuthorizationStatus } from '../../const';
+import UserInfo from '../user-info/user-info';
 
 const Main = (): JSX.Element => {
 
@@ -23,7 +21,6 @@ const Main = (): JSX.Element => {
   const city = useAppSelector((state) => state.change.city);
   const offers = useAppSelector((state) => state.change.offers);
   const filtredOffers = useMemo(() => offers.filter((offer) => offer.city.name === city), [offers, city]);
-  const authorizationStatus = useAppSelector((state) => state.change.authorizationStatus);
 
   useEffect(() => {
     dispatch(fillOffersList(offers));
@@ -41,6 +38,20 @@ const Main = (): JSX.Element => {
 
   const changeSorting = (type: string) => {
     setSorting(type);
+  };
+
+  const sortingByPrice = (offerA: Offer, offerB: Offer) => {
+    const priceA = offerA.price;
+    const priceB = offerB.price;
+
+    switch(priceA < priceB) {
+      case true:
+        return 1;
+      case false:
+        return -1;
+      default:
+        return 0;
+    }
   };
 
   const sortingOffers = (copyOffers: Offer[]) => {
@@ -86,35 +97,7 @@ const Main = (): JSX.Element => {
               </div>
               <nav className='header__nav'>
                 <ul className='header__nav-list'>
-                  <li className='header__nav-item user'>
-                    <Link className='header__nav-link header__nav-link--profile' to='/favorites'>
-                      <div className='header__avatar-wrapper user__avatar-wrapper'></div>
-                      {authorizationStatus === AuthorizationStatus.Auth && (
-                        <>
-                          <span className='header__user-name user__name'>Oliver.conner@gmail.com</span>
-                          <span className='header__favorite-count'>3</span>
-                        </>
-                      )}
-                    </Link>
-                  </li>
-                  <li className='header__nav-item'>
-                    {authorizationStatus === AuthorizationStatus.Auth ? (
-                      <Link
-                        className='header__nav-link'
-                        to={'/'}
-                        onClick={(evt) => {
-                          evt.preventDefault();
-                          dispatch(logoutAction());
-                        }}
-                      >
-                        <span className='header__signout'>Sign out</span>
-                      </Link>
-                    ) : (
-                      <Link className='header__nav-link' to={'/login'}>
-                        <span className='header__signout'>Sign in</span>
-                      </Link>
-                    )}
-                  </li>
+                  <UserInfo />
                 </ul>
               </nav>
             </div>

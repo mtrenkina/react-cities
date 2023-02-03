@@ -3,7 +3,7 @@ import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
 import { Offer } from '../../types/offer';
-import { cities } from '../../mocks/cities';
+import { cities } from '../../const';
 
 type MapProps = {
   selectedPoint?: Offer;

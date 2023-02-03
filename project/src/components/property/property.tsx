@@ -1,29 +1,38 @@
-import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { store } from '../../store';
+import { AuthorizationStatus } from '../../const';
+import { fetchCommentsAction, fetchNearOffersAction } from '../../store/api-action';
 import Logo from '../../components/logo/logo';
-import Comment from '../../components/comment/comment';
-import ReviewsList from '../reviews-list/reviews-list';
-import { reviews } from '../../mocks/reviews';
+import CommentsList from '../comments-list/comments-list';
 import { Offer } from '../../types/offer';
 import Map from '../map/map';
 import CardsList from '../cards-list/cards-list';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { AuthorizationStatus } from '../../const';
-import { logoutAction } from '../../store/api-action';
+import { useAppSelector } from '../../hooks';
+import UserInfo from '../user-info/user-info';
+import Comment from '../comment/comment';
 
 const Property = (): JSX.Element => {
-  const dispatch = useAppDispatch();
 
-  const authorizationStatus = useAppSelector((state) => state.change.authorizationStatus);
   const params = useParams();
-  const offers = useAppSelector((state) => state.change.offers);
-  const city = useAppSelector((state) => state.change.city);
-  const currentOffer = offers.find((offer) => offer.id === Number(params.id));
-  const nearOffers = offers
-    .filter((offer) => offer.id !== Number(params.id))
-    .filter((offer) => offer.city.name === city);
-
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
+  const authorizationStatus = useAppSelector((state) => state.change.authorizationStatus);
+
+  const offers = useAppSelector((state) => state.change.offers);
+  const nearOffers = useAppSelector((state) => state.change.nearOffers);
+  const comments = useAppSelector((state) => state.change.comments);
+  const city = useAppSelector((state) => state.change.city);
+
+  const currentOffer = offers.find((offer) => offer.id === Number(params.id));
+
+  useEffect(() => {
+    if (nearOffers.length === 0) {
+      if (params.id && currentOffer !== undefined) {
+        store.dispatch(fetchNearOffersAction({ hotelId: params.id }));
+        store.dispatch(fetchCommentsAction({ hotelId: params.id }));
+      }
+    }
+  }, [params.id]);
 
   const onCardHover = (listItemId: number) => {
     const currentPoint = offers.find((offer) => offer.id === listItemId);
@@ -60,35 +69,7 @@ const Property = (): JSX.Element => {
               </div>
               <nav className='header__nav'>
                 <ul className='header__nav-list'>
-                  <li className='header__nav-item user'>
-                    <Link className='header__nav-link header__nav-link--profile' to='/'>
-                      <div className='header__avatar-wrapper user__avatar-wrapper'></div>
-                      {authorizationStatus === AuthorizationStatus.Auth && (
-                        <>
-                          <span className='header__user-name user__name'>Oliver.conner@gmail.com</span>
-                          <span className='header__favorite-count'>3</span>
-                        </>
-                      )}
-                    </Link>
-                  </li>
-                  <li className='header__nav-item'>
-                    {authorizationStatus === AuthorizationStatus.Auth ? (
-                      <Link
-                        className='header__nav-link'
-                        to={'/'}
-                        onClick={(evt) => {
-                          evt.preventDefault();
-                          dispatch(logoutAction());
-                        }}
-                      >
-                        <span className='header__signout'>Sign out</span>
-                      </Link>
-                    ) : (
-                      <Link className='header__nav-link' to={'/login'}>
-                        <span className='header__signout'>Sign in</span>
-                      </Link>
-                    )}
-                  </li>
+                  <UserInfo />
                 </ul>
               </nav>
             </div>
@@ -168,8 +149,8 @@ const Property = (): JSX.Element => {
                   </div>
                 </div>
                 <section className='property__reviews reviews'>
-                  <ReviewsList reviews={reviews} />
-                  <Comment />
+                  <CommentsList comments={comments}/>
+                  {authorizationStatus === AuthorizationStatus.AUTH && <Comment />}
                 </section>
               </div>
             </div>

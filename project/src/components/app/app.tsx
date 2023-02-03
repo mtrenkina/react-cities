@@ -12,18 +12,19 @@ import LoadingPage from '../../pages/loading-page/loading-page';
 
 const App = (): JSX.Element => {
   const authorizationStatus = useAppSelector((state) => state.change.authorizationStatus);
-  const isOffersDataLoading = useAppSelector((state) => state.change.isDataLoading);
+  const isOffersDataLoading = useAppSelector((state) => state.change.areOffersLoading);
+  const isNearOffersDataLoading = useAppSelector((state) => state.change.areNearOffersLoading);
 
-  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
+  if (authorizationStatus === AuthorizationStatus.UNKNOWN || isOffersDataLoading || isNearOffersDataLoading) {
     return <LoadingPage />;
   }
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={AppRoute.Main} element={<Main />} />
+        <Route path={AppRoute.MAIN} element={<Main />} />
         <Route
-          path={AppRoute.Login}
+          path={AppRoute.LOGIN}
           element={
             <LoginPrivateRoute>
               <Login />
@@ -31,14 +32,14 @@ const App = (): JSX.Element => {
           }
         />
         <Route
-          path={AppRoute.Favorites}
+          path={AppRoute.FAVOURITES}
           element={
             <FavouritesPrivateRoute>
               <Favorites />
             </FavouritesPrivateRoute>
           }
         />
-        <Route path={`${AppRoute.Room}/:id`} element={<Property />} />
+        <Route path={`${AppRoute.ROOM}/:id`} element={<Property />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

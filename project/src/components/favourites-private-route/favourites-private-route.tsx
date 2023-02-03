@@ -11,9 +11,9 @@ function FavouritesPrivateRoute(props: PrivateRouteProps): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.change.authorizationStatus);
 
   return (
-    authorizationStatus === AuthorizationStatus.Auth
+    authorizationStatus === AuthorizationStatus.AUTH
       ? children
-      : <Navigate to={AppRoute.Login} />
+      : <Navigate to={AppRoute.LOGIN} />
   );
 }
 

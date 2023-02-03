@@ -33,7 +33,7 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName}: CardsProps)
         <span>Premium</span>
       </div>}
       <div className={`${imgClassName} place-card__image-wrapper`}>
-        <Link to={`${AppRoute.Room}/${id}`}>
+        <Link to={`${AppRoute.ROOM}/${id}`}>
           <img className="place-card__image" src={previewImage}
             width={imgClassName === 'favorites__image-wrapper' ? 150 : 260}
             height={imgClassName === 'favorites__image-wrapper' ? 110 : 200}
@@ -61,7 +61,7 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName}: CardsProps)
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoute.Room}/${id}`}>{title}</Link>
+          <Link to={`${AppRoute.ROOM}/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
