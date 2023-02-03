@@ -2,13 +2,13 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { Offer } from '../../types/offer';
 import { sortingTypes } from '../../const';
 import Logo from '../../components/logo/logo';
-import CardsList from '../cards-list/cards-list';
-import Map from '../map/map';
-import CitiesList from '../cities-list/cities-list';
-import PlacesSorting from '../places-sorting/places-sorting';
+import CardsList from '../../components/cards-list/cards-list';
+import Map from '../../components/map/map';
+import CitiesList from '../../components/cities-list/cities-list';
+import PlacesSorting from '../../components/places-sorting/places-sorting';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fillOffersList } from '../../store/action';
-import UserInfo from '../user-info/user-info';
+import UserInfo from '../../components/user-info/user-info';
 
 const Main = (): JSX.Element => {
 

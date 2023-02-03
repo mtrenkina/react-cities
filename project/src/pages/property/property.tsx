@@ -4,13 +4,13 @@ import { store } from '../../store';
 import { AuthorizationStatus } from '../../const';
 import { fetchCommentsAction, fetchNearOffersAction } from '../../store/api-action';
 import Logo from '../../components/logo/logo';
-import CommentsList from '../comments-list/comments-list';
+import CommentsList from '../../components/comments-list/comments-list';
 import { Offer } from '../../types/offer';
-import Map from '../map/map';
-import CardsList from '../cards-list/cards-list';
+import Map from '../../components/map/map';
+import CardsList from '../../components/cards-list/cards-list';
 import { useAppSelector } from '../../hooks';
-import UserInfo from '../user-info/user-info';
-import Comment from '../comment/comment';
+import UserInfo from '../../components/user-info/user-info';
+import Comment from '../../components/comment/comment';
 
 const Property = (): JSX.Element => {
 

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import Logo from '../../components/logo/logo';
-import Card from '../card/card';
+import Card from '../../components/card/card';
 import { useAppSelector } from '../../hooks';
 import UserInfo from '../../components/user-info/user-info';
 
