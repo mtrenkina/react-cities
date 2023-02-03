@@ -13,9 +13,11 @@ import {
 import { saveToken, dropToken } from '../services/token';
 import { APIRoute, AuthorizationStatus } from '../const';
 import { Offer } from '../types/offer';
+import { Comment } from '../types/comment.js';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
-import { Comment } from '../types/comment.js';
+import { CommentData } from '../types/comment-data.js';
+import { NewCommentData } from '../types/new-comment-data.js';
 
 export const fetchOffersAction = createAsyncThunk<
   void,
@@ -107,4 +109,17 @@ export const logoutAction = createAsyncThunk<
   await api.delete(APIRoute.LOGOUT);
   dropToken();
   dispatch(requireAuthorization(AuthorizationStatus.NO_AUTH));
+});
+
+export const commentAddAction = createAsyncThunk<
+  void,
+  CommentData,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('user/comment', async ({comment, rating, hotelId}, { dispatch, extra: api }) => {
+  const { data } = await api.post<NewCommentData[]>(APIRoute.COMMENTS.replace('{hotelId}', hotelId), { comment, rating });
+  dispatch(getComments(data));
 });

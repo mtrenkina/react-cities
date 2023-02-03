@@ -149,8 +149,8 @@ const Property = (): JSX.Element => {
                   </div>
                 </div>
                 <section className='property__reviews reviews'>
-                  <CommentsList comments={comments}/>
-                  {authorizationStatus === AuthorizationStatus.AUTH && <Comment />}
+                  <CommentsList comments={comments ?? []}/>
+                  {authorizationStatus === AuthorizationStatus.AUTH && <Comment hotelId={params.id}/>}
                 </section>
               </div>
             </div>
