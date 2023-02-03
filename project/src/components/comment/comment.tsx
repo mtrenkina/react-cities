@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { useState } from 'react';
+import { useAppDispatch } from '../../hooks';
+import { commentAddAction } from '../../store/api-action';
 
-const Comment = (): JSX.Element => {
+const Comment = ({hotelId}: {hotelId?: string}): JSX.Element => {
 
+  const dispatch = useAppDispatch();
   const [formData, setFormData] = useState('');
   const [rating, setRating] = useState(0);
 
@@ -15,8 +18,17 @@ const Comment = (): JSX.Element => {
     setRating(Number(target.value));
   };
 
+  const onSubmit = (evt: FormEvent) => {
+    evt.preventDefault();
+    if (hotelId) {
+      dispatch(commentAddAction({comment: formData,
+        hotelId,
+        rating}));
+    }
+  };
+
   return (
-    <form className='reviews__form form' action='#' method='post'>
+    <form className='reviews__form form' action='#' method='post' onSubmit={onSubmit}>
       <label className='reviews__label form__label' htmlFor='review'>
         Your review
       </label>
@@ -70,7 +82,7 @@ const Comment = (): JSX.Element => {
           To submit review please make sure to set <span className='reviews__star'>rating</span> and describe your stay
           with at least <b className='reviews__text-amount'>50 characters</b>.
         </p>
-        <button className='reviews__submit form__submit button' type='submit' disabled>
+        <button className='reviews__submit form__submit button' type='submit'>
           Submit
         </button>
       </div>
