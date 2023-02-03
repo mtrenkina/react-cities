@@ -23,8 +23,6 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export const SHOW_ERROR_TIMEOUT = 2000;
-
 export const sortingTypes = {
   POPULAR: 'Popular',
   PRICELOWTOHIGHT: 'Price: low to high',
