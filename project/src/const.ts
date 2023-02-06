@@ -30,8 +30,8 @@ const AMSTERDAM: City = {
 
 const HAMBURG: City = {
   name: 'Hamburg',
-  lat: 53.5753,
-  lng: 10.0153,
+  lat: 53.55073,
+  lng: 9.99302,
   zoom: 13,
 };
 
@@ -72,3 +72,9 @@ export const sortingTypes = {
   PRICEHIGHTTOLOW: 'Price: high to low',
   RAITING: 'Top rated first',
 };
+
+export enum ReducerNameSpace {
+  DATA = 'DATA',
+  OFFERS = 'ACTION',
+  USER = 'USER',
+}

@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AuthorizationStatus } from '../../const';
 import { logoutAction } from '../../store/api-action';
+import { getAuthorizationStatus } from '../../store/user-auth/selectors';
 
 function UserInfo(): JSX.Element {
 
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((state) => state.change.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   return (
     <React.Fragment>

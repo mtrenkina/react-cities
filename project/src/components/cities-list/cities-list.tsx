@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { cities } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import {changeCurrentCity} from '../../store/action';
+import { getCity } from '../../store/user-actions/selectors';
+import { changeCity } from '../../store/user-actions/user-actions';
 
 type citiesLiProps = {
   city: string;
@@ -10,11 +11,11 @@ type citiesLiProps = {
 const CitiesLi = ({city}: citiesLiProps): JSX.Element => {
 
   const dispatch = useAppDispatch();
-  const currentCity = useAppSelector((state) => state.change.city);
+  const currentCity = useAppSelector(getCity);
 
   return (
     <li className='locations__item'>
-      <Link className={`locations__item-link tabs__item ${city === currentCity ? 'tabs__item--active' : ''}`} to='/' onClick={() => dispatch(changeCurrentCity(city))}>
+      <Link className={`locations__item-link tabs__item ${city === currentCity ? 'tabs__item--active' : ''}`} to='/' onClick={() => dispatch(changeCity(city))}>
         <span>{city}</span>
       </Link>
     </li>

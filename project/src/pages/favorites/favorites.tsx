@@ -3,10 +3,11 @@ import Logo from '../../components/logo/logo';
 import Card from '../../components/card/card';
 import { useAppSelector } from '../../hooks';
 import UserInfo from '../../components/user-info/user-info';
+import { getOffers } from '../../store/offers-data/selectors';
 
 const Favorites = (): JSX.Element => {
 
-  const offers = useAppSelector((state) => state.change.offers);
+  const offers = useAppSelector(getOffers);
   const filterOffers = offers.filter((offer) => offer.isFavotite === true);
   const filterOffer = filterOffers.map((offer) => <Card card={offer} key={offer.id} cardClassName={'favorites__card'} imgClassName={'favorites__image-wrapper'} />);
 

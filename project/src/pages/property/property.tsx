@@ -1,36 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useAppSelector } from '../../hooks';
 import { store } from '../../store';
 import { AuthorizationStatus } from '../../const';
 import { fetchCommentsAction, fetchNearOffersAction } from '../../store/api-action';
+import { getNearOffers, getNearOffersLoadingStatus, getOffers, getOffersLoadingStatus, getComments } from '../../store/offers-data/selectors';
+import { getCity } from '../../store/user-actions/selectors';
+import { getAuthorizationStatus } from '../../store/user-auth/selectors';
+import { Offer } from '../../types/offer';
 import Logo from '../../components/logo/logo';
 import CommentsList from '../../components/comments-list/comments-list';
-import { Offer } from '../../types/offer';
 import Map from '../../components/map/map';
 import CardsList from '../../components/cards-list/cards-list';
-import { useAppSelector } from '../../hooks';
 import UserInfo from '../../components/user-info/user-info';
 import Comment from '../../components/comment/comment';
+import LoadingPage from '../loading-page/loading-page';
+import NotFoundPage from '../not-found-page/not-found-page';
 
 const Property = (): JSX.Element => {
 
   const params = useParams();
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
-  const authorizationStatus = useAppSelector((state) => state.change.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
-  const offers = useAppSelector((state) => state.change.offers);
-  const nearOffers = useAppSelector((state) => state.change.nearOffers);
-  const comments = useAppSelector((state) => state.change.comments);
-  const city = useAppSelector((state) => state.change.city);
+  const offers = useAppSelector(getOffers);
+  const nearOffers = useAppSelector(getNearOffers);
+  const comments = useAppSelector(getComments);
+  const city = useAppSelector(getCity);
 
   const currentOffer = offers.find((offer) => offer.id === Number(params.id));
+  const newOffers = currentOffer && nearOffers !== null ? [...nearOffers, currentOffer] : [];
+
+  const areOffersLoading = useAppSelector(getOffersLoadingStatus);
+  const areNearOffersLoading = useAppSelector(getNearOffersLoadingStatus);
 
   useEffect(() => {
-    if (nearOffers.length === 0) {
-      if (params.id && currentOffer !== undefined) {
-        store.dispatch(fetchNearOffersAction({ hotelId: params.id }));
-        store.dispatch(fetchCommentsAction({ hotelId: params.id }));
-      }
+    if (params.id) {
+      store.dispatch(fetchNearOffersAction({ hotelId: params.id }));
+      store.dispatch(fetchCommentsAction({ hotelId: params.id }));
     }
   }, [params.id]);
 
@@ -38,6 +45,16 @@ const Property = (): JSX.Element => {
     const currentPoint = offers.find((offer) => offer.id === listItemId);
     setSelectedOffer(currentPoint);
   };
+
+  if (areOffersLoading || areNearOffersLoading) {
+    return (
+      <LoadingPage />
+    );
+  }
+  if (!currentOffer) {
+    return <NotFoundPage />;
+  }
+
 
   return (
     <React.Fragment>
@@ -155,7 +172,7 @@ const Property = (): JSX.Element => {
               </div>
             </div>
             <section className='property__map map'>
-              <Map city={city} points={nearOffers} selectedPoint={selectedOffer} />
+              <Map city={city} points={newOffers} selectedPoint={selectedOffer} />
             </section>
           </section>
           <div className='container'>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useAppSelector } from '../../hooks';
 import { Offer } from '../../types/offer';
 import { sortingTypes } from '../../const';
 import Logo from '../../components/logo/logo';
@@ -6,25 +7,19 @@ import CardsList from '../../components/cards-list/cards-list';
 import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
 import PlacesSorting from '../../components/places-sorting/places-sorting';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fillOffersList } from '../../store/action';
 import UserInfo from '../../components/user-info/user-info';
+import { getOffers } from '../../store/offers-data/selectors';
+import { getCity } from '../../store/user-actions/selectors';
 
 const Main = (): JSX.Element => {
-
-  const dispatch = useAppDispatch();
 
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
   const [sortedOffers, setSortedOffers] = useState<Offer[]>([]);
   const [currentSorting, setSorting] = useState<string>('Popular');
 
-  const city = useAppSelector((state) => state.change.city);
-  const offers = useAppSelector((state) => state.change.offers);
+  const city = useAppSelector(getCity);
+  const offers = useAppSelector(getOffers);
   const filtredOffers = useMemo(() => offers.filter((offer) => offer.city.name === city), [offers, city]);
-
-  useEffect(() => {
-    dispatch(fillOffersList(offers));
-  }, [city]);
 
   useEffect(() => {
     const sorted = sortingOffers([...filtredOffers]);

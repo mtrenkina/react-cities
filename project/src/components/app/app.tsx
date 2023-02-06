@@ -5,17 +5,19 @@ import Property from '../../pages/property/property';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import LoginPrivateRoute from '../login-private-route/login-private-route';
 import FavouritesPrivateRoute from '../favourites-private-route/favourites-private-route';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute } from '../../const';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
+import { getAuthCheckedStatus, getAuthorizationStatus } from '../../store/user-auth/selectors';
 import LoadingPage from '../../pages/loading-page/loading-page';
 
-const App = (): JSX.Element => {
-  const authorizationStatus = useAppSelector((state) => state.change.authorizationStatus);
-  const isOffersDataLoading = useAppSelector((state) => state.change.areOffersLoading);
-  const isNearOffersDataLoading = useAppSelector((state) => state.change.areNearOffersLoading);
 
-  if (authorizationStatus === AuthorizationStatus.UNKNOWN || isOffersDataLoading || isNearOffersDataLoading) {
+const App = (): JSX.Element => {
+
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
+
+  if (!isAuthChecked) {
     return <LoadingPage />;
   }
 
@@ -26,7 +28,7 @@ const App = (): JSX.Element => {
         <Route
           path={AppRoute.LOGIN}
           element={
-            <LoginPrivateRoute>
+            <LoginPrivateRoute authorizationStatus={authorizationStatus}>
               <Login />
             </LoginPrivateRoute>
           }

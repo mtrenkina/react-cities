@@ -12,3 +12,8 @@ export type Comment = {
   rating: number;
   user: Host;
 };
+
+export type Input = {
+  review: string;
+  rating: string;
+};
