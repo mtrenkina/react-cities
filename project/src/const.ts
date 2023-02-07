@@ -58,6 +58,8 @@ export enum APIRoute {
   LOGOUT = '/logout',
   NEAR_OFFERS = '/hotels/{hotelId}/nearby',
   COMMENTS = '/comments/{hotelId}',
+  FAVOURITES = '/favorite',
+  FAVOURITE_OFFER = '/favorite/{hotelId}/{status}',
 }
 
 export enum AuthorizationStatus {

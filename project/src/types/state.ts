@@ -13,9 +13,11 @@ export type UserProcess = {
 export type Data = {
   offers: Offer[];
   nearOffers: Offer[];
+  favouriteOffers: Offer[];
   comments: Comment[];
   areOffersLoading: boolean;
   areNearOffersLoading: boolean;
+  areFavouriteOffersLoading: boolean;
   areCommentsLoading: boolean;
 };
 

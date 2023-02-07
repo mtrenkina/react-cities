@@ -1,5 +1,6 @@
-import { useRef, useEffect } from 'react';
 import leaflet from 'leaflet';
+import { useRef, useEffect } from 'react';
+import { memo } from 'react';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
 import { Offer } from '../../types/offer';
@@ -52,4 +53,4 @@ const Map = (props: MapProps): JSX.Element => {
   return <div style={{ height: '100%' }} ref={mapRef}></div>;
 };
 
-export default Map;
+export default memo(Map);

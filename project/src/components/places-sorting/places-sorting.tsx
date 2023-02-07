@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { sortingTypes } from '../../const';
 
 type SortOptionsProps = {
@@ -38,4 +38,4 @@ const PlacesSorting = ({sortingType, currentSorting, setSorting}: SortOptionsPro
   );
 };
 
-export default PlacesSorting;
+export default memo(PlacesSorting);

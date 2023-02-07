@@ -18,7 +18,7 @@ export type Offer = {
   };
   id: number;
   images: string[];
-  isFavotite: boolean;
+  isFavorite: boolean;
 	isPremium: boolean;
   location: {
     latitude: number,

@@ -1,7 +1,5 @@
-//import { useEffect } from 'react';
+import { memo } from 'react';
 import Card from '../card/card';
-//import { useAppDispatch, useAppSelector } from '../../hooks';
-//import { fillOffersList } from '../../store/action';
 import { Offer } from '../../types/offer';
 
 type CardsListProps = {
@@ -12,13 +10,6 @@ type CardsListProps = {
 };
 
 const CardsList = ({ sortedOffers, cardClassName, imgClassName, onCardHover }: CardsListProps): JSX.Element => {
-  //const city = useAppSelector((state) => state.change.city);
-  //const offers = useAppSelector((state) => state.change.offers).filter((offer) => offer.city.id === city.id);
-  //const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   dispatch(fillOffersList(offers));
-  // }, [city]);
 
   const changeActiveCard = (id: number) => {
     onCardHover(id);
@@ -29,6 +20,7 @@ const CardsList = ({ sortedOffers, cardClassName, imgClassName, onCardHover }: C
       {Array.from(sortedOffers).map((offer) => (
         <Card
           card={offer}
+          offerId={offer.id}
           key={offer.id}
           changeActiveCard={changeActiveCard}
           cardClassName={cardClassName}
@@ -39,4 +31,4 @@ const CardsList = ({ sortedOffers, cardClassName, imgClassName, onCardHover }: C
   );
 };
 
-export default CardsList;
+export default memo(CardsList);

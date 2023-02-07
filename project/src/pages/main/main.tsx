@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useAppSelector } from '../../hooks';
 import { Offer } from '../../types/offer';
 import { sortingTypes } from '../../const';
@@ -8,8 +8,12 @@ import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
 import PlacesSorting from '../../components/places-sorting/places-sorting';
 import UserInfo from '../../components/user-info/user-info';
-import { getOffers } from '../../store/offers-data/selectors';
+import { getFavouriteOffers, getOffers } from '../../store/offers-data/selectors';
 import { getCity } from '../../store/user-actions/selectors';
+import MainEmpty from '../main-empty/main-empty';
+import { getAuthorizationStatus } from '../../store/user-auth/selectors';
+import { fetchFavouriteOffersAction } from '../../store/api-action';
+import { store } from '../../store';
 
 const Main = (): JSX.Element => {
 
@@ -19,21 +23,28 @@ const Main = (): JSX.Element => {
 
   const city = useAppSelector(getCity);
   const offers = useAppSelector(getOffers);
-  const filtredOffers = useMemo(() => offers.filter((offer) => offer.city.name === city), [offers, city]);
+  const filteredOffers = useMemo(() => offers.filter((offer) => offer.city.name === city), [offers, city]);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const favoritesOffers = useAppSelector(getFavouriteOffers);
 
   useEffect(() => {
-    const sorted = sortingOffers([...filtredOffers]);
+    const sorted = sortingOffers([...filteredOffers]);
     setSortedOffers(sorted ?? []);
   }, [currentSorting, city]);
 
-  const onCardHover = (listItemId: number) => {
-    const currentPoint = filtredOffers.find((offer) => offer.id === listItemId);
-    setSelectedOffer(currentPoint);
-  };
+  useEffect(() => {
+    store.dispatch(fetchFavouriteOffersAction());
 
-  const changeSorting = (type: string) => {
+  }, [authorizationStatus, favoritesOffers.length]);
+
+  const onCardHover = useCallback((listItemId: number) => {
+    const currentPoint = filteredOffers.find((offer) => offer.id === listItemId);
+    setSelectedOffer(currentPoint);
+  }, [filteredOffers]);
+
+  const changeSorting = useCallback((type: string) => {
     setSorting(type);
-  };
+  }, []);
 
   const sortingByPrice = (offerA: Offer, offerB: Offer) => {
     const priceA = offerA.price;
@@ -61,6 +72,10 @@ const Main = (): JSX.Element => {
         return copyOffers;
     }
   };
+
+  if (offers.length === 0) {
+    return (<MainEmpty />);
+  }
 
   return (
     <React.Fragment>
@@ -111,7 +126,7 @@ const Main = (): JSX.Element => {
               <section className='cities__places places'>
                 <h2 className='visually-hidden'>Places</h2>
                 <b className='places__found'>
-                  {filtredOffers.length} places to stay in {city}
+                  {filteredOffers.length} places to stay in {city}
                 </b>
                 <PlacesSorting sortingType={sortingTypes} currentSorting={currentSorting} setSorting={changeSorting} />
                 <CardsList
@@ -123,7 +138,7 @@ const Main = (): JSX.Element => {
               </section>
               <div className='cities__right-section'>
                 <section className='cities__map map'>
-                  <Map city={city} points={filtredOffers} selectedPoint={selectedOffer} />
+                  <Map city={city} points={filteredOffers} selectedPoint={selectedOffer} />
                 </section>
               </div>
             </div>

@@ -117,7 +117,7 @@ const Property = (): JSX.Element => {
                     <svg className='property__bookmark-icon' width='31' height='33'>
                       <use xlinkHref='#icon-bookmark'></use>
                     </svg>
-                    <span className='visually-hidden'>{currentOffer?.isFavotite ? 'In' : 'To'} bookmarks</span>
+                    <span className='visually-hidden'>{currentOffer?.isFavorite ? 'In' : 'To'} bookmarks</span>
                   </button>
                 </div>
                 <div className='property__rating rating'>

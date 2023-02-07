@@ -1,5 +1,5 @@
 import Main from '../../pages/main/main';
-import Favorites from '../../pages/favorites/favorites';
+import Favorites from '../../pages/favourites/favourites';
 import Login from '../../pages/login/login';
 import Property from '../../pages/property/property';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';

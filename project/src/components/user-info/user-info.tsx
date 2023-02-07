@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AuthorizationStatus } from '../../const';
 import { logoutAction } from '../../store/api-action';
 import { getAuthorizationStatus } from '../../store/user-auth/selectors';
+import { getFavouriteOffers } from '../../store/offers-data/selectors';
 
 function UserInfo(): JSX.Element {
 
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const favouriteOffers = useAppSelector(getFavouriteOffers);
 
   return (
     <React.Fragment>
@@ -18,7 +20,7 @@ function UserInfo(): JSX.Element {
           {authorizationStatus === AuthorizationStatus.AUTH && (
             <>
               <span className='header__user-name user__name'>Oliver.conner@gmail.com</span>
-              <span className='header__favorite-count'>3</span>
+              <span className='header__favorite-count'>{favouriteOffers.length}</span>
             </>
           )}
         </Link>
@@ -45,4 +47,4 @@ function UserInfo(): JSX.Element {
   );
 }
 
-export default UserInfo;
+export default memo(UserInfo);

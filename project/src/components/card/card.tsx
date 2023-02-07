@@ -1,33 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
-import {Offer} from '../../types/offer';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { Offer } from '../../types/offer';
+import { getAuthorizationStatus } from '../../store/user-auth/selectors';
+import Login from '../../pages/login/login';
+import { changeFavouriteStatusAction } from '../../store/api-action';
 
 type CardsProps = {
   card: Offer;
   changeActiveCard?: (id: number) => void;
   cardClassName: string;
   imgClassName: string;
+  offerId: number;
 }
 
-const Card = ({card, changeActiveCard, cardClassName, imgClassName}: CardsProps): JSX.Element => {
+const Card = ({card, changeActiveCard, cardClassName, imgClassName, offerId}: CardsProps): JSX.Element => {
 
-  const {isPremium, previewImage, price, isFavotite, rating, title, type, id} = card;
+  const {isPremium, previewImage, price, isFavorite, rating, title, type, id} = card;
 
-  const handleCardMouseEnter = () => {
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const [favouriteState, setFavouriteState] = useState(isFavorite);
+
+  const onCardMouseEnterHandler = () => {
     if (changeActiveCard) {
-      changeActiveCard(card.id);
+      changeActiveCard(id);
     }
   };
 
-  const handleCardMouseleave = () => {
+  const onCardMouseLeaveHandler = () => {
     if (changeActiveCard) {
       changeActiveCard(0);
     }
   };
 
+  const onFavouriteButtonClickHandler = () => {
+    setFavouriteState(!favouriteState);
+    if (authorizationStatus !== AuthorizationStatus.AUTH) {
+      return (<Login />);
+    }
+
+    if (offerId) {
+      dispatch(changeFavouriteStatusAction({hotelId: offerId, isFavorite: !isFavorite}));
+    }
+  };
+
   return (
-    <article className={`${cardClassName} place-card`} onMouseEnter={handleCardMouseEnter} onMouseLeave={handleCardMouseleave}>
+    <article className={`${cardClassName} place-card`} onMouseEnter={onCardMouseEnterHandler} onMouseLeave={onCardMouseLeaveHandler}>
       {isPremium &&
       <div className="place-card__mark">
         <span>Premium</span>
@@ -47,11 +67,11 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName}: CardsProps)
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`button place-card__bookmark-button ${isFavotite ? 'place-card__bookmark-button--active' : ''}`} type="button">
+          <button className={`button place-card__bookmark-button ${favouriteState ? 'place-card__bookmark-button--active' : ''}`} type="button" onClick={onFavouriteButtonClickHandler}>
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark" />
             </svg>
-            <span className="visually-hidden">{isFavotite ? 'In' : 'To'} bookmarks</span>
+            <span className="visually-hidden">{isFavorite ? 'In' : 'To'} bookmarks</span>
           </button>
         </div>
         <div className="place-card__rating rating">
