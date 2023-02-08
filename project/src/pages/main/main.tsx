@@ -11,7 +11,6 @@ import UserInfo from '../../components/user-info/user-info';
 import { getFavouriteOffers, getOffers } from '../../store/offers-data/selectors';
 import { getCity } from '../../store/user-actions/selectors';
 import MainEmpty from '../main-empty/main-empty';
-import { getAuthorizationStatus } from '../../store/user-auth/selectors';
 import { fetchFavouriteOffersAction } from '../../store/api-action';
 import { store } from '../../store';
 
@@ -24,18 +23,17 @@ const Main = (): JSX.Element => {
   const city = useAppSelector(getCity);
   const offers = useAppSelector(getOffers);
   const filteredOffers = useMemo(() => offers.filter((offer) => offer.city.name === city), [offers, city]);
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const favoritesOffers = useAppSelector(getFavouriteOffers);
 
   useEffect(() => {
     const sorted = sortingOffers([...filteredOffers]);
     setSortedOffers(sorted ?? []);
-  }, [currentSorting, city]);
+  }, [currentSorting, filteredOffers, city]);
 
   useEffect(() => {
     store.dispatch(fetchFavouriteOffersAction());
 
-  }, [authorizationStatus, favoritesOffers.length]);
+  }, [favoritesOffers.length]);
 
   const onCardHover = useCallback((listItemId: number) => {
     const currentPoint = filteredOffers.find((offer) => offer.id === listItemId);

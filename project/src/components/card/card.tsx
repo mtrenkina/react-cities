@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { Offer } from '../../types/offer';
 import { getAuthorizationStatus } from '../../store/user-auth/selectors';
-import Login from '../../pages/login/login';
 import { changeFavouriteStatusAction } from '../../store/api-action';
 
 type CardsProps = {
@@ -18,6 +17,7 @@ type CardsProps = {
 const Card = ({card, changeActiveCard, cardClassName, imgClassName, offerId}: CardsProps): JSX.Element => {
 
   const {isPremium, previewImage, price, isFavorite, rating, title, type, id} = card;
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
@@ -36,12 +36,13 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName, offerId}: Ca
   };
 
   const onFavouriteButtonClickHandler = () => {
-    setFavouriteState(!favouriteState);
+
     if (authorizationStatus !== AuthorizationStatus.AUTH) {
-      return (<Login />);
+      navigate(AppRoute.LOGIN);
     }
 
     if (offerId) {
+      setFavouriteState(!favouriteState);
       dispatch(changeFavouriteStatusAction({hotelId: offerId, isFavorite: !isFavorite}));
     }
   };
