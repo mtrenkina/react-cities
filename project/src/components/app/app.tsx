@@ -10,14 +10,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { getAuthCheckedStatus, getAuthorizationStatus } from '../../store/user-auth/selectors';
 import LoadingPage from '../../pages/loading-page/loading-page';
+import {getOffersLoadingStatus} from '../../store/offers-data/selectors';
 
 
 const App = (): JSX.Element => {
 
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
+  const isOffersDataLoading = useAppSelector(getOffersLoadingStatus);
 
-  if (!isAuthChecked) {
+  if (!isAuthChecked || isOffersDataLoading) {
     return <LoadingPage />;
   }
 

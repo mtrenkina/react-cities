@@ -1,7 +1,7 @@
-import {store} from '../store/index.js';
-import { AuthorizationStatus } from '../const.js';
-import { Offer } from './offer.js';
-import { Comment } from './comment.js';
+import { store } from '../store/index';
+import { AuthorizationStatus } from '../const';
+import { Offer } from './offer';
+import { Comment } from './comment';
 
 export type State = ReturnType<typeof store.getState>;
 
@@ -10,6 +10,7 @@ export type AppDispatch = typeof store.dispatch;
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
 };
+
 export type Data = {
   offers: Offer[];
   nearOffers: Offer[];
@@ -19,6 +20,7 @@ export type Data = {
   areNearOffersLoading: boolean;
   areFavouriteOffersLoading: boolean;
   areCommentsLoading: boolean;
+  errorMessage: string | undefined;
 };
 
 export type UserAction = {

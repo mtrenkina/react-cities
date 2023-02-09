@@ -18,3 +18,5 @@ export const getNearOffersLoadingStatus = (state: State): boolean => state[Reduc
 export const getFavouriteOffersLoadingStatus = (state: State): boolean => state[ReducerNameSpace.DATA].areFavouriteOffersLoading;
 
 export const getCommentsLoadingStatus = (state: State): boolean => state[ReducerNameSpace.DATA].areCommentsLoading;
+
+export const getErrorMessage = (state: State): string | undefined => state[ReducerNameSpace.DATA].errorMessage;

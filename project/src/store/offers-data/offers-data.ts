@@ -12,6 +12,7 @@ const initialState: Data = {
   areNearOffersLoading: false,
   areFavouriteOffersLoading: false,
   areCommentsLoading: false,
+  errorMessage: undefined,
 };
 
 export const OffersData = createSlice({
@@ -34,6 +35,11 @@ export const OffersData = createSlice({
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
         state.areOffersLoading = false;
+      })
+      .addCase(fetchOffersAction.rejected, (state, action) => {
+        state.offers = [];
+        state.areOffersLoading = false;
+        state.errorMessage = action.error.message;
       })
       .addCase(fetchNearOffersAction.pending, (state) => {
         state.areNearOffersLoading = true;

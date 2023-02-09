@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import Logo from '../../components/logo/logo';
 import { useAppSelector } from '../../hooks';
-import UserInfo from '../../components/user-info/user-info';
 import { getFavouriteOffers, getFavouriteOffersLoadingStatus } from '../../store/offers-data/selectors';
 import FavouritesEmpty from '../favourites-empty/favourites-empty';
 import LoadingPage from '../loading-page/loading-page';
 import FavouritesList from '../../components/favourites-list/favourites-list';
+import Sprite from '../../components/svg-sprite/svg-sprite';
+import Header from '../../components/header/header';
 
 const Favorites = (): JSX.Element => {
 
@@ -24,20 +24,8 @@ const Favorites = (): JSX.Element => {
 
   return (
     <div className='page'>
-      <header className='header'>
-        <div className='container'>
-          <div className='header__wrapper'>
-            <div className='header__left'>
-              <Logo />
-            </div>
-            <nav className='header__nav'>
-              <ul className='header__nav-list'>
-                <UserInfo/>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Sprite />
+      <Header />
 
       <main className='page__main page__main--favorites'>
         <div className='page__favorites-container container'>

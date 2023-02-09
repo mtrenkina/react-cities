@@ -1,4 +1,4 @@
-import PuffLoader from 'react-spinners/PuffLoader';
+import { PuffLoader } from 'react-spinners';
 import { CSSProperties } from 'react';
 
 function LoadingPage(): JSX.Element {
