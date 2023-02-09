@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { getFavouriteOffers, getFavouriteOffersLoadingStatus } from '../../store/offers-data/selectors';
@@ -6,13 +7,21 @@ import LoadingPage from '../loading-page/loading-page';
 import FavouritesList from '../../components/favourites-list/favourites-list';
 import Sprite from '../../components/svg-sprite/svg-sprite';
 import Header from '../../components/header/header';
+import { store } from '../../store';
+import { fetchFavouriteOffersAction } from '../../store/api-action';
+import { getAuthorizationStatus } from '../../store/user-auth/selectors';
 
 const Favorites = (): JSX.Element => {
 
-  const offers = useAppSelector(getFavouriteOffers);
+  const favouriteOffers = useAppSelector(getFavouriteOffers);
   const areFavouriteOffersLoading = useAppSelector(getFavouriteOffersLoadingStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
-  if (offers.length === 0) {
+  useEffect(() => {
+    store.dispatch(fetchFavouriteOffersAction());
+  }, [authorizationStatus, favouriteOffers.length]);
+
+  if (favouriteOffers.length === 0) {
     return (<FavouritesEmpty/>);
   }
 

@@ -56,7 +56,7 @@ export const fetchCurrentOfferAction = createAsyncThunk<Offer, {hotelId: string}
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchCurrentOffers',
+  'data/fetchCurrentOffer',
   async ({hotelId}, {dispatch, extra: api}) => {
     const {data} = await api.get<Offer>(APIRoute.CURRENT_OFFER.replace('{hotelId}', hotelId));
     return data;

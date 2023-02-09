@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import { store } from '../../store';
 import { AuthorizationStatus } from '../../const';
-import { fetchCommentsAction, fetchNearOffersAction } from '../../store/api-action';
+import { fetchCommentsAction, fetchCurrentOfferAction, fetchNearOffersAction } from '../../store/api-action';
 import { getNearOffers, getNearOffersLoadingStatus, getComments, getCurrentOffer, getCurrentOfferLoadingStatus } from '../../store/offers-data/selectors';
 import { getCity } from '../../store/user-actions/selectors';
 import { getAuthorizationStatus } from '../../store/user-auth/selectors';
@@ -34,6 +34,7 @@ const Property = (): JSX.Element => {
   useEffect(() => {
     if (id) {
       store.dispatch(fetchNearOffersAction({ hotelId: id }));
+      store.dispatch(fetchCurrentOfferAction({hotelId: id}));
       store.dispatch(fetchCommentsAction({ hotelId: id }));
     }
   }, [id]);
@@ -63,7 +64,7 @@ const Property = (): JSX.Element => {
           <section className='property'>
             <div className='property__gallery-container container'>
               <div className='property__gallery'>
-                {currentOffer?.images.map((image) => (
+                {currentOffer?.images.slice(0,6).map((image) => (
                   <div className='property__image-wrapper' key={image}>
                     <img className='property__image' src={image} alt='Studio' />
                   </div>
@@ -95,8 +96,12 @@ const Property = (): JSX.Element => {
                 </div>
                 <ul className='property__features'>
                   <li className='property__feature property__feature--entire'>{currentOffer?.type}</li>
-                  <li className='property__feature property__feature--bedrooms'>{currentOffer?.bedrooms} bedrooms</li>
-                  <li className='property__feature property__feature--adults'>max {currentOffer?.maxAdults} adults</li>
+                  <li className='property__feature property__feature--bedrooms'>
+                    {currentOffer?.bedrooms} {` bedroom${currentOffer?.bedrooms > 1 ? 's' : ''}`}
+                  </li>
+                  <li className='property__feature property__feature--adults'>
+                    max {currentOffer?.maxAdults} {`adult${currentOffer?.maxAdults > 1 ? 's' : ''}`}
+                  </li>
                 </ul>
                 <div className='property__price'>
                   <b className='property__price-value'>&euro;{currentOffer?.price}</b>

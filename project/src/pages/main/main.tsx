@@ -7,11 +7,9 @@ import CardsList from '../../components/cards-list/cards-list';
 import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
 import PlacesSorting from '../../components/places-sorting/places-sorting';
-import { getFavouriteOffers, getOffers, getErrorMessage } from '../../store/offers-data/selectors';
+import { getOffers, getErrorMessage } from '../../store/offers-data/selectors';
 import { getCity } from '../../store/user-actions/selectors';
 import MainEmpty from '../main-empty/main-empty';
-import { fetchFavouriteOffersAction } from '../../store/api-action';
-import { store } from '../../store';
 import Sprite from '../../components/svg-sprite/svg-sprite';
 import Header from '../../components/header/header';
 
@@ -25,17 +23,11 @@ const Main = (): JSX.Element => {
   const offers = useAppSelector(getOffers);
   const filteredOffers = useMemo(() => offers.filter((offer) => offer.city.name === city), [offers, city]);
   const errorMessage = useAppSelector(getErrorMessage);
-  const favoritesOffers = useAppSelector(getFavouriteOffers);
 
   useEffect(() => {
     const sorted = sortingOffers([...filteredOffers]);
     setSortedOffers(sorted ?? []);
   }, [currentSorting, filteredOffers, city]);
-
-  useEffect(() => {
-    store.dispatch(fetchFavouriteOffersAction());
-
-  }, [favoritesOffers.length]);
 
   const onCardHover = useCallback((listItemId: number) => {
     const currentPoint = filteredOffers.find((offer) => offer.id === listItemId);
