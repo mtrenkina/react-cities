@@ -60,6 +60,7 @@ export enum APIRoute {
   COMMENTS = '/comments/{hotelId}',
   FAVOURITES = '/favorite',
   FAVOURITE_OFFER = '/favorite/{hotelId}/{status}',
+  CURRENT_OFFER = '/hotels/{hotelId}'
 }
 
 export enum AuthorizationStatus {

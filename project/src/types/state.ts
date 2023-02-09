@@ -15,10 +15,12 @@ export type Data = {
   offers: Offer[];
   nearOffers: Offer[];
   favouriteOffers: Offer[];
+  currentOffer: Offer | null;
   comments: Comment[];
   areOffersLoading: boolean;
   areNearOffersLoading: boolean;
   areFavouriteOffersLoading: boolean;
+  isCurrentOfferLoading: boolean;
   areCommentsLoading: boolean;
   errorMessage: string | undefined;
 };

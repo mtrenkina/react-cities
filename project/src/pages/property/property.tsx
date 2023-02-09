@@ -4,7 +4,7 @@ import { useAppSelector } from '../../hooks';
 import { store } from '../../store';
 import { AuthorizationStatus } from '../../const';
 import { fetchCommentsAction, fetchNearOffersAction } from '../../store/api-action';
-import { getNearOffers, getNearOffersLoadingStatus, getOffers, getOffersLoadingStatus, getComments } from '../../store/offers-data/selectors';
+import { getNearOffers, getNearOffersLoadingStatus, getComments, getCurrentOffer, getCurrentOfferLoadingStatus } from '../../store/offers-data/selectors';
 import { getCity } from '../../store/user-actions/selectors';
 import { getAuthorizationStatus } from '../../store/user-auth/selectors';
 import { Offer } from '../../types/offer';
@@ -19,42 +19,39 @@ import Header from '../../components/header/header';
 
 const Property = (): JSX.Element => {
 
-  const params = useParams();
+  const {id} = useParams();
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isCurrentOfferLoading = useAppSelector(getCurrentOfferLoadingStatus);
+  const areNearOffersLoading = useAppSelector(getNearOffersLoadingStatus);
 
-  const offers = useAppSelector(getOffers);
   const nearOffers = useAppSelector(getNearOffers);
   const comments = useAppSelector(getComments);
   const city = useAppSelector(getCity);
-
-  const currentOffer = offers.find((offer) => offer.id === Number(params.id));
+  const currentOffer = useAppSelector(getCurrentOffer);
   const newOffers = currentOffer && nearOffers !== null ? [...nearOffers, currentOffer] : [];
 
-  const areOffersLoading = useAppSelector(getOffersLoadingStatus);
-  const areNearOffersLoading = useAppSelector(getNearOffersLoadingStatus);
-
   useEffect(() => {
-    if (params.id) {
-      store.dispatch(fetchNearOffersAction({ hotelId: params.id }));
-      store.dispatch(fetchCommentsAction({ hotelId: params.id }));
+    if (id) {
+      store.dispatch(fetchNearOffersAction({ hotelId: id }));
+      store.dispatch(fetchCommentsAction({ hotelId: id }));
     }
-  }, [params.id]);
+  }, [id]);
 
   const onCardHover = (listItemId: number) => {
-    const currentPoint = offers.find((offer) => offer.id === listItemId);
+    const currentPoint = nearOffers.find((offer) => offer.id === listItemId);
     setSelectedOffer(currentPoint);
   };
 
-  if (areOffersLoading || areNearOffersLoading) {
+  if (isCurrentOfferLoading || areNearOffersLoading) {
     return (
       <LoadingPage />
     );
   }
+
   if (!currentOffer) {
     return <NotFoundPage />;
   }
-
 
   return (
     <React.Fragment>
@@ -136,7 +133,7 @@ const Property = (): JSX.Element => {
                 </div>
                 <section className='property__reviews reviews'>
                   <CommentsList comments={comments ?? []}/>
-                  {authorizationStatus === AuthorizationStatus.AUTH && <Comment hotelId={params.id}/>}
+                  {authorizationStatus === AuthorizationStatus.AUTH && <Comment hotelId={id}/>}
                 </section>
               </div>
             </div>

@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ReducerNameSpace } from '../../const';
 import { Data } from '../../types/state';
-import { fetchOffersAction, fetchNearOffersAction, fetchCommentsAction, commentPostAction, fetchFavouriteOffersAction, changeFavouriteStatusAction } from '../api-action';
+import { fetchOffersAction, fetchNearOffersAction, fetchCommentsAction, commentPostAction, fetchFavouriteOffersAction, changeFavouriteStatusAction, fetchCurrentOfferAction } from '../api-action';
 
 const initialState: Data = {
   offers: [],
   nearOffers: [],
   favouriteOffers: [],
+  currentOffer: null,
   comments: [],
   areOffersLoading: false,
   areNearOffersLoading: false,
   areFavouriteOffersLoading: false,
+  isCurrentOfferLoading: false,
   areCommentsLoading: false,
   errorMessage: undefined,
 };
@@ -54,6 +56,13 @@ export const OffersData = createSlice({
       .addCase(fetchFavouriteOffersAction.fulfilled, (state, action) => {
         state.favouriteOffers = action.payload;
         state.areFavouriteOffersLoading = false;
+      })
+      .addCase(fetchCurrentOfferAction.pending, (state) => {
+        state.isCurrentOfferLoading = true;
+      })
+      .addCase(fetchCurrentOfferAction.fulfilled, (state, action) => {
+        state.currentOffer = action.payload;
+        state.isCurrentOfferLoading = false;
       })
       .addCase(fetchCommentsAction.pending, (state) => {
         state.areCommentsLoading = true;

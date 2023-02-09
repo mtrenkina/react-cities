@@ -9,7 +9,11 @@ export const getNearOffers = (state: State): Offer[] => state[ReducerNameSpace.D
 
 export const getFavouriteOffers = (state: State): Offer[] => state[ReducerNameSpace.DATA].favouriteOffers;
 
+export const getCurrentOffer = (state: State): Offer | null => state[ReducerNameSpace.DATA].currentOffer;
+
 export const getComments = (state: State): Comment[] => state[ReducerNameSpace.DATA].comments;
+
+export const getErrorMessage = (state: State): string | undefined => state[ReducerNameSpace.DATA].errorMessage;
 
 export const getOffersLoadingStatus = (state: State): boolean => state[ReducerNameSpace.DATA].areOffersLoading;
 
@@ -17,6 +21,6 @@ export const getNearOffersLoadingStatus = (state: State): boolean => state[Reduc
 
 export const getFavouriteOffersLoadingStatus = (state: State): boolean => state[ReducerNameSpace.DATA].areFavouriteOffersLoading;
 
-export const getCommentsLoadingStatus = (state: State): boolean => state[ReducerNameSpace.DATA].areCommentsLoading;
+export const getCurrentOfferLoadingStatus = (state: State): boolean => state[ReducerNameSpace.DATA].isCurrentOfferLoading;
 
-export const getErrorMessage = (state: State): string | undefined => state[ReducerNameSpace.DATA].errorMessage;
+export const getCommentsLoadingStatus = (state: State): boolean => state[ReducerNameSpace.DATA].areCommentsLoading;
