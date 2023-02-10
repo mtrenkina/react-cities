@@ -1,6 +1,7 @@
 import React from 'react';
 import CommentsItem from '../comments-item/comments-item';
 import { Comment } from '../../types/comment';
+import { MAX_REVIEWS_COUNT } from '../../const';
 
 type CommentListProps = {
   comments: Comment[];
@@ -12,9 +13,9 @@ const CommentsList = ({ comments }: CommentListProps): JSX.Element => (
       Reviews &middot; <span className='reviews__amount'>{comments.length}</span>
     </h2>
     <ul className='reviews__list'>
-      {Array.from(comments).map((comment) => (
+      {Array.from(comments).reverse().slice(0, MAX_REVIEWS_COUNT).map((comment) => (
         <CommentsItem comment={comment} key={comment.id}/>
-      ))}
+      )).sort()}
     </ul>
   </React.Fragment>
 );

@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
+import { getOffers, getErrorMessage } from '../../store/offers-data/selectors';
+import { getCity } from '../../store/user-actions/selectors';
 import { useAppSelector } from '../../hooks';
-import { Offer } from '../../types/offer';
 import { sortingTypes } from '../../const';
+import { Offer } from '../../types/offer';
 import CardsList from '../../components/cards-list/cards-list';
 import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
 import PlacesSorting from '../../components/places-sorting/places-sorting';
-import { getOffers, getErrorMessage } from '../../store/offers-data/selectors';
-import { getCity } from '../../store/user-actions/selectors';
 import MainEmpty from '../main-empty/main-empty';
 import Sprite from '../../components/svg-sprite/svg-sprite';
 import Header from '../../components/header/header';

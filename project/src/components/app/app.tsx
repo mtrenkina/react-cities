@@ -1,3 +1,9 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AppRoute } from '../../const';
+import { useAppSelector } from '../../hooks';
+import { getAuthCheckedStatus } from '../../store/user-auth/selectors';
+import {getOffersLoadingStatus} from '../../store/offers-data/selectors';
+import LoadingPage from '../../pages/loading-page/loading-page';
 import Main from '../../pages/main/main';
 import Favorites from '../../pages/favourites/favourites';
 import Login from '../../pages/login/login';
@@ -5,17 +11,10 @@ import Property from '../../pages/property/property';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import LoginPrivateRoute from '../login-private-route/login-private-route';
 import FavouritesPrivateRoute from '../favourites-private-route/favourites-private-route';
-import { AppRoute } from '../../const';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useAppSelector } from '../../hooks';
-import { getAuthCheckedStatus, getAuthorizationStatus } from '../../store/user-auth/selectors';
-import LoadingPage from '../../pages/loading-page/loading-page';
-import {getOffersLoadingStatus} from '../../store/offers-data/selectors';
 
 
 const App = (): JSX.Element => {
 
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
   const isOffersDataLoading = useAppSelector(getOffersLoadingStatus);
 
@@ -30,7 +29,7 @@ const App = (): JSX.Element => {
         <Route
           path={AppRoute.LOGIN}
           element={
-            <LoginPrivateRoute authorizationStatus={authorizationStatus}>
+            <LoginPrivateRoute>
               <Login />
             </LoginPrivateRoute>
           }

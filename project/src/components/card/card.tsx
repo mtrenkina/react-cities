@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { Offer } from '../../types/offer';
 import { getAuthorizationStatus } from '../../store/user-auth/selectors';
-import { changeFavouriteStatusAction } from '../../store/api-action';
+import { changeFavouriteStatusAction, fetchFavouriteOffersAction } from '../../store/api-action';
+import { store } from '../../store';
 
 type CardsProps = {
   card: Offer;
@@ -16,12 +17,18 @@ type CardsProps = {
 
 const Card = ({card, changeActiveCard, cardClassName, imgClassName, offerId}: CardsProps): JSX.Element => {
 
-  const {isPremium, previewImage, price, isFavorite, rating, title, type, id} = card;
-  const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const {isPremium, previewImage, price, isFavorite, rating, title, type, id} = card;
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const [favouriteState, setFavouriteState] = useState(isFavorite);
+
+  useEffect(() => {
+    if (location.pathname !== AppRoute.FAVOURITES && authorizationStatus === AuthorizationStatus.AUTH) {
+      store.dispatch(fetchFavouriteOffersAction());
+    }
+  }, []);
 
   const onCardMouseEnterHandler = () => {
     if (changeActiveCard) {
@@ -36,13 +43,11 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName, offerId}: Ca
   };
 
   const onFavouriteButtonClickHandler = () => {
-
     if (authorizationStatus !== AuthorizationStatus.AUTH) {
       navigate(AppRoute.LOGIN);
     }
 
     if (offerId) {
-      setFavouriteState(!favouriteState);
       dispatch(changeFavouriteStatusAction({hotelId: offerId, isFavorite: !isFavorite}));
     }
   };
@@ -68,7 +73,7 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName, offerId}: Ca
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`button place-card__bookmark-button ${favouriteState ? 'place-card__bookmark-button--active' : ''}`} type="button" onClick={onFavouriteButtonClickHandler}>
+          <button className={`button place-card__bookmark-button ${!isFavorite || authorizationStatus !== AuthorizationStatus.AUTH ? '' : 'place-card__bookmark-button--active'}`} type="button" onClick={onFavouriteButtonClickHandler}>
             <svg className="place-card__bookmark-icon" width={18} height={19}>
               <use xlinkHref="#icon-bookmark" />
             </svg>

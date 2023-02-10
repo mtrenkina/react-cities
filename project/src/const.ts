@@ -81,3 +81,5 @@ export enum ReducerNameSpace {
   OFFERS = 'ACTION',
   USER = 'USER',
 }
+
+export const MAX_REVIEWS_COUNT = 10;

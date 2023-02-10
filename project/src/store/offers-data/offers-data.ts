@@ -23,9 +23,16 @@ export const OffersData = createSlice({
   reducers: {
     changeFavoriteStatus: (state, action: PayloadAction<{hotelId: number; isFavorite: boolean}>) => {
       const currentOffer = state.offers.find((offer) => offer.id === action.payload.hotelId);
+      const currentOfferFromStore = state.currentOffer;
 
       if(currentOffer) {
         currentOffer.isFavorite = action.payload.isFavorite;
+      }
+
+      if (currentOffer?.id === currentOfferFromStore?.id) {
+        if (currentOfferFromStore) {
+          currentOfferFromStore.isFavorite = action.payload.isFavorite;
+        }
       }
     },
   },

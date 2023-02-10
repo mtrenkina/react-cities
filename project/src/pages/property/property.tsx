@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useAppSelector } from '../../hooks';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { store } from '../../store';
-import { AuthorizationStatus } from '../../const';
-import { fetchCommentsAction, fetchCurrentOfferAction, fetchNearOffersAction } from '../../store/api-action';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { changeFavouriteStatusAction, fetchCommentsAction, fetchCurrentOfferAction, fetchNearOffersAction } from '../../store/api-action';
 import { getNearOffers, getNearOffersLoadingStatus, getComments, getCurrentOffer, getCurrentOfferLoadingStatus } from '../../store/offers-data/selectors';
 import { getCity } from '../../store/user-actions/selectors';
 import { getAuthorizationStatus } from '../../store/user-auth/selectors';
@@ -18,6 +18,9 @@ import Sprite from '../../components/svg-sprite/svg-sprite';
 import Header from '../../components/header/header';
 
 const Property = (): JSX.Element => {
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const {id} = useParams();
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
@@ -42,6 +45,16 @@ const Property = (): JSX.Element => {
   const onCardHover = (listItemId: number) => {
     const currentPoint = nearOffers.find((offer) => offer.id === listItemId);
     setSelectedOffer(currentPoint);
+  };
+
+  const onFavouriteButtonClickHandler = () => {
+    if (authorizationStatus !== AuthorizationStatus.AUTH) {
+      navigate(AppRoute.LOGIN);
+    }
+
+    if (currentOffer) {
+      dispatch(changeFavouriteStatusAction({hotelId: currentOffer.id, isFavorite: !currentOffer.isFavorite}));
+    }
   };
 
   if (isCurrentOfferLoading || areNearOffersLoading) {
@@ -80,7 +93,7 @@ const Property = (): JSX.Element => {
                 )}
                 <div className='property__name-wrapper'>
                   <h1 className='property__name'>{currentOffer?.title}</h1>
-                  <button className='property__bookmark-button button' type='button'>
+                  <button className={`button property__bookmark-button ${currentOffer?.isFavorite ? 'property__bookmark-button--active' : ''}`} type='button' onClick={onFavouriteButtonClickHandler}>
                     <svg className='property__bookmark-icon' width='31' height='33'>
                       <use xlinkHref='#icon-bookmark'></use>
                     </svg>

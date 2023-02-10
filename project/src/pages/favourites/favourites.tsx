@@ -9,17 +9,15 @@ import Sprite from '../../components/svg-sprite/svg-sprite';
 import Header from '../../components/header/header';
 import { store } from '../../store';
 import { fetchFavouriteOffersAction } from '../../store/api-action';
-import { getAuthorizationStatus } from '../../store/user-auth/selectors';
 
 const Favorites = (): JSX.Element => {
 
   const favouriteOffers = useAppSelector(getFavouriteOffers);
   const areFavouriteOffersLoading = useAppSelector(getFavouriteOffersLoadingStatus);
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
     store.dispatch(fetchFavouriteOffersAction());
-  }, [authorizationStatus, favouriteOffers.length]);
+  }, []);
 
   if (favouriteOffers.length === 0) {
     return (<FavouritesEmpty/>);
