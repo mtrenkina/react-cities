@@ -4,3 +4,12 @@ export type City = {
   lng: number;
   zoom: number;
 }
+
+export type CityMock = {
+  location: {
+      latitude: number;
+      longitude: number;
+      zoom: number;
+  };
+  name: string;
+}

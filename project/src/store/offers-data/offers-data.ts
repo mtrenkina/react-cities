@@ -57,12 +57,22 @@ export const OffersData = createSlice({
         state.nearOffers = action.payload;
         state.areNearOffersLoading = false;
       })
+      .addCase(fetchNearOffersAction.rejected, (state, action) => {
+        state.nearOffers = [];
+        state.areNearOffersLoading = false;
+        state.errorMessage = action.error.message;
+      })
       .addCase(fetchFavouriteOffersAction.pending, (state) => {
         state.areFavouriteOffersLoading = true;
       })
       .addCase(fetchFavouriteOffersAction.fulfilled, (state, action) => {
         state.favouriteOffers = action.payload;
         state.areFavouriteOffersLoading = false;
+      })
+      .addCase(fetchFavouriteOffersAction.rejected, (state, action) => {
+        state.favouriteOffers = [];
+        state.areFavouriteOffersLoading = false;
+        state.errorMessage = action.error.message;
       })
       .addCase(fetchCurrentOfferAction.pending, (state) => {
         state.isCurrentOfferLoading = true;
@@ -71,6 +81,11 @@ export const OffersData = createSlice({
         state.currentOffer = action.payload;
         state.isCurrentOfferLoading = false;
       })
+      .addCase(fetchCurrentOfferAction.rejected, (state, action) => {
+        state.currentOffer = null;
+        state.isCurrentOfferLoading = false;
+        state.errorMessage = action.error.message;
+      })
       .addCase(fetchCommentsAction.pending, (state) => {
         state.areCommentsLoading = true;
       })
@@ -78,8 +93,16 @@ export const OffersData = createSlice({
         state.comments = action.payload;
         state.areCommentsLoading = false;
       })
+      .addCase(fetchCommentsAction.rejected, (state, action) => {
+        state.comments = [];
+        state.areCommentsLoading = false;
+        state.errorMessage = action.error.message;
+      })
       .addCase(commentPostAction.fulfilled, (state, action) => {
         state.comments = action.payload;
+      })
+      .addCase(commentPostAction.rejected, (state, action) => {
+        state.errorMessage = action.error.message;
       })
       .addCase(changeFavouriteStatusAction.fulfilled, (state, action) => {
         const currentOfferIndex = state.favouriteOffers.findIndex((offer) => offer.id === action.payload.id);
@@ -91,6 +114,9 @@ export const OffersData = createSlice({
         }
         const currentNearOfferIndex = state.nearOffers.findIndex((nearOffer) => nearOffer.id === action.payload.id);
         state.nearOffers[currentNearOfferIndex] = action.payload;
+      })
+      .addCase(changeFavouriteStatusAction.rejected, (state, action) => {
+        state.errorMessage = action.error.message;
       });
   }
 });

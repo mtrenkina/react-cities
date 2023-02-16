@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { Offer } from '../../types/offer';
 import { getAuthorizationStatus } from '../../store/user-auth/selectors';
-import { changeFavouriteStatusAction, fetchFavouriteOffersAction } from '../../store/api-action';
-import { store } from '../../store';
+import { changeFavouriteStatusAction } from '../../store/api-action';
 
 type CardsProps = {
   card: Offer;
@@ -19,16 +18,9 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName, offerId}: Ca
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const {isPremium, previewImage, price, isFavorite, rating, title, type, id} = card;
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-
-  useEffect(() => {
-    if (location.pathname !== AppRoute.FAVOURITES && authorizationStatus === AuthorizationStatus.AUTH) {
-      store.dispatch(fetchFavouriteOffersAction());
-    }
-  }, []);
 
   const onCardMouseEnterHandler = () => {
     if (changeActiveCard) {
@@ -47,9 +39,7 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName, offerId}: Ca
       navigate(AppRoute.LOGIN);
     }
 
-    if (offerId) {
-      dispatch(changeFavouriteStatusAction({hotelId: offerId, isFavorite: !isFavorite}));
-    }
+    dispatch(changeFavouriteStatusAction({hotelId: offerId, isFavorite: !isFavorite}));
   };
 
   return (

@@ -27,14 +27,14 @@ export const fetchOffersAction = createAsyncThunk<
 
 export const fetchNearOffersAction = createAsyncThunk<
   Offer[],
-  {hotelId: string},
+  { hotelId: string },
   {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('data/fetchNearOffers', async ({hotelId}, { dispatch, extra: api }) => {
-  const { data } = await api.get<Offer[]>(APIRoute.NEAR_OFFERS.replace('{hotelId}', String(hotelId)));
+>('data/fetchNearOffers', async ({ hotelId }, { dispatch, extra: api }) => {
+  const { data } = await api.get<Offer[]>(APIRoute.NEAR_OFFERS.replace('{hotelId}', hotelId));
   return data;
 });
 
@@ -51,28 +51,29 @@ export const fetchFavouriteOffersAction = createAsyncThunk<
   return data;
 });
 
-export const fetchCurrentOfferAction = createAsyncThunk<Offer, {hotelId: string}, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
-  'data/fetchCurrentOffer',
-  async ({hotelId}, {dispatch, extra: api}) => {
-    const {data} = await api.get<Offer>(APIRoute.CURRENT_OFFER.replace('{hotelId}', hotelId));
-    return data;
-  },
-);
-
-export const fetchCommentsAction = createAsyncThunk<
-  Comment[],
-  {hotelId: string},
+export const fetchCurrentOfferAction = createAsyncThunk<
+  Offer,
+  { hotelId: string },
   {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('data/fetchComments', async ({hotelId}, { dispatch, extra: api }) => {
-  const { data } = await api.get<Comment[]>(APIRoute.COMMENTS.replace('{hotelId}', String(hotelId)));
+>('data/fetchCurrentOffer', async ({ hotelId }, { dispatch, extra: api }) => {
+  const { data } = await api.get<Offer>(APIRoute.CURRENT_OFFER.replace('{hotelId}', hotelId));
+  return data;
+});
+
+export const fetchCommentsAction = createAsyncThunk<
+  Comment[],
+  { hotelId: string },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/fetchComments', async ({ hotelId }, { dispatch, extra: api }) => {
+  const { data } = await api.get<Comment[]>(APIRoute.COMMENTS.replace('{hotelId}', hotelId));
   return data;
 });
 
@@ -124,17 +125,26 @@ export const commentPostAction = createAsyncThunk<
     state: State;
     extra: AxiosInstance;
   }
->('user/comment', async ({comment, rating, hotelId}, { dispatch, extra: api }) => {
-  const { data } = await api.post<NewCommentData[]>(APIRoute.COMMENTS.replace('{hotelId}', String(hotelId)), { comment, rating });
+>('user/comment', async ({ comment, rating, hotelId }, { dispatch, extra: api }) => {
+  const { data } = await api.post<NewCommentData[]>(APIRoute.COMMENTS.replace('{hotelId}', hotelId), {
+    comment,
+    rating,
+  });
   return data;
 });
 
-export const changeFavouriteStatusAction = createAsyncThunk<Offer, FavouriteOfferData, {
+export const changeFavouriteStatusAction = createAsyncThunk<
+  Offer,
+  FavouriteOfferData,
+  {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
-}>('data/favouriteOffer', async ({hotelId, isFavorite}, { dispatch, extra: api }) => {
-  const { data } = await api.post<Offer>(APIRoute.FAVOURITE_OFFER.replace('{hotelId}', String(hotelId)).replace('{status}', String(Number(isFavorite))));
-  dispatch(changeFavoriteStatus({hotelId, isFavorite}));
+  }
+>('data/favouriteOffer', async ({ hotelId, isFavorite }, { dispatch, extra: api }) => {
+  const { data } = await api.post<Offer>(
+    APIRoute.FAVOURITE_OFFER.replace('{hotelId}', String(hotelId)).replace('{status}', String(Number(isFavorite)))
+  );
+  dispatch(changeFavoriteStatus({ hotelId, isFavorite }));
   return data;
 });
