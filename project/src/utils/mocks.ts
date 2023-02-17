@@ -1,4 +1,4 @@
-import {name, date, internet, address, random} from 'faker';
+import {name, date, internet, address, random, datatype} from 'faker';
 import { Offer } from "../types/offer";
 import { City, CityMock } from "../types/city";
 import { Comment } from '../types/comment';
@@ -21,19 +21,19 @@ export const makeCity = (): City => ({
 
 export const makeOffer = (): Offer => ({
   bedrooms: 3,
-  isFavorite: random.boolean(),
+  isFavorite: datatype.boolean(),
   city: makeMockCity(),
   description: random.words(),
   goods: ['TV', 'conditioner'],
   host: {
     avatarUrl: internet.url(),
-    id: random.number(),
-    isPro: random.boolean(),
+    id: datatype.number(),
+    isPro: datatype.boolean(),
     name: name.title(),
   },
-  id: random.number(),
+  id: datatype.number(20),
   images: [internet.url(), internet.url()],
-  isPremium: random.boolean(),
+  isPremium: datatype.boolean(),
   location: {
     latitude: Number(address.latitude()),
     longitude: Number(address.longitude()),
@@ -41,35 +41,35 @@ export const makeOffer = (): Offer => ({
   },
   maxAdults: 4,
   previewImage: internet.url(),
-  price: random.number(),
+  price: datatype.number(),
   rating: 5,
   title: address.streetName(),
   type: 'hotel'
 });
 
 export const makeFavouriteOffer = (): Offer => ({
-  bedrooms: random.number(),
+  bedrooms: datatype.number(),
   isFavorite: true,
   city: makeMockCity(),
   description: random.words(),
   goods: ['TV', 'conditioner'],
   host: {
     avatarUrl: internet.url(),
-    id: random.number(),
-    isPro: random.boolean(),
+    id: datatype.number(),
+    isPro: datatype.boolean(),
     name: name.title(),
   },
-  id: random.number(),
+  id: datatype.number(),
   images: [internet.url(), internet.url()],
-  isPremium: random.boolean(),
+  isPremium: datatype.boolean(),
   location: {
     latitude: Number(address.latitude()),
     longitude: Number(address.longitude()),
     zoom: 10
   },
-  maxAdults: random.number(),
+  maxAdults: datatype.number(),
   previewImage: internet.url(),
-  price: random.number(),
+  price: datatype.number(),
   rating: 4,
   title: address.streetName(),
   type: 'hotel'

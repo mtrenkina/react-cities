@@ -27,6 +27,7 @@ describe('offersData reducer', () => {
       errorMessage: undefined,
     };
   });
+
   it('should return initial state', () => {
     expect(OffersData.reducer(undefined, {type: 'UNKNOWN_ACTION'}))
       .toEqual(state);
@@ -106,11 +107,13 @@ describe('offersData reducer', () => {
 
   });
 
-  describe('favorite status tests', () => {
+  describe('favourite status tests', () => {
 
-    it('should change favorite status', () => {
-      expect(OffersData.reducer(state, {type: changeFavoriteStatus({hotelId: 12, isFavorite: false})}))
-        .toEqual({isFavorite: true});
+    it('should change favourite status', () => {
+      let pastFavouriteStatus = currentOffer.isFavorite;
+      state = {...state, favouriteOffers: makeFavouriteOffers(), currentOffer: makeOffer()};
+      let newState = OffersData.reducer(state, {type: changeFavouriteStatusAction.fulfilled.type, payload:{hotelId: currentOffer.id, isFavourite: currentOffer.isFavorite}});
+      expect(newState.currentOffer?.isFavorite).toBe(!pastFavouriteStatus);
     });
 
   });

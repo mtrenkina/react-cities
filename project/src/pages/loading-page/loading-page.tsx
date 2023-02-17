@@ -11,7 +11,7 @@ function LoadingPage(): JSX.Element {
 
   return (
     <main className="page__main page__main--index">
-      <h2 className="near-places__title" style={{position: 'fixed', left:'48%', top: '35%'}}>Loading offers...</h2>
+      <h2 className="near-places__title" style={{position: 'fixed', left:'48%', top: '35%'}}>Loading...</h2>
       <div className="container">
         <PuffLoader color={'#4481C3'} size={150} aria-label="Loading Spinner" data-testid="loader" cssOverride={override}/>
       </div>

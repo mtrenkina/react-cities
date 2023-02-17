@@ -24,7 +24,7 @@ const CardsList = ({ sortedOffers, cardClassName, imgClassName, onCardHover }: C
     if (location.pathname !== AppRoute.FAVOURITES && authorizationStatus === AuthorizationStatus.AUTH) {
       store.dispatch(fetchFavouriteOffersAction());
     }
-  }, []);
+  }, [authorizationStatus]);
 
   const changeActiveCard = (id: number) => {
     onCardHover(id);

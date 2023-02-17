@@ -1,5 +1,5 @@
 function ErrorPage(): JSX.Element {
-  return <p style={{position: 'fixed', left:'48%', top: '35%'}}>Ошибочка!</p>;
+  return <p style={{position: 'fixed', left:'48%', top: '35%'}}>Error!</p>;
 }
 
 export default ErrorPage;
