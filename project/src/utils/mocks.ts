@@ -1,7 +1,9 @@
-import {name, date, internet, address, random, datatype} from 'faker';
+import { name, date, internet, address, random, datatype, lorem } from 'faker';
 import { Offer } from "../types/offer";
 import { City, CityMock } from "../types/city";
 import { Comment } from '../types/comment';
+import { UserData } from '../types/user-data';
+import { CommentData } from '../types/comment-data';
 
 export const makeMockCity = (): CityMock => ({
   location: {
@@ -93,14 +95,14 @@ export const makeFavouriteOffers = () => {
   return offers;
 };
 
-export const makeComment = (i: number): Comment => ({
-  comment: 'Great',
+export const makeComment = (): Comment => ({
+  comment: lorem.word(),
   date: date.recent().toDateString(),
-  id: i + 10,
-  rating: i + 3,
+  id: datatype.number(20),
+  rating: datatype.number(5),
   user: {
     avatarUrl: internet.url(),
-    id: i + 20,
+    id: datatype.number(20),
     isPro: true,
     name: name.title(),
   },
@@ -115,4 +117,23 @@ export const makeComments = (): Comment[] => {
   return comments;
 };
 
+export const makeUserData = (): UserData => ({
+  id: datatype.number(),
+  email: internet.exampleEmail(),
+  name: internet.userName(),
+  isPro: datatype.boolean(),
+  avatarUrl: internet.avatar(),
+  token: lorem.word()
+});
+
+export const makeCommentData = (): CommentData => ({
+  comment: lorem.word(50),
+  hotelId: String(datatype.number(20)),
+  rating: datatype.number({min: 1, max: 5, precision: 0.1})
+})
+
+export const getNeabyOffers = Array.from({length: 3}, makeOffer);
+
 export const makeEmail = (): string => internet.email();
+
+export const makeOfferId = (): string => String(datatype.number(20));

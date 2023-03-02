@@ -23,13 +23,13 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName, offerId}: Ca
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const onCardMouseEnterHandler = () => {
-    if (changeActiveCard) {
+    if (changeActiveCard && authorizationStatus === AuthorizationStatus.AUTH) {
       changeActiveCard(id);
     }
   };
 
   const onCardMouseLeaveHandler = () => {
-    if (changeActiveCard) {
+    if (changeActiveCard && authorizationStatus === AuthorizationStatus.AUTH) {
       changeActiveCard(0);
     }
   };
@@ -37,9 +37,9 @@ const Card = ({card, changeActiveCard, cardClassName, imgClassName, offerId}: Ca
   const onFavouriteButtonClickHandler = () => {
     if (authorizationStatus !== AuthorizationStatus.AUTH) {
       navigate(AppRoute.LOGIN);
+    } else {
+      dispatch(changeFavouriteStatusAction({hotelId: offerId, isFavorite: !isFavorite}));
     }
-
-    dispatch(changeFavouriteStatusAction({hotelId: offerId, isFavorite: !isFavorite}));
   };
 
   return (

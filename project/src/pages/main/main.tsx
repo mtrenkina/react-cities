@@ -17,7 +17,7 @@ const Main = (): JSX.Element => {
 
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
   const [sortedOffers, setSortedOffers] = useState<Offer[]>([]);
-  const [currentSorting, setSorting] = useState<string>('Popular');
+  const [currentSorting, setSorting] = useState<string>(sortingTypes.POPULAR);
 
   const city = useAppSelector(getCity);
   const offers = useAppSelector(getOffers);
@@ -36,7 +36,7 @@ const Main = (): JSX.Element => {
 
   const changeSorting = useCallback((type: string) => {
     setSorting(type);
-  }, []);
+  }, [currentSorting]);
 
   const sortingByPrice = (offerA: Offer, offerB: Offer) => {
     const priceA = offerA.price;

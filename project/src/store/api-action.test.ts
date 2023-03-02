@@ -1,131 +1,168 @@
-import { Action } from "@reduxjs/toolkit";
-import thunk, { ThunkDispatch } from "redux-thunk";
+import { Action } from '@reduxjs/toolkit';
+import thunk, { ThunkDispatch } from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
-import { configureMockStore } from '@jedmao/redux-mock-store'
-import { createAPI } from "../services/api";
-import { checkAuthAction, fetchCommentsAction, fetchCurrentOfferAction, fetchFavouriteOffersAction, fetchNearOffersAction, fetchOffersAction } from "./api-action";
-import { APIRoute, AuthorizationStatus } from "../const";
-import { State } from "../types/state";
-import { Offer } from "../types/offer";
-import { makeComments, makeFavouriteOffers, makeOffer, makeOffers } from "../utils/mocks";
-import { Comment } from "../types/comment";
+import { configureMockStore } from '@jedmao/redux-mock-store';
+import { createAPI } from '../services/api';
+import {
+  checkAuthAction,
+  commentPostAction,
+  fetchCommentsAction,
+  fetchCurrentOfferAction,
+  fetchFavouriteOffersAction,
+  fetchNearOffersAction,
+  fetchOffersAction,
+  loginAction,
+  logoutAction,
+} from './api-action';
+import { APIRoute } from '../const';
+import { State } from '../types/state';
+import { getNeabyOffers, makeCommentData, makeComments, makeFavouriteOffers, makeOffer, makeOfferId, makeOffers, makeUserData } from '../utils/mocks';
+import { AuthData } from '../types/auth-data';
+
+const fakeOfferId = makeOfferId();
+const offer = makeOffer();
+const offers = makeOffers();
+const favouriteOffers = makeFavouriteOffers();
+const comment = makeCommentData();
+const comments = makeComments();
+const nearbyOffers = getNeabyOffers;
+const userData = makeUserData();
 
 describe('Async actions', () => {
   const api = createAPI();
   const mockAPI = new MockAdapter(api);
   const middlewares = [thunk.withExtraArgument(api)];
 
-  const mockStore = configureMockStore<
-  State,
-  Action<string>,
-  ThunkDispatch<State, typeof api, Action>
-  >(middlewares);
 
-  it('should change authorization status to "AUTH" when server return 200', async () => {
-    const store = mockStore();
-    mockAPI
-      .onGet(APIRoute.LOGIN)
-      .reply(200, []);
+  const mockStore = configureMockStore<State, Action<string>, ThunkDispatch<State, typeof api, Action>>(middlewares);
 
-    expect(store.getActions()).toEqual([]);
+  describe('Async actions: authorization actions', () => {
 
-    await store.dispatch(checkAuthAction());
+    it('should change authorization status to "AUTH" when server return 200', async () => {
+      const store = mockStore();
+      mockAPI.onGet(APIRoute.LOGIN).reply(200, []);
 
-    const actions = store.getActions().map(({type}) => type);
+      await store.dispatch(checkAuthAction());
+      const actions = store.getActions().map(({ type }) => type);
 
-    expect(actions).toEqual([
-      checkAuthAction.pending.type,
-      checkAuthAction.fulfilled.type,
-    ]);
+      expect(actions).toEqual([checkAuthAction.pending.type, checkAuthAction.fulfilled.type]);
+    });
+
+    it('login action should return user data and save token when POST /login', async () => {
+      const fakeUser: AuthData = {login: 'test@bk.com', password: '11a'};
+      const store = mockStore();
+
+      mockAPI.onPost(APIRoute.LOGIN).reply(200, userData);
+      Storage.prototype.setItem = jest.fn();
+
+      await store.dispatch(loginAction(fakeUser));
+      const actions = store.getActions().map(({type}) => type);
+
+      expect(actions).toEqual([
+        loginAction.pending.type,
+        loginAction.fulfilled.type
+      ]);
+      expect(Storage.prototype.setItem).toBeCalledTimes(1);
+      expect(Storage.prototype.setItem).toBeCalledWith('six-cities-token', userData.token);
+    });
+
+    it('logout action should delete token when DELETE /logout', async () => {
+      const store = mockStore();
+      mockAPI
+        .onDelete(APIRoute.LOGOUT)
+        .reply(204);
+
+      Storage.prototype.removeItem = jest.fn();
+
+      await store.dispatch(logoutAction());
+
+      const actions = store.getActions().map(({type}) => type);
+
+      expect(actions).toEqual([
+        logoutAction.pending.type,
+        logoutAction.fulfilled.type
+      ]);
+
+      expect(Storage.prototype.removeItem).toBeCalledTimes(1);
+      expect(Storage.prototype.removeItem).toBeCalledWith('six-cities-token');
+    });
+
   });
 
   describe('Async actions: fetching data', () => {
-
-    const offer: Offer = makeOffer();
-    const offers: Offer[] = makeOffers();
-    const favouriteOffers: Offer[] = makeFavouriteOffers();
-    const comments: Comment[] = makeComments();
-
     it('should dispatch offers when GET /offers', async () => {
       const store = mockStore();
-      mockAPI
-        .onGet(APIRoute.OFFERS)
-        .reply(200, offers);
+      mockAPI.onGet(APIRoute.OFFERS).reply(200, offers);
 
-        await store.dispatch(fetchOffersAction());
+      await store.dispatch(fetchOffersAction());
+      const actions = store.getActions().map(({ type }) => type);
 
-        const actions = store.getActions().map(({type}) => type);
-
-        expect(actions).toEqual([
-          fetchOffersAction.pending.type,
-          fetchOffersAction.fulfilled.type,
-        ]);
-    });
-
-    it('should dispatch near offers when GET /nearby', async () => {
-      const store = mockStore();
-      mockAPI
-        .onGet(APIRoute.NEAR_OFFERS)
-        .reply(200, offers);
-
-        await store.dispatch(fetchNearOffersAction({hotelId: String(offer.id)}));
-
-        const actions = store.getActions().map(({type}) => type);
-
-        expect(actions).toEqual([
-          fetchNearOffersAction.pending.type,
-          fetchNearOffersAction.fulfilled.type,
-        ]);
+      expect(actions).toEqual([fetchOffersAction.pending.type, fetchOffersAction.fulfilled.type]);
     });
 
     it('should dispatch favourite offers when GET /favorite', async () => {
       const store = mockStore();
-      mockAPI
-        .onGet(APIRoute.FAVOURITES)
-        .reply(200, favouriteOffers);
+      mockAPI.onGet(APIRoute.FAVOURITES).reply(200, favouriteOffers);
 
-        await store.dispatch(fetchFavouriteOffersAction());
+      await store.dispatch(fetchFavouriteOffersAction());
+      const actions = store.getActions().map(({ type }) => type);
 
-        const actions = store.getActions().map(({type}) => type);
+      expect(actions).toEqual([fetchFavouriteOffersAction.pending.type, fetchFavouriteOffersAction.fulfilled.type]);
+    });
 
-        expect(actions).toEqual([
-          fetchFavouriteOffersAction.pending.type,
-          fetchFavouriteOffersAction.fulfilled.type,
-        ]);
+    it('should dispatch near offers when GET /nearby', async () => {
+      mockAPI.onGet(APIRoute.NEAR_OFFERS.replace('{hotelId}', fakeOfferId)).reply(200, nearbyOffers);
+      const store = mockStore();
+      expect(store.getActions()).toEqual([]);
+
+      const {payload} = await store.dispatch(fetchNearOffersAction({ hotelId: fakeOfferId }));
+      const actions = store.getActions().map(({ type }) => type);
+
+      expect(actions).toEqual([fetchNearOffersAction.pending.type, fetchNearOffersAction.fulfilled.type]);
+      expect(payload).toEqual(nearbyOffers);
     });
 
     it('should dispatch current offer when GET /hotels/{hotelId}', async () => {
       const store = mockStore();
-      mockAPI
-        .onGet(APIRoute.CURRENT_OFFER)
-        .reply(200, offer);
+      mockAPI.onGet(APIRoute.CURRENT_OFFER.replace('{hotelId}', fakeOfferId)).reply(200, offer);
 
-        await store.dispatch(fetchCurrentOfferAction({hotelId: String(offer.id)}));
+      const {payload} = await store.dispatch(fetchCurrentOfferAction({ hotelId: fakeOfferId }));
+      const actions = store.getActions().map(({ type }) => type);
 
-        const actions = store.getActions().map(({type}) => type);
-
-        expect(actions).toEqual([
-          fetchCurrentOfferAction.pending.type,
-          fetchCurrentOfferAction.fulfilled.type,
-        ]);
+      expect(actions).toEqual([fetchCurrentOfferAction.pending.type, fetchCurrentOfferAction.fulfilled.type]);
+      expect(payload).toEqual(offer);
     });
 
     it('should dispatch comments when GET /comments/{hotelId}', async () => {
       const store = mockStore();
-      mockAPI
-        .onGet(APIRoute.COMMENTS)
-        .reply(200, comments);
+      mockAPI.onGet(APIRoute.COMMENTS.replace('{hotelId}', fakeOfferId)).reply(200, comments);
 
-        await store.dispatch(fetchCommentsAction({hotelId: '15'}));
+      const {payload} = await store.dispatch(fetchCommentsAction({ hotelId: fakeOfferId }));
+      const actions = store.getActions().map(({ type }) => type);
 
-        const actions = store.getActions().map(({type}) => type);
+      expect(actions).toEqual([fetchCommentsAction.pending.type, fetchCommentsAction.fulfilled.type]);
+      expect(payload).toEqual(comments);
+    });
+  });
 
-        expect(actions).toEqual([
-          fetchCommentsAction.pending.type,
-          fetchCommentsAction.fulfilled.type,
-        ]);
+  describe('comments test', () => {
+
+    it('should post comment when POST /comments/{hotelId}', async () => {
+      const {hotelId} = comment;
+      const store = mockStore();
+      mockAPI.onPost(APIRoute.COMMENTS.replace('{hotelId}', hotelId)).reply(200, comments);
+
+      const {payload} = await store.dispatch(commentPostAction(comment));
+      const actions = store.getActions().map(({type}) => type);
+
+      expect(actions).toEqual([
+        commentPostAction.pending.type,
+        commentPostAction.fulfilled.type
+      ]);
+
+      expect(payload).toEqual(comments);
+
     });
 
   });
-
-})
+});
