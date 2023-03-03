@@ -1,7 +1,7 @@
 import { Offer } from "../../types/offer";
 import { fetchOffersAction, fetchCurrentOfferAction, fetchNearOffersAction, fetchFavouriteOffersAction, fetchCommentsAction, changeFavouriteStatusAction } from "../api-action";
 import { Data } from '../../types/state';
-import { makeOffer, makeOffers, makeComments, makeFavouriteOffers } from "../../utils/mocks";
+import { makeOffer, makeOffers, makeComments, makeFavouriteOffers, makeNotFavouriteOffer } from "../../utils/mocks";
 import { OffersData, changeFavoriteStatus } from "./offers-data";
 
 describe('offersData reducer', () => {
@@ -11,6 +11,7 @@ describe('offersData reducer', () => {
   const favouriteOffers = makeFavouriteOffers();
   const currentOffer = makeOffer();
   const comments = makeComments();
+  const notFavouriteOffer = makeNotFavouriteOffer();
 
   beforeEach(() => {
     state = {
@@ -110,9 +111,9 @@ describe('offersData reducer', () => {
   describe('favourite status tests', () => {
 
     it('should change favourite status', () => {
-      /*state = {...state, favouriteOffers: favouriteOffers, currentOffer: currentOffer};
-      let newState = OffersData.reducer(state, {type: changeFavouriteStatusAction.fulfilled.type, payload:{hotelId: currentOffer.id, isFavourite: currentOffer.isFavorite}});
-      expect(newState.currentOffer?.isFavorite).toBe(!state.currentOffer?.isFavorite);*/
+      state = {...state, favouriteOffers: favouriteOffers, currentOffer: notFavouriteOffer};
+      let newState = OffersData.reducer(state, {type: changeFavouriteStatusAction.fulfilled.type, payload:{hotelId: notFavouriteOffer.id, isFavourite: notFavouriteOffer.isFavorite}});
+      expect(newState.currentOffer?.isFavorite).toBe(true);
     });
 
   });

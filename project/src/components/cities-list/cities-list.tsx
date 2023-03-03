@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/index';
 import { changeCity } from '../../store/user-actions/user-actions';
-import { getCity } from '../../store/user-actions/selectors';
+import { getCity } from '../../store/user-actions/user-actions-selectors';
 import { cities } from '../../const';
 import CitiesItem from '../cities-item/cities-item';
 

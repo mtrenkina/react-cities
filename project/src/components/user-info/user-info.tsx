@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AuthorizationStatus } from '../../const';
 import { logoutAction } from '../../store/api-action';
-import { getAuthorizationStatus } from '../../store/user-auth/selectors';
-import { getFavouriteOffers } from '../../store/offers-data/selectors';
+import { getAuthorizationStatus } from '../../store/user-auth/user-auth-selectors';
+import { getFavouriteOffers } from '../../store/offers-data/offers-data-selectors';
 
 function UserInfo(): JSX.Element {
 

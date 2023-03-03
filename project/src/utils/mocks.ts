@@ -77,6 +77,34 @@ export const makeFavouriteOffer = (): Offer => ({
   type: 'hotel'
 });
 
+export const makeNotFavouriteOffer = (): Offer => ({
+  bedrooms: datatype.number(),
+  isFavorite: true,
+  city: makeMockCity(),
+  description: random.words(),
+  goods: ['TV', 'conditioner'],
+  host: {
+    avatarUrl: internet.url(),
+    id: datatype.number(),
+    isPro: datatype.boolean(),
+    name: name.title(),
+  },
+  id: datatype.number(),
+  images: [internet.url(), internet.url()],
+  isPremium: datatype.boolean(),
+  location: {
+    latitude: Number(address.latitude()),
+    longitude: Number(address.longitude()),
+    zoom: 10
+  },
+  maxAdults: datatype.number(),
+  previewImage: internet.url(),
+  price: datatype.number(),
+  rating: 4,
+  title: address.streetName(),
+  type: 'hotel'
+});
+
 export const makeOffers = () => {
   const offers: Offer[] = [];
   for (let i = 0; i < 5; i++) {

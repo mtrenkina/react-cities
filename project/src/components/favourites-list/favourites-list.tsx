@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Card from '../../components/card/card';
 import { useAppSelector } from '../../hooks';
-import { getFavouriteOffers } from '../../store/offers-data/selectors';
+import { getFavouriteOffers } from '../../store/offers-data/offers-data-selectors';
 
 const FavouritesList = (): JSX.Element => {
   const favouriteOffers = useAppSelector(getFavouriteOffers);

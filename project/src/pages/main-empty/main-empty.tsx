@@ -3,7 +3,7 @@ import CitiesList from '../../components/cities-list/cities-list';
 import Sprite from '../../components/svg-sprite/svg-sprite';
 import Header from '../../components/header/header';
 import { useAppSelector } from '../../hooks';
-import { getCity } from '../../store/user-actions/selectors';
+import { getCity } from '../../store/user-actions/user-actions-selectors';
 
 const MainEmpty = (): JSX.Element => {
   const city = useAppSelector(getCity);

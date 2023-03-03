@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { Offer } from '../../types/offer';
-import { getAuthorizationStatus } from '../../store/user-auth/selectors';
+import { getAuthorizationStatus } from '../../store/user-auth/user-auth-selectors';
 import { changeFavouriteStatusAction } from '../../store/api-action';
 
 type CardsProps = {

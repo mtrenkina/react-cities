@@ -2,7 +2,7 @@ import { memo, useEffect } from 'react';
 import Card from '../card/card';
 import { Offer } from '../../types/offer';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import { getAuthorizationStatus } from '../../store/user-auth/selectors';
+import { getAuthorizationStatus } from '../../store/user-auth/user-auth-selectors';
 import { useAppSelector } from '../../hooks';
 import { store } from '../../store';
 import { fetchFavouriteOffersAction } from '../../store/api-action';

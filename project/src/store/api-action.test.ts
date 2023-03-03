@@ -4,6 +4,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createAPI } from '../services/api';
 import {
+  changeFavouriteStatusAction,
   checkAuthAction,
   commentPostAction,
   fetchCommentsAction,
@@ -18,6 +19,7 @@ import { APIRoute } from '../const';
 import { State } from '../types/state';
 import { getNeabyOffers, makeCommentData, makeComments, makeFavouriteOffers, makeOffer, makeOfferId, makeOffers, makeUserData } from '../utils/mocks';
 import { AuthData } from '../types/auth-data';
+import { changeFavoriteStatus } from './offers-data/offers-data';
 
 const fakeOfferId = makeOfferId();
 const offer = makeOffer();
@@ -49,8 +51,8 @@ describe('Async actions', () => {
     });
 
     it('login action should return user data and save token when POST /login', async () => {
-      const fakeUser: AuthData = {login: 'test@bk.com', password: '11a'};
       const store = mockStore();
+      const fakeUser: AuthData = {login: 'test@bk.com', password: '11a'};
 
       mockAPI.onPost(APIRoute.LOGIN).reply(200, userData);
       Storage.prototype.setItem = jest.fn();
@@ -111,8 +113,8 @@ describe('Async actions', () => {
     });
 
     it('should dispatch near offers when GET /nearby', async () => {
-      mockAPI.onGet(APIRoute.NEAR_OFFERS.replace('{hotelId}', fakeOfferId)).reply(200, nearbyOffers);
       const store = mockStore();
+      mockAPI.onGet(APIRoute.NEAR_OFFERS.replace('{hotelId}', fakeOfferId)).reply(200, nearbyOffers);
       expect(store.getActions()).toEqual([]);
 
       const {payload} = await store.dispatch(fetchNearOffersAction({ hotelId: fakeOfferId }));
@@ -148,8 +150,8 @@ describe('Async actions', () => {
   describe('comments test', () => {
 
     it('should post comment when POST /comments/{hotelId}', async () => {
-      const {hotelId} = comment;
       const store = mockStore();
+      const {hotelId} = comment;
       mockAPI.onPost(APIRoute.COMMENTS.replace('{hotelId}', hotelId)).reply(200, comments);
 
       const {payload} = await store.dispatch(commentPostAction(comment));
@@ -161,6 +163,22 @@ describe('Async actions', () => {
       ]);
 
       expect(payload).toEqual(comments);
+
+    });
+
+    it('should change favorite status', async () => {
+      /*const store = mockStore();
+      const {id, isFavorite} = offer;
+      mockAPI.onPost(APIRoute.FAVOURITE_OFFER.replace('{hotelId}', String(id)).replace('{status}', String(Number(isFavorite))))
+      .reply(200);
+
+      await store.dispatch(changeFavouriteStatusAction({ hotelId: id, isFavorite: isFavorite }));
+      const actions = store.getActions().map(({type}) => type);
+
+      expect(actions).toEqual([
+        changeFavouriteStatusAction.pending.type,
+        changeFavouriteStatusAction.fulfilled.type
+      ]);*/
 
     });
 

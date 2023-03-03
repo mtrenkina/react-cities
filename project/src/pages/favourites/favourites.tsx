@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import { getFavouriteOffers, getFavouriteOffersLoadingStatus } from '../../store/offers-data/selectors';
+import { getFavouriteOffers, getFavouriteOffersLoadingStatus } from '../../store/offers-data/offers-data-selectors';
 import FavouritesEmpty from '../favourites-empty/favourites-empty';
 import LoadingPage from '../loading-page/loading-page';
 import FavouritesList from '../../components/favourites-list/favourites-list';

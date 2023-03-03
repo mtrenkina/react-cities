@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { toast } from 'react-toastify';
-import { getOffers, getErrorMessage } from '../../store/offers-data/selectors';
-import { getCity } from '../../store/user-actions/selectors';
+import { getOffers, getErrorMessage } from '../../store/offers-data/offers-data-selectors';
+import { getCity } from '../../store/user-actions/user-actions-selectors';
 import { useAppSelector } from '../../hooks';
 import { sortingTypes } from '../../const';
 import { Offer } from '../../types/offer';
