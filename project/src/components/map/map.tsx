@@ -1,14 +1,15 @@
-import { useRef, useEffect } from 'react';
 import leaflet from 'leaflet';
+import { useRef, useEffect } from 'react';
+import { memo } from 'react';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
 import { Offer } from '../../types/offer';
 import { cities } from '../../const';
 
 type MapProps = {
-  selectedPoint?: Offer;
   city: string;
   points: Offer[];
+  selectedPoint?: Offer;
 };
 
 const defaultCustomIcon = new leaflet.Icon({
@@ -52,4 +53,4 @@ const Map = (props: MapProps): JSX.Element => {
   return <div style={{ height: '100%' }} ref={mapRef}></div>;
 };
 
-export default Map;
+export default memo(Map);

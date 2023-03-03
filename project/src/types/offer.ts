@@ -2,11 +2,11 @@ export type Offer = {
   bedrooms: number;
   city: {
     location: {
-      latitude: number,
-      longitude: number,
-      zoom: number
-    },
-    name: string
+      latitude: number;
+      longitude: number;
+      zoom: number;
+    };
+    name: string;
   };
   description: string;
   goods: string[];
@@ -18,17 +18,17 @@ export type Offer = {
   };
   id: number;
   images: string[];
-  isFavotite: boolean;
-	isPremium: boolean;
+  isFavorite: boolean;
+  isPremium: boolean;
   location: {
-    latitude: number,
-    longitude: number,
-    zoom: number
-  }
+    latitude: number;
+    longitude: number;
+    zoom: number;
+  };
   maxAdults: number;
-  previewImage: string,
+  previewImage: string;
   price: number;
   rating: number;
   title: string;
   type: string;
-}
+};

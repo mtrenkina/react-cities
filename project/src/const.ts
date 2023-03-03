@@ -30,8 +30,8 @@ const AMSTERDAM: City = {
 
 const HAMBURG: City = {
   name: 'Hamburg',
-  lat: 53.5753,
-  lng: 10.0153,
+  lat: 53.55073,
+  lng: 9.99302,
   zoom: 13,
 };
 
@@ -58,6 +58,9 @@ export enum APIRoute {
   LOGOUT = '/logout',
   NEAR_OFFERS = '/hotels/{hotelId}/nearby',
   COMMENTS = '/comments/{hotelId}',
+  FAVOURITES = '/favorite',
+  FAVOURITE_OFFER = '/favorite/{hotelId}/{status}',
+  CURRENT_OFFER = '/hotels/{hotelId}'
 }
 
 export enum AuthorizationStatus {
@@ -72,3 +75,11 @@ export const sortingTypes = {
   PRICEHIGHTTOLOW: 'Price: high to low',
   RAITING: 'Top rated first',
 };
+
+export enum ReducerNameSpace {
+  DATA = 'DATA',
+  OFFERS = 'ACTION',
+  USER = 'USER',
+}
+
+export const MAX_REVIEWS_COUNT = 10;

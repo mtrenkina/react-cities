@@ -1,25 +1,11 @@
 import { Link } from 'react-router-dom';
-import Logo from '../../components/logo/logo';
 import { AppRoute } from '../../const';
-import UserInfo from '../../components/user-info/user-info';
+import Header from '../../components/header/header';
 
 const NotFoundPage = (): JSX.Element => (
   <div className='page page--gray'>
     <title>Страница не найдена</title>
-    <header className='header' id='header'>
-      <div className='container'>
-        <div className='header__wrapper'>
-          <div className='header__left'>
-            <Logo />
-          </div>
-          <nav className='header__nav'>
-            <ul className='header__nav-list'>
-              <UserInfo />
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </header>
+    <Header />
     <main>
       <div className='page page--gray'>
         <title>Страница не найдена</title>

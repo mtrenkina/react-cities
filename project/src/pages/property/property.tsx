@@ -1,86 +1,83 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { store } from '../../store';
-import { AuthorizationStatus } from '../../const';
-import { fetchCommentsAction, fetchNearOffersAction } from '../../store/api-action';
-import Logo from '../../components/logo/logo';
-import CommentsList from '../../components/comments-list/comments-list';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { changeFavouriteStatusAction, fetchCommentsAction, fetchCurrentOfferAction, fetchNearOffersAction } from '../../store/api-action';
+import { getNearOffers, getNearOffersLoadingStatus, getComments, getCurrentOffer, getCurrentOfferLoadingStatus } from '../../store/offers-data/offers-data-selectors';
+import { getCity } from '../../store/user-actions/user-actions-selectors';
+import { getAuthorizationStatus } from '../../store/user-auth/user-auth-selectors';
 import { Offer } from '../../types/offer';
+import CommentsList from '../../components/comments-list/comments-list';
 import Map from '../../components/map/map';
 import CardsList from '../../components/cards-list/cards-list';
-import { useAppSelector } from '../../hooks';
-import UserInfo from '../../components/user-info/user-info';
 import Comment from '../../components/comment/comment';
+import LoadingPage from '../loading-page/loading-page';
+import NotFoundPage from '../not-found-page/not-found-page';
+import Sprite from '../../components/svg-sprite/svg-sprite';
+import Header from '../../components/header/header';
 
 const Property = (): JSX.Element => {
 
-  const params = useParams();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const {id} = useParams();
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
-  const authorizationStatus = useAppSelector((state) => state.change.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isCurrentOfferLoading = useAppSelector(getCurrentOfferLoadingStatus);
+  const areNearOffersLoading = useAppSelector(getNearOffersLoadingStatus);
 
-  const offers = useAppSelector((state) => state.change.offers);
-  const nearOffers = useAppSelector((state) => state.change.nearOffers);
-  const comments = useAppSelector((state) => state.change.comments);
-  const city = useAppSelector((state) => state.change.city);
-
-  const currentOffer = offers.find((offer) => offer.id === Number(params.id));
+  const nearOffers = useAppSelector(getNearOffers);
+  const comments = useAppSelector(getComments);
+  const city = useAppSelector(getCity);
+  const currentOffer = useAppSelector(getCurrentOffer);
+  const newOffers = currentOffer && nearOffers !== null ? [...nearOffers, currentOffer] : [];
 
   useEffect(() => {
-    if (nearOffers.length === 0) {
-      if (params.id && currentOffer !== undefined) {
-        store.dispatch(fetchNearOffersAction({ hotelId: params.id }));
-        store.dispatch(fetchCommentsAction({ hotelId: params.id }));
-      }
+    if (id) {
+      store.dispatch(fetchNearOffersAction({ hotelId: id }));
+      store.dispatch(fetchCurrentOfferAction({hotelId: id}));
+      store.dispatch(fetchCommentsAction({ hotelId: id }));
     }
-  }, [params.id]);
+  }, [id]);
 
   const onCardHover = (listItemId: number) => {
-    const currentPoint = offers.find((offer) => offer.id === listItemId);
+    const currentPoint = nearOffers.find((offer) => offer.id === listItemId);
     setSelectedOffer(currentPoint);
   };
 
+  const onFavouriteButtonClickHandler = () => {
+    if (authorizationStatus !== AuthorizationStatus.AUTH) {
+      navigate(AppRoute.LOGIN);
+    }
+
+    if (currentOffer) {
+      dispatch(changeFavouriteStatusAction({hotelId: currentOffer.id, isFavorite: !currentOffer.isFavorite}));
+    }
+  };
+
+  if (isCurrentOfferLoading || areNearOffersLoading) {
+    return (
+      <LoadingPage />
+    );
+  }
+
+  if (!currentOffer) {
+    return <NotFoundPage />;
+  }
+
   return (
     <React.Fragment>
-      <div style={{ display: 'none' }}>
-        <svg xmlns='http://www.w3.org/2000/svg'>
-          <symbol id='icon-arrow-select' viewBox='0 0 7 4'>
-            <path fillRule='evenodd' clipRule='evenodd' d='M0 0l3.5 2.813L7 0v1.084L3.5 4 0 1.084V0z'></path>
-          </symbol>
-          <symbol id='icon-bookmark' viewBox='0 0 17 18'>
-            <path d='M3.993 2.185l.017-.092V2c0-.554.449-1 .99-1h10c.522 0 .957.41.997.923l-2.736 14.59-4.814-2.407-.39-.195-.408.153L1.31 16.44 3.993 2.185z'></path>
-          </symbol>
-          <symbol id='icon-star' viewBox='0 0 13 12'>
-            <path
-              fillRule='evenodd'
-              clipRule='evenodd'
-              d='M6.5 9.644L10.517 12 9.451 7.56 13 4.573l-4.674-.386L6.5 0 4.673 4.187 0 4.573 3.549 7.56 2.483 12 6.5 9.644z'
-            >
-            </path>
-          </symbol>
-        </svg>
-      </div>
-
+      <Sprite />
       <div className='page'>
-        <header className='header'>
-          <div className='container'>
-            <div className='header__wrapper'>
-              <div className='header__left'>
-                <Logo />
-              </div>
-              <nav className='header__nav'>
-                <ul className='header__nav-list'>
-                  <UserInfo />
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </header>
+        <Header />
 
         <main className='page__main page__main--property'>
           <section className='property'>
             <div className='property__gallery-container container'>
               <div className='property__gallery'>
-                {currentOffer?.images.map((image) => (
+                {currentOffer?.images.slice(0,6).map((image) => (
                   <div className='property__image-wrapper' key={image}>
                     <img className='property__image' src={image} alt='Studio' />
                   </div>
@@ -96,11 +93,11 @@ const Property = (): JSX.Element => {
                 )}
                 <div className='property__name-wrapper'>
                   <h1 className='property__name'>{currentOffer?.title}</h1>
-                  <button className='property__bookmark-button button' type='button'>
+                  <button className={`button property__bookmark-button ${currentOffer?.isFavorite ? 'property__bookmark-button--active' : ''}`} type='button' onClick={onFavouriteButtonClickHandler}>
                     <svg className='property__bookmark-icon' width='31' height='33'>
                       <use xlinkHref='#icon-bookmark'></use>
                     </svg>
-                    <span className='visually-hidden'>{currentOffer?.isFavotite ? 'In' : 'To'} bookmarks</span>
+                    <span className='visually-hidden'>{currentOffer?.isFavorite ? 'In' : 'To'} bookmarks</span>
                   </button>
                 </div>
                 <div className='property__rating rating'>
@@ -112,8 +109,12 @@ const Property = (): JSX.Element => {
                 </div>
                 <ul className='property__features'>
                   <li className='property__feature property__feature--entire'>{currentOffer?.type}</li>
-                  <li className='property__feature property__feature--bedrooms'>{currentOffer?.bedrooms} bedrooms</li>
-                  <li className='property__feature property__feature--adults'>max {currentOffer?.maxAdults} adults</li>
+                  <li className='property__feature property__feature--bedrooms'>
+                    {currentOffer?.bedrooms} {` bedroom${currentOffer?.bedrooms > 1 ? 's' : ''}`}
+                  </li>
+                  <li className='property__feature property__feature--adults'>
+                    max {currentOffer?.maxAdults} {`adult${currentOffer?.maxAdults > 1 ? 's' : ''}`}
+                  </li>
                 </ul>
                 <div className='property__price'>
                   <b className='property__price-value'>&euro;{currentOffer?.price}</b>
@@ -150,12 +151,12 @@ const Property = (): JSX.Element => {
                 </div>
                 <section className='property__reviews reviews'>
                   <CommentsList comments={comments ?? []}/>
-                  {authorizationStatus === AuthorizationStatus.AUTH && <Comment hotelId={params.id}/>}
+                  {authorizationStatus === AuthorizationStatus.AUTH && <Comment hotelId={id}/>}
                 </section>
               </div>
             </div>
             <section className='property__map map'>
-              <Map city={city} points={nearOffers} selectedPoint={selectedOffer} />
+              <Map city={city} points={newOffers} selectedPoint={selectedOffer} />
             </section>
           </section>
           <div className='container'>

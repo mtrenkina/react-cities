@@ -1,32 +1,28 @@
-import { Link } from 'react-router-dom';
+import { useCallback } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/index';
+import { changeCity } from '../../store/user-actions/user-actions';
+import { getCity } from '../../store/user-actions/user-actions-selectors';
 import { cities } from '../../const';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import {changeCurrentCity} from '../../store/action';
+import CitiesItem from '../cities-item/cities-item';
 
-type citiesLiProps = {
-  city: string;
-}
-
-const CitiesLi = ({city}: citiesLiProps): JSX.Element => {
-
+const CitiesList = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const currentCity = useAppSelector((state) => state.change.city);
+  const currentCity = useAppSelector(getCity);
+
+  const clickHandler = useCallback(
+    (cityName: string) => {
+      dispatch(changeCity(cityName));
+    },
+    [dispatch]
+  );
 
   return (
-    <li className='locations__item'>
-      <Link className={`locations__item-link tabs__item ${city === currentCity ? 'tabs__item--active' : ''}`} to='/' onClick={() => dispatch(changeCurrentCity(city))}>
-        <span>{city}</span>
-      </Link>
-    </li>
+    <ul className='locations__list tabs__list'>
+      {Array.from(cities).map((city) => (
+        <CitiesItem key={city.name} city={city} currentCity={currentCity} clickHandler={clickHandler} />
+      ))}
+    </ul>
   );
 };
-
-const CitiesList = (): JSX.Element => (
-  <ul className='locations__list tabs__list'>
-    {Array.from(cities).map((city) => (
-      <CitiesLi key={city.name} city={city.name} />
-    ))}
-  </ul>
-);
 
 export default CitiesList;
