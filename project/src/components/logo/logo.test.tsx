@@ -1,18 +1,47 @@
 import { render, screen } from '@testing-library/react';
+import {Route, Routes} from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
+import {createMemoryHistory} from 'history';
 import Logo from './logo';
-import { Link } from 'react-router-dom';
+import HistoryRoute from '../history-route/history-route';
+import { AppRoute } from '../../const';
 
-describe('Page: NotFoundPage', () => {
+const history = createMemoryHistory();
 
-  it('should render correctly', async () => {
+describe('Component: Logo', () => {
 
-    const { getByAltText } = await render(
-      <Link to='/'>
+  it('should render correctly from required URL', async () => {
+
+    render(
+      <HistoryRoute history={history}>
         <Logo />
-      </Link>
+      </HistoryRoute>
     );
-    const image = getByAltText('6 cities logo');
+    const image = screen.getByAltText(/6 cities logo/i);
 
     expect(image).toHaveAttribute('src', 'img/logo.svg')
   });
+
+  it('should redirect to the main page when user click on the link', async () => {
+    history.push('/logo');
+
+    render(
+      <HistoryRoute history={history}>
+        <Routes>
+          <Route
+            path='/logo'
+            element={<Logo />}
+          />
+          <Route
+            path={AppRoute.MAIN}
+            element={<h1>Main screen!</h1>}
+          />
+        </Routes>
+      </HistoryRoute>
+    );
+
+    await userEvent.click(screen.getByTestId('link'));
+    expect(screen.getByText(/Main screen!/i)).toBeInTheDocument();
+  });
+
 })

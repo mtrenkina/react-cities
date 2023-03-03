@@ -19,7 +19,6 @@ import { APIRoute } from '../const';
 import { State } from '../types/state';
 import { getNeabyOffers, makeCommentData, makeComments, makeFavouriteOffers, makeOffer, makeOfferId, makeOffers, makeUserData } from '../utils/mocks';
 import { AuthData } from '../types/auth-data';
-import { changeFavoriteStatus } from './offers-data/offers-data';
 
 const fakeOfferId = makeOfferId();
 const offer = makeOffer();

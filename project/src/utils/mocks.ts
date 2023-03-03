@@ -138,8 +138,8 @@ export const makeComment = (): Comment => ({
 
 export const makeComments = (): Comment[] => {
   const comments: Comment[] = [];
-  for (let i = 0; i < 2; i++) {
-    comments.push(makeComment(i));
+  for (let i = 0; i < 3; i++) {
+    comments.push(makeComment());
   }
 
   return comments;
