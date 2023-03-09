@@ -1,12 +1,18 @@
 import { Link } from 'react-router-dom';
 import Card from '../../components/card/card';
 import { useAppSelector } from '../../hooks';
+import { useSelectedOffer } from '../../hooks/useSelectedOffer';
 import { getFavouriteOffers } from '../../store/offers-data/offers-data-selectors';
 
 const FavouritesList = (): JSX.Element => {
   const favouriteOffers = useAppSelector(getFavouriteOffers);
   const favouriteCities = Array.from(favouriteOffers).map((offer) => offer.city.name);
   const uniqueFavouriteCities = Array.from(new Set(favouriteCities));
+  const { setCurrentOfferId } = useSelectedOffer();
+
+  const onCardHover = (listItemId: number) => {
+    setCurrentOfferId(listItemId);
+  };
 
   return (
     <ul className='favorites__list'>
@@ -26,6 +32,7 @@ const FavouritesList = (): JSX.Element => {
                 <Card
                   cardClassName={'favorites__card'}
                   imgClassName={'favorites__image-wrapper'}
+                  changeActiveCard={onCardHover}
                   card={offer}
                   key={offer.id}
                   offerId={offer.id}

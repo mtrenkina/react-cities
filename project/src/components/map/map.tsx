@@ -5,27 +5,29 @@ import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
 import { Offer } from '../../types/offer';
 import { cities } from '../../const';
+import { useSelectedOffer } from '../../hooks/useSelectedOffer';
 
 type MapProps = {
   city: string;
   points: Offer[];
-  selectedPoint?: Offer;
 };
 
 const defaultCustomIcon = new leaflet.Icon({
-  iconUrl: 'img/pin.svg',
+  iconUrl: './img/pin.svg',
   iconSize: [27, 39],
   iconAnchor: [20, 40],
 });
 
 const currentCustomIcon = new leaflet.Icon({
-  iconUrl: 'img/pin-active.svg',
+  iconUrl: './img/pin-active.svg',
   iconSize: [27, 39],
   iconAnchor: [20, 40],
 });
 
 const Map = (props: MapProps): JSX.Element => {
-  const { selectedPoint, city, points } = props;
+  const { city, points } = props;
+  const { currentOffer } = useSelectedOffer();
+
   const currentCity = cities.filter((el) => el.name === city)[0];
   const mapRef = useRef(null);
 
@@ -43,12 +45,12 @@ const Map = (props: MapProps): JSX.Element => {
 
         marker
           .setIcon(
-            selectedPoint !== undefined && point.id === selectedPoint.id ? currentCustomIcon : defaultCustomIcon
+            currentOffer && point.id === currentOffer.id ? currentCustomIcon : defaultCustomIcon
           )
           .addTo(map);
       });
     }
-  }, [map, city, points, selectedPoint]);
+  }, [map, city, points, currentOffer]);
 
   return <div style={{ height: '100%' }} ref={mapRef}></div>;
 };
