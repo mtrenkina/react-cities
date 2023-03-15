@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { store } from '../../store';
@@ -15,12 +15,13 @@ import LoadingPage from '../loading-page/loading-page';
 import NotFoundPage from '../not-found-page/not-found-page';
 import Sprite from '../../components/svg-sprite/svg-sprite';
 import Header from '../../components/header/header';
-import { useSelectedOffer } from '../../hooks/useSelectedOffer';
+import { Offer } from '../../types/offer';
 
 const Property = (): JSX.Element => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [selectedOffer, setSelectedOffer] = useState<Offer>();
 
   const {id} = useParams();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
@@ -32,10 +33,10 @@ const Property = (): JSX.Element => {
   const city = useAppSelector(getCity);
   const currentOffer = useAppSelector(getCurrentOffer);
   const newOffers = currentOffer && nearOffers !== null ? [...nearOffers, currentOffer] : [];
-  const { setCurrentOfferId } = useSelectedOffer();
 
   const onCardHover = (listItemId: number) => {
-    setCurrentOfferId(listItemId);
+    const currentPoint = nearOffers.find((offer) => offer.id === listItemId);
+    setSelectedOffer(currentPoint);
   };
 
   useEffect(() => {
@@ -155,7 +156,7 @@ const Property = (): JSX.Element => {
               </div>
             </div>
             <section className='property__map map'>
-              <Map city={city} points={newOffers}/>
+              <Map city={city} points={newOffers} selectedPoint={selectedOffer}/>
             </section>
           </section>
           <div className='container'>
