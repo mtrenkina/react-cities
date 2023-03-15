@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { store } from '../../store';
@@ -7,7 +7,6 @@ import { changeFavouriteStatusAction, fetchCommentsAction, fetchCurrentOfferActi
 import { getNearOffers, getNearOffersLoadingStatus, getComments, getCurrentOffer, getCurrentOfferLoadingStatus } from '../../store/offers-data/offers-data-selectors';
 import { getCity } from '../../store/user-actions/user-actions-selectors';
 import { getAuthorizationStatus } from '../../store/user-auth/user-auth-selectors';
-import { Offer } from '../../types/offer';
 import CommentsList from '../../components/comments-list/comments-list';
 import Map from '../../components/map/map';
 import CardsList from '../../components/cards-list/cards-list';
@@ -16,6 +15,7 @@ import LoadingPage from '../loading-page/loading-page';
 import NotFoundPage from '../not-found-page/not-found-page';
 import Sprite from '../../components/svg-sprite/svg-sprite';
 import Header from '../../components/header/header';
+import { useSelectedOffer } from '../../hooks/useSelectedOffer';
 
 const Property = (): JSX.Element => {
 
@@ -23,7 +23,6 @@ const Property = (): JSX.Element => {
   const navigate = useNavigate();
 
   const {id} = useParams();
-  const [selectedOffer, setSelectedOffer] = useState<Offer>();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isCurrentOfferLoading = useAppSelector(getCurrentOfferLoadingStatus);
   const areNearOffersLoading = useAppSelector(getNearOffersLoadingStatus);
@@ -33,6 +32,11 @@ const Property = (): JSX.Element => {
   const city = useAppSelector(getCity);
   const currentOffer = useAppSelector(getCurrentOffer);
   const newOffers = currentOffer && nearOffers !== null ? [...nearOffers, currentOffer] : [];
+  const { setCurrentOfferId } = useSelectedOffer();
+
+  const onCardHover = (listItemId: number) => {
+    setCurrentOfferId(listItemId);
+  };
 
   useEffect(() => {
     if (id) {
@@ -41,11 +45,6 @@ const Property = (): JSX.Element => {
       store.dispatch(fetchCommentsAction({ hotelId: id }));
     }
   }, [id]);
-
-  const onCardHover = (listItemId: number) => {
-    const currentPoint = nearOffers.find((offer) => offer.id === listItemId);
-    setSelectedOffer(currentPoint);
-  };
 
   const onFavouriteButtonClickHandler = () => {
     if (authorizationStatus !== AuthorizationStatus.AUTH) {
@@ -156,7 +155,7 @@ const Property = (): JSX.Element => {
               </div>
             </div>
             <section className='property__map map'>
-              <Map city={city} points={newOffers} selectedPoint={selectedOffer} />
+              <Map city={city} points={newOffers}/>
             </section>
           </section>
           <div className='container'>

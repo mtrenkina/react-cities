@@ -13,19 +13,20 @@ type MapProps = {
 };
 
 const defaultCustomIcon = new leaflet.Icon({
-  iconUrl: 'img/pin.svg',
+  iconUrl: './img/pin.svg',
   iconSize: [27, 39],
   iconAnchor: [20, 40],
 });
 
 const currentCustomIcon = new leaflet.Icon({
-  iconUrl: 'img/pin-active.svg',
+  iconUrl: './img/pin-active.svg',
   iconSize: [27, 39],
   iconAnchor: [20, 40],
 });
 
 const Map = (props: MapProps): JSX.Element => {
-  const { selectedPoint, city, points } = props;
+  const { city, points, selectedPoint } = props;
+
   const currentCity = cities.filter((el) => el.name === city)[0];
   const mapRef = useRef(null);
 
@@ -43,7 +44,7 @@ const Map = (props: MapProps): JSX.Element => {
 
         marker
           .setIcon(
-            selectedPoint !== undefined && point.id === selectedPoint.id ? currentCustomIcon : defaultCustomIcon
+            selectedPoint && point.id === selectedPoint.id ? currentCustomIcon : defaultCustomIcon
           )
           .addTo(map);
       });

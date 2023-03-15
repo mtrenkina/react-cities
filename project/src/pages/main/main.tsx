@@ -1,10 +1,8 @@
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import React, { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getOffers, getErrorMessage } from '../../store/offers-data/offers-data-selectors';
-import { getCity } from '../../store/user-actions/user-actions-selectors';
+import { getErrorMessage } from '../../store/offers-data/offers-data-selectors';
 import { useAppSelector } from '../../hooks';
 import { sortingTypes } from '../../const';
-import { Offer } from '../../types/offer';
 import CardsList from '../../components/cards-list/cards-list';
 import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
@@ -12,64 +10,31 @@ import PlacesSorting from '../../components/places-sorting/places-sorting';
 import MainEmpty from '../main-empty/main-empty';
 import Sprite from '../../components/svg-sprite/svg-sprite';
 import Header from '../../components/header/header';
+import { useSorting } from '../../hooks/useSorting';
+import { useFilter } from '../../hooks/useFilter';
+import { Offer } from '../../types/offer';
 
 const Main = (): JSX.Element => {
 
+  const {filteredOffers, city} = useFilter();
+  const {sortedOffers, sorting, setSorting} = useSorting(sortingTypes.POPULAR, filteredOffers);
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
-  const [sortedOffers, setSortedOffers] = useState<Offer[]>([]);
-  const [currentSorting, setSorting] = useState<string>(sortingTypes.POPULAR);
-
-  const city = useAppSelector(getCity);
-  const offers = useAppSelector(getOffers);
-  const filteredOffers = useMemo(() => offers.filter((offer) => offer.city.name === city), [offers, city]);
   const errorMessage = useAppSelector(getErrorMessage);
-
-  useEffect(() => {
-    const sorted = sortingOffers([...filteredOffers]);
-    setSortedOffers(sorted ?? []);
-  }, [currentSorting, filteredOffers, city]);
 
   const onCardHover = useCallback((listItemId: number) => {
     const currentPoint = filteredOffers.find((offer) => offer.id === listItemId);
     setSelectedOffer(currentPoint);
   }, [filteredOffers]);
 
-  const changeSorting = useCallback((type: string) => {
+  const changeSorting = (type: string) => {
     setSorting(type);
-  }, [currentSorting]);
-
-  const sortingByPrice = (offerA: Offer, offerB: Offer) => {
-    const priceA = offerA.price;
-    const priceB = offerB.price;
-
-    switch(priceA < priceB) {
-      case true:
-        return 1;
-      case false:
-        return -1;
-      default:
-        return 0;
-    }
-  };
-
-  const sortingOffers = (copyOffers: Offer[]) => {
-    switch (currentSorting) {
-      case sortingTypes.PRICELOWTOHIGHT:
-        return copyOffers.sort((x, y) => x.price - y.price);
-      case sortingTypes.PRICEHIGHTTOLOW:
-        return copyOffers.sort(sortingByPrice);
-      case sortingTypes.RAITING:
-        return copyOffers.sort((x, y) => y.rating - x.rating);
-      case sortingTypes.POPULAR:
-        return copyOffers;
-    }
   };
 
   if (errorMessage !== undefined) {
     toast.error(errorMessage);
   }
 
-  if (offers.length === 0) {
+  if (filteredOffers.length === 0) {
     return (<MainEmpty />);
   }
 
@@ -93,7 +58,7 @@ const Main = (): JSX.Element => {
                 <b className='places__found'>
                   {filteredOffers.length} places to stay in {city}
                 </b>
-                <PlacesSorting sortingType={sortingTypes} currentSorting={currentSorting} setSorting={changeSorting} />
+                <PlacesSorting sortingType={sortingTypes} currentSorting={sorting} setSorting={changeSorting} />
                 <CardsList
                   sortedOffers={sortedOffers}
                   cardClassName={'cities__place-card'}
@@ -103,7 +68,7 @@ const Main = (): JSX.Element => {
               </section>
               <div className='cities__right-section'>
                 <section className='cities__map map'>
-                  <Map city={city} points={filteredOffers} selectedPoint={selectedOffer} />
+                  <Map city={city} points={filteredOffers} selectedPoint={selectedOffer}/>
                 </section>
               </div>
             </div>
