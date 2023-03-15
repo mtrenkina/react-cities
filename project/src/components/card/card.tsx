@@ -5,37 +5,35 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import { Offer } from '../../types/offer';
 import { getAuthorizationStatus } from '../../store/user-auth/user-auth-selectors';
 import { changeFavouriteStatusAction } from '../../store/api-action';
-import { useSelectedOffer } from '../../hooks/useSelectedOffer';
 
 type CardsProps = {
   card: Offer;
   cardClassName: string;
   imgClassName: string;
   offerId: number;
-  changeActiveCard: (id: number) => void;
+  changeActiveCard?: (id: number) => void;
 };
 
 const Card = ({ card, cardClassName, imgClassName, offerId, changeActiveCard }: CardsProps): JSX.Element => {
-  const { setCurrentOfferId } = useSelectedOffer();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  changeActiveCard = (id: number) => {
-    setCurrentOfferId(id);
-  };
 
   const { isPremium, previewImage, price, isFavorite, rating, title, type, id } = card;
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const onCardMouseEnterHandler = () => {
     //if (changeActiveCard && authorizationStatus === AuthorizationStatus.AUTH) {
-    changeActiveCard(id);
+    if (changeActiveCard) {
+      changeActiveCard(id);
+    }
     //}
   };
 
   const onCardMouseLeaveHandler = () => {
     // if (changeActiveCard && authorizationStatus === AuthorizationStatus.AUTH) {
-    changeActiveCard(0);
+    if (changeActiveCard) {
+      changeActiveCard(0);
+    }
     //}
   };
 

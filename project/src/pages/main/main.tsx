@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 import { getErrorMessage } from '../../store/offers-data/offers-data-selectors';
 import { useAppSelector } from '../../hooks';
@@ -12,17 +12,18 @@ import Sprite from '../../components/svg-sprite/svg-sprite';
 import Header from '../../components/header/header';
 import { useSorting } from '../../hooks/useSorting';
 import { useFilter } from '../../hooks/useFilter';
-import { useSelectedOffer } from '../../hooks/useSelectedOffer';
+import { Offer } from '../../types/offer';
 
 const Main = (): JSX.Element => {
 
   const {filteredOffers, city} = useFilter();
   const {sortedOffers, sorting, setSorting} = useSorting(sortingTypes.POPULAR, filteredOffers);
-  const { setCurrentOfferId } = useSelectedOffer();
+  const [selectedOffer, setSelectedOffer] = useState<Offer>();
   const errorMessage = useAppSelector(getErrorMessage);
 
   const onCardHover = useCallback((listItemId: number) => {
-    setCurrentOfferId(listItemId);
+    const currentPoint = filteredOffers.find((offer) => offer.id === listItemId);
+    setSelectedOffer(currentPoint);
   }, [filteredOffers]);
 
   const changeSorting = (type: string) => {
@@ -67,7 +68,7 @@ const Main = (): JSX.Element => {
               </section>
               <div className='cities__right-section'>
                 <section className='cities__map map'>
-                  <Map city={city} points={filteredOffers}/>
+                  <Map city={city} points={filteredOffers} selectedPoint={selectedOffer}/>
                 </section>
               </div>
             </div>

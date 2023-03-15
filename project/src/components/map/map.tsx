@@ -5,11 +5,11 @@ import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
 import { Offer } from '../../types/offer';
 import { cities } from '../../const';
-import { useSelectedOffer } from '../../hooks/useSelectedOffer';
 
 type MapProps = {
   city: string;
   points: Offer[];
+  selectedPoint?: Offer;
 };
 
 const defaultCustomIcon = new leaflet.Icon({
@@ -25,8 +25,7 @@ const currentCustomIcon = new leaflet.Icon({
 });
 
 const Map = (props: MapProps): JSX.Element => {
-  const { city, points } = props;
-  const { currentOffer } = useSelectedOffer();
+  const { city, points, selectedPoint } = props;
 
   const currentCity = cities.filter((el) => el.name === city)[0];
   const mapRef = useRef(null);
@@ -45,12 +44,12 @@ const Map = (props: MapProps): JSX.Element => {
 
         marker
           .setIcon(
-            currentOffer && point.id === currentOffer.id ? currentCustomIcon : defaultCustomIcon
+            selectedPoint && point.id === selectedPoint.id ? currentCustomIcon : defaultCustomIcon
           )
           .addTo(map);
       });
     }
-  }, [map, city, points, currentOffer]);
+  }, [map, city, points, selectedPoint]);
 
   return <div style={{ height: '100%' }} ref={mapRef}></div>;
 };
