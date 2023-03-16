@@ -2,7 +2,7 @@ import { City } from './types/city';
 
 const PARIS: City = {
   name: 'Paris',
-  lat: 48.8534,
+  lat: 48.8654,
   lng: 2.3488,
   zoom: 13,
 };
