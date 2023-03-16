@@ -15,7 +15,7 @@ function UserInfo(): JSX.Element {
   return (
     <React.Fragment>
       <li className='header__nav-item user'>
-        <Link className='header__nav-link header__nav-link--profile' to={'/favorites'}>
+        <Link className='header__nav-link header__nav-link--profile' data-testid='favourites-link' to={'/favorites'}>
           <div className='header__avatar-wrapper user__avatar-wrapper'></div>
           {authorizationStatus === AuthorizationStatus.AUTH && (
             <>
@@ -29,6 +29,7 @@ function UserInfo(): JSX.Element {
         {authorizationStatus === AuthorizationStatus.AUTH ? (
           <Link
             className='header__nav-link'
+            data-testid='sign-out-link'
             to={'/'}
             onClick={(evt) => {
               evt.preventDefault();
@@ -38,7 +39,7 @@ function UserInfo(): JSX.Element {
             <span className='header__signout'>Sign out</span>
           </Link>
         ) : (
-          <Link className='header__nav-link' to={'/login'}>
+          <Link className='header__nav-link' data-testid='sign-in-link' to={'/login'}>
             <span className='header__signout'>Sign in</span>
           </Link>
         )}

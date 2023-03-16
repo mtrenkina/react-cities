@@ -6,22 +6,26 @@ import { AppRoute, AuthorizationStatus } from '../../const';
 import NotFoundPage from './not-found-page';
 import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import { makeUserData } from '../../utils/mocks';
+import { makeFavouriteOffers, makeUserData } from '../../utils/mocks';
 
 const mockStore = configureMockStore();
 const history = createMemoryHistory();
 
 const fakeUserData = makeUserData();
-const fakeState = {USER: {
-  authorizationStatus: AuthorizationStatus.AUTH,
-  user: fakeUserData}
+
+const fakeState = {
+  USER: {
+    authorizationStatus: AuthorizationStatus.AUTH,
+    user: fakeUserData},
+  DATA: {
+    favouriteOffers: makeFavouriteOffers()}
 };
 
 const store = mockStore(fakeState);
 
 describe('Page: NotFoundPage', () => {
 
-  it('should render correctly', () => {
+  it('should render NotFoundPage correctly', () => {
     render(
       <Provider store={store}>
         <HistoryRoute history={history}>
