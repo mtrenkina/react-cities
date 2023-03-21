@@ -4,6 +4,13 @@ import { City, CityMock } from "../types/city";
 import { Comment } from '../types/comment';
 import { UserData } from '../types/user-data';
 import { CommentData } from '../types/comment-data';
+import { cities } from '../const';
+
+const getRandomInt = (min: number, max: number): number => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 export const makeMockCity = (): CityMock => ({
   location: {
@@ -21,10 +28,19 @@ export const makeCity = (): City => ({
   name: address.cityName(),
 });
 
+const transformToOfferCity = (city: City): CityMock => ({
+  location: {
+    latitude: city.lat,
+    longitude: city.lng,
+    zoom: city.zoom,
+  },
+  name: city.name,
+});
+
 export const makeOffer = (): Offer => ({
   bedrooms: 3,
   isFavorite: datatype.boolean(),
-  city: makeMockCity(),
+  city: transformToOfferCity(cities[getRandomInt(0, 5)]),
   description: random.words(),
   goods: ['TV', 'conditioner'],
   host: {

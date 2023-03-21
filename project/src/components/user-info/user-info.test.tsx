@@ -14,7 +14,7 @@ import { Route, Routes } from 'react-router-dom';
 const mockStore = configureMockStore();
 const api = createAPI();
 const middlewares = [thunk.withExtraArgument(api)];
-const history = createMemoryHistory();
+let history = createMemoryHistory();
 
 const fakeUserData = makeUserData();
 
@@ -34,6 +34,7 @@ describe('Component: UserInfo', () => {
     };
 
     store = mockStore(fakeState);
+    history = createMemoryHistory();
   });
 
   it('should render UserInfo correctly', () => {
