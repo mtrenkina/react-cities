@@ -7,7 +7,7 @@ type PrivateRouteProps = {
   children: JSX.Element;
 }
 
-function FavouritesPrivateRoute(props: PrivateRouteProps): JSX.Element {
+function PrivateRoute(props: PrivateRouteProps): JSX.Element {
   const { children } = props;
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
@@ -18,4 +18,4 @@ function FavouritesPrivateRoute(props: PrivateRouteProps): JSX.Element {
   );
 }
 
-export default FavouritesPrivateRoute;
+export default PrivateRoute;
