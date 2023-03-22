@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Card from '../../components/card/card';
+import { CardClassName, ImgClassName } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { getFavouriteOffers } from '../../store/offers-data/offers-data-selectors';
 
@@ -24,8 +25,8 @@ const FavouritesList = (): JSX.Element => {
               .filter((el) => el.city.name === city)
               .map((offer) => (
                 <Card
-                  cardClassName={'favorites__card'}
-                  imgClassName={'favorites__image-wrapper'}
+                  cardClassName={CardClassName.FAVOURITES}
+                  imgClassName={ImgClassName.FAVOURITES}
                   card={offer}
                   key={offer.id}
                   offerId={offer.id}

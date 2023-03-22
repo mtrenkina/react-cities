@@ -83,3 +83,15 @@ export enum ReducerNameSpace {
 }
 
 export const MAX_REVIEWS_COUNT = 10;
+
+export enum CardClassName {
+  MAIN = 'cities__place-card',
+  FAVOURITES = 'favorites__card',
+  NEARBY = 'near-places__card',
+}
+
+export enum ImgClassName {
+  MAIN = 'cities__image-wrapper',
+  FAVOURITES = 'favorites__image-wrapper',
+  NEARBY = 'near-places__image-wrapper',
+}

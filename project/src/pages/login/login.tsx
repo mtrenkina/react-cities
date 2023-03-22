@@ -41,11 +41,12 @@ const Login = (): JSX.Element => {
           <div className='page__login-container container'>
             <section className='login'>
               <h1 className='login__title'>Sign in</h1>
-              <form className='login__form form' action='#' method='post' onSubmit={handleSubmit(submitHandler)}>
+              <form className='login__form form' data-testid='login-form' action='#' method='post' onSubmit={handleSubmit(submitHandler)}>
                 <div className='login__input-wrapper form__input-wrapper'>
                   <label className='visually-hidden'>E-mail</label>
                   <input
                     className='login__input form__input'
+                    data-testid='login'
                     type='email'
                     placeholder='Email'
                     {...register('login', { required: true })}
@@ -55,6 +56,7 @@ const Login = (): JSX.Element => {
                   <label className='visually-hidden'>Password</label>
                   <input
                     className='login__input form__input'
+                    data-testid='password'
                     type='password'
                     placeholder='Password'
                     {...register('password', {
@@ -67,7 +69,7 @@ const Login = (): JSX.Element => {
                     })}
                   />
                 </div>
-                <button className='login__submipt form__submit button' type='submit' disabled={!isValid}>
+                <button className='login__submipt form__submit button' data-testid='login-submit' type='submit' disabled={!isValid}>
                   Sign in
                 </button>
                 <div style={{ height: 20, width: `${100}%`, paddingBottom: `${10}px` }}>
