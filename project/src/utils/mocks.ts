@@ -25,7 +25,7 @@ export const makeCity = (): City => ({
   lat: Number(address.latitude()),
   lng: Number(address.longitude()),
   zoom: 10,
-  name: address.cityName(),
+  name: cities[getRandomInt(0, 5)].name,
 });
 
 const transformToOfferCity = (city: City): CityMock => ({
@@ -68,7 +68,7 @@ export const makeOffer = (): Offer => ({
 export const makeFavouriteOffer = (): Offer => ({
   bedrooms: datatype.number(),
   isFavorite: true,
-  city: makeMockCity(),
+  city: transformToOfferCity(cities[getRandomInt(0, 5)]),
   description: random.words(),
   goods: ['TV', 'conditioner'],
   host: {
@@ -96,7 +96,7 @@ export const makeFavouriteOffer = (): Offer => ({
 export const makeNotFavouriteOffer = (): Offer => ({
   bedrooms: datatype.number(),
   isFavorite: true,
-  city: makeMockCity(),
+  city: transformToOfferCity(cities[getRandomInt(0, 5)]),
   description: random.words(),
   goods: ['TV', 'conditioner'],
   host: {

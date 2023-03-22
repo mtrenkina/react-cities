@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 import { getErrorMessage } from '../../store/offers-data/offers-data-selectors';
 import { useAppSelector } from '../../hooks';
-import { sortingTypes } from '../../const';
+import { CardClassName, ImgClassName, sortingTypes } from '../../const';
 import CardsList from '../../components/cards-list/cards-list';
 import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
@@ -56,13 +56,13 @@ const Main = (): JSX.Element => {
               <section className='cities__places places'>
                 <h2 className='visually-hidden'>Places</h2>
                 <b className='places__found'>
-                  {filteredOffers.length} places to stay in {city}
+                  {filteredOffers.length} {`place${filteredOffers.length > 1 ? 's' : ''}`} to stay in {city}
                 </b>
                 <PlacesSorting sortingType={sortingTypes} currentSorting={sorting} setSorting={changeSorting} />
                 <CardsList
                   sortedOffers={sortedOffers}
-                  cardClassName={'cities__place-card'}
-                  imgClassName={'cities__image-wrapper'}
+                  cardClassName={CardClassName.MAIN}
+                  imgClassName={ImgClassName.MAIN}
                   onCardHover={onCardHover}
                 />
               </section>

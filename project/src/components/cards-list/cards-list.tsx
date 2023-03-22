@@ -8,7 +8,7 @@ import { store } from '../../store';
 import { fetchFavouriteOffersAction } from '../../store/api-action';
 import { useLocation } from 'react-router-dom';
 
-type CardsListProps = {
+export type CardsListProps = {
   sortedOffers: Offer[];
   onCardHover: (id: number) => void;
   cardClassName: string;

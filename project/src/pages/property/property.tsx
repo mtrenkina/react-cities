@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { store } from '../../store';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus, CardClassName, ImgClassName } from '../../const';
 import { changeFavouriteStatusAction, fetchCommentsAction, fetchCurrentOfferAction, fetchNearOffersAction } from '../../store/api-action';
 import { getNearOffers, getNearOffersLoadingStatus, getComments, getCurrentOffer, getCurrentOfferLoadingStatus } from '../../store/offers-data/offers-data-selectors';
 import { getCity } from '../../store/user-actions/user-actions-selectors';
@@ -165,8 +165,8 @@ const Property = (): JSX.Element => {
               <div className='near-places__list places__list'>
                 <CardsList
                   sortedOffers={nearOffers}
-                  cardClassName={'near-places__card'}
-                  imgClassName={'near-places__image-wrapper'}
+                  cardClassName={CardClassName.NEARBY}
+                  imgClassName={ImgClassName.NEARBY}
                   onCardHover={onCardHover}
                 />
               </div>

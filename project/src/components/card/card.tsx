@@ -6,7 +6,7 @@ import { Offer } from '../../types/offer';
 import { getAuthorizationStatus } from '../../store/user-auth/user-auth-selectors';
 import { changeFavouriteStatusAction } from '../../store/api-action';
 
-type CardsProps = {
+export type CardsProps = {
   card: Offer;
   cardClassName: string;
   imgClassName: string;
@@ -22,19 +22,15 @@ const Card = ({ card, cardClassName, imgClassName, offerId, changeActiveCard }: 
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const onCardMouseEnterHandler = () => {
-    //if (changeActiveCard && authorizationStatus === AuthorizationStatus.AUTH) {
     if (changeActiveCard) {
       changeActiveCard(id);
     }
-    //}
   };
 
   const onCardMouseLeaveHandler = () => {
-    // if (changeActiveCard && authorizationStatus === AuthorizationStatus.AUTH) {
     if (changeActiveCard) {
       changeActiveCard(0);
     }
-    //}
   };
 
   const onFavouriteButtonClickHandler = () => {
@@ -79,6 +75,7 @@ const Card = ({ card, cardClassName, imgClassName, offerId, changeActiveCard }: 
                 ? ''
                 : 'place-card__bookmark-button--active'
             }`}
+            data-testid='favourite__button'
             type='button'
             onClick={onFavouriteButtonClickHandler}
           >
