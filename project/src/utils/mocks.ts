@@ -1,7 +1,7 @@
 import { name, date, internet, address, random, datatype, lorem } from 'faker';
 import { Offer } from "../types/offer";
 import { City, CityMock } from "../types/city";
-import { Comment } from '../types/comment';
+import { Comment, Host } from '../types/comment';
 import { UserData } from '../types/user-data';
 import { CommentData } from '../types/comment-data';
 import { cities } from '../const';
@@ -139,28 +139,6 @@ export const makeFavouriteOffers = () => {
   return offers;
 };
 
-export const makeComment = (): Comment => ({
-  comment: lorem.word(),
-  date: date.recent().toDateString(),
-  id: datatype.number(20),
-  rating: datatype.number(5),
-  user: {
-    avatarUrl: internet.url(),
-    id: datatype.number(20),
-    isPro: true,
-    name: name.title(),
-  },
-});
-
-export const makeComments = (): Comment[] => {
-  const comments: Comment[] = [];
-  for (let i = 0; i < 3; i++) {
-    comments.push(makeComment());
-  }
-
-  return comments;
-};
-
 export const makeUserData = (): UserData => ({
   id: datatype.number(),
   email: internet.exampleEmail(),
@@ -174,10 +152,35 @@ export const makeCommentData = (): CommentData => ({
   comment: lorem.word(50),
   hotelId: String(datatype.number(20)),
   rating: datatype.number({min: 1, max: 5, precision: 0.1})
-})
+});
 
 export const getNeabyOffers = Array.from({length: 3}, makeOffer);
 
 export const makeEmail = (): string => internet.email();
 
 export const makeOfferId = (): string => String(datatype.number(20));
+
+const makeHost = (): Host => ({
+  id: datatype.number(),
+  name: name.firstName(),
+  avatarUrl: internet.url(),
+  isPro: datatype.boolean(),
+});
+
+export const makeComment = (): Comment => ({
+  comment: lorem.sentence(20),
+  date: date.recent().toDateString(),
+  id: datatype.number(20),
+  rating: datatype.number(5),
+  user: makeHost(),
+});
+
+export const makeComments = (): Comment[] => {
+  const comments: Comment[] = [];
+  for (let i = 0; i < 3; i++) {
+    comments.push(makeComment());
+  }
+
+  return comments;
+};
+
