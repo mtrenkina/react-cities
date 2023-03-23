@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 
 dayjs().format();
 
-type CommentProps = {
+export type CommentProps = {
   comment: Comment;
 }
 
@@ -25,7 +25,7 @@ const CommentsItem = ({comment}: CommentProps): JSX.Element => (
     <div className='reviews__info'>
       <div className='reviews__rating rating'>
         <div className='reviews__stars rating__stars'>
-          <span style={{ width: `${100 / 5 * comment.rating}%` }}></span>
+          <span data-testid='rating-stars' style={{ width: `${100 / 5 * comment.rating}%` }}></span>
           <span className='visually-hidden'>Rating</span>
         </div>
       </div>

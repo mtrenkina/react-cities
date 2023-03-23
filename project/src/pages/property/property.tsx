@@ -93,7 +93,7 @@ const Property = (): JSX.Element => {
                 )}
                 <div className='property__name-wrapper'>
                   <h1 className='property__name'>{currentOffer?.title}</h1>
-                  <button className={`button property__bookmark-button ${currentOffer?.isFavorite ? 'property__bookmark-button--active' : ''}`} type='button' onClick={onFavouriteButtonClickHandler}>
+                  <button data-testid='favourite-change' className={`button property__bookmark-button ${currentOffer?.isFavorite ? 'property__bookmark-button--active' : ''}`} type='button' onClick={onFavouriteButtonClickHandler}>
                     <svg className='property__bookmark-icon' width='31' height='33'>
                       <use xlinkHref='#icon-bookmark'></use>
                     </svg>

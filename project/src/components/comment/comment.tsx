@@ -22,7 +22,7 @@ const Comment = ({hotelId}: {hotelId?: string}): JSX.Element => {
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form className='reviews__form form' action='#' method='post' onSubmit={handleSubmit(submitHandler)}>
+    <form className='reviews__form form' data-testid='review-form' action='#' method='post' onSubmit={handleSubmit(submitHandler)}>
       <label className='reviews__label form__label' htmlFor='review'>
         Your review
       </label>
@@ -65,6 +65,7 @@ const Comment = ({hotelId}: {hotelId?: string}): JSX.Element => {
       <textarea
         className='reviews__textarea form__textarea'
         id='review'
+        data-testid='review-text'
         placeholder='Tell how was your stay, what you like and what can be improved'
         {...register('review', { required: true, minLength: 50, maxLength: 300, deps: ['rating'] })}
       />
@@ -73,7 +74,7 @@ const Comment = ({hotelId}: {hotelId?: string}): JSX.Element => {
           To submit review please make sure to set <span className='reviews__star'>rating</span> and describe your stay
           with at least <b className='reviews__text-amount'>50 characters</b>.
         </p>
-        <button className='reviews__submit form__submit button' type='submit' disabled={!isValid}>
+        <button className='reviews__submit form__submit button' data-testid='review-submit' type='submit' disabled={!isValid}>
           Submit
         </button>
       </div>
