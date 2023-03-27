@@ -205,9 +205,9 @@ describe('Page: Property', () => {
     });
 
     it('2. Should redirect to Login when click on changing favourite status button', async() => {
-      const foo = { useNavigate };
+      const navigateHook = { useNavigate };
       const navigate = jest.fn()
-      jest.spyOn(foo, 'useNavigate').mockImplementation(() => navigate)
+      jest.spyOn(navigateHook, 'useNavigate').mockImplementation(() => navigate)
 
       render(fakeApp);
       const fakeOnFavouriteButtonClickHandler = jest.fn();
